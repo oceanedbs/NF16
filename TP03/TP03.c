@@ -9,7 +9,7 @@ T_Element *creerElement(char *val){
 	T_Element* new_elemt;
 	new_elemt=malloc(sizeof(*new_elemt));
 	if(new_elemt==NULL){
-		printf("Erreur d'allocation mémoire pour l'élément");
+		printf("Erreur d'allocation mÃ©moire pour l'Ã©lÃ©ment");
 	}
 	else{
 		strcpy(new_elemt->valeur, val);
@@ -114,6 +114,40 @@ T_Element *rechercherElement(T_Liste *list, char *val){
 
 		return NULL;
 	}
+
+}
+
+
+int supprimerElement(T_Liste *list, char *val) {
+
+	T_Element * a; 
+	a = rechercherElement(list, val);
+	if (a==NULL) {return -1;}
+	if (a->precedent == NULL) {
+			a->suivant->precedent = NULL;
+			
+			free(a);
+			list->taille = list->taille - 1;
+			return 0;
+		}
+	if (a->suivant == NULL) {
+			
+			a->precedent->suivant = NULL;
+			free(a);
+			list->taille = list->taille - 1;
+			return 0;
+		}
+	a->suivant->precedent = a->precedent;
+	a->precedent->suivant = a->suivant;
+	free(a);
+	list->taille = list->taille - 1;
+	return 0;
+}
+
+
+int supprimerListe(T_Liste *list) {
+
+	//a faire flemme maintenant <3
 
 }
 
