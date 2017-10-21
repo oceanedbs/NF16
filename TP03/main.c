@@ -31,6 +31,10 @@ int main() {
     if(b== -1){printf("Erreur d'insertion \n");}
     else{printf("insertion correcte \n");}
 
+	b = insererElement(new_lst, a);
+	 if(b== -1){printf("Erreur d'insertion \n");}
+    else{printf("insertion correcte \n");}
+
     printf("taille liste %d \n", new_lst->taille);
 
    rechercher = rechercherElement(new_lst, a);
