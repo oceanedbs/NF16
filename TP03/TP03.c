@@ -20,7 +20,7 @@ T_Element *creerElement(char *val){
 
 }
 
-T_Liste *creerListe(){
+T_Liste *creerListe(){ //OK
 	T_Liste* new_lst;
 	new_lst=malloc(sizeof(* new_lst));
 	if(new_lst==NULL){
@@ -35,7 +35,7 @@ T_Liste *creerListe(){
 	return new_lst;
 }
 
-int insererElement(T_Liste *list, char *val){
+int insererElement(T_Liste *list, char *val){ //OK
 	T_Element* new_elemt, *tete;
 	tete = malloc(sizeof(*tete));
 	tete=list->tete;
@@ -44,7 +44,7 @@ int insererElement(T_Liste *list, char *val){
 
     if(list == NULL){return -1;}
     else {
-        if(list->taille == 0){
+        if(list->taille == 0){ //la liste est vide
                 list->tete = new_elemt;
                 list->queue = new_elemt;
                 list->taille ++;
@@ -55,27 +55,28 @@ int insererElement(T_Liste *list, char *val){
                 cmp = strcmp(tete->valeur, val);
 
                  if(cmp != 0){
-                        if(cmp<0){
-                            if(i==0){
-                                tete->precedent = new_elemt;
+                        if(cmp>0){ 
+                            if(i==0){ //insertion en tete de liste
+                                list->tete->precedent = new_elemt;
                                 new_elemt->suivant=tete;
-                                tete = new_elemt;
+                                list->tete = new_elemt;
                             }
-                            else{
+                            else{ // insertion n'importe ou dans la liste
                                 new_elemt->suivant = tete;
                                 new_elemt->precedent=tete->precedent;
+				tete->precedent->suivant=new_elemt;
                                 tete->precedent=new_elemt;
-                                tete->precedent->suivant=new_elemt;
+
 
                             }
                             list->taille++;
                             return 0;
-                        }else{
+                        }else{ 
                             i++;
-                            if(i==list->taille){
+                            if(i==list->taille){ //insertion en fin de liste
 
                             new_elemt->precedent = list->queue;
-                            list->queue->precedent = new_elemt;
+                            list->queue->suivant = new_elemt;
                             list->queue = new_elemt;
 
                             list->taille++;
@@ -92,7 +93,7 @@ int insererElement(T_Liste *list, char *val){
 }
 
 
-T_Element *rechercherElement(T_Liste *list, char *val){
+T_Element *rechercherElement(T_Liste *list, char *val){ //OK
 	T_Element* debut = list->tete;
 
 	if(strcmp(list->queue->valeur, val) < 0 || strcmp(list->tete->valeur, val)>0){
@@ -122,7 +123,7 @@ T_Element *rechercherElement(T_Liste *list, char *val){
 
 
 
-int supprimerElement(T_Liste *list, char *val) {
+int supprimerElement(T_Liste *list, char *val) { //OK
  
  	if ((list->taille == 1) && (strcmp(list->tete->valeur,val)==0)) {
 		free(list->tete);
@@ -160,7 +161,7 @@ int supprimerElement(T_Liste *list, char *val) {
 
  
  
- int supprimerListe(T_Liste *list) {
+ int supprimerListe(T_Liste *list) { //Pb tout n'est pas free a priori si tu install valgrind et que tu le lance, on obtient à la fois 488 dans 13 blocks qui n'ont pas été free et en indirect lost il y a 120 bytes dans 3 blocks donc il manque des trucs a free (et quand je le debug a la fin la liste que j'ai free a comme taille 0 mais les pointeurs tete et queue sont initialisés)
  
  	if(list !=NULL)
 	{
@@ -178,7 +179,7 @@ int supprimerElement(T_Liste *list, char *val) {
  }
  
 
- T_Liste *fusionnerListes(T_Liste *list1, T_Liste *list2) {
+ T_Liste *fusionnerListes(T_Liste *list1, T_Liste *list2) { //OK
  
  //cas listes vides
 //check la plus petite tete
