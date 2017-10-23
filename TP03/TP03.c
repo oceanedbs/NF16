@@ -184,7 +184,7 @@ int supprimerElement(T_Liste *list, char *val) {
 //check la plus petite tete
 //remplir 3e list tete et retirer de l'autre l'element (use supprElem) 
 	T_Liste * res;
-	int a,i;
+	int a;
 	char* k;
 	if (list1->taille == 0) {return list2;}
 	if (list2->taille == 0) {return list1;}
