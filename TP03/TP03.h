@@ -41,3 +41,6 @@ int supprimerElement(T_Liste *list, char *val);
 
  T_Liste *fusionnerListes(T_Liste *list1, T_Liste *list2);
 
+int afficher(T_Liste *list);
+int menu();
+
