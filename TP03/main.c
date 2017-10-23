@@ -84,7 +84,7 @@ int main() {
 
 int main() {
 int a,i=0;
-int b;
+int b,c;
 char v[20];
 T_Liste* tab[20];
 T_Liste* list;
@@ -172,7 +172,26 @@ for (a=0;a<=20;a++) {tab[a]=NULL;}
 			}
 			else {printf("veuillez entrer une valeur correcte /n");}
 		}
-		if (a==7) {}
+		if (a==7) {
+			printf("veuillez choisir la premiere liste concernee (entrer l'indice du tableau)");
+			if ((scanf("%d",&b) == 1) && (b<=20) && (b>=0)) {
+				if (tab[b]==NULL) {printf("indice incorrect, pas de liste ici /n");}
+				else {
+							printf("veuillez choisir la deuxieme liste concernee (entrer l'indice du tableau)");
+						if ((scanf("%d",&i) == 1) && (i<=20) && (i>=0)) {
+						if (tab[i]==NULL) {printf("indice incorrect, pas de liste ici /n");}
+						else {
+							list = fusionnerListes(tab[i], tab[b]);
+							tab[i] = list;
+							tab[b] = NULL;
+							printf("la nouvelle liste a prit la place de la liste numero %d",i);
+						}
+					}
+					else {printf("veuillez entrer une valeur correcte /n");}
+				}
+			}
+			else {printf("veuillez entrer une valeur correcte /n");}
+		}
 		
 	}
 
