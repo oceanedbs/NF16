@@ -9,7 +9,7 @@ T_Element *creerElement(char *val){
 	T_Element* new_elemt;
 	new_elemt=malloc(sizeof(*new_elemt));
 	if(new_elemt==NULL){
-		printf("Erreur d'allocation mémoire pour l'élément");
+		printf("Erreur d'allocation mÃ©moire pour l'Ã©lÃ©ment");
 	}
 	else{
 		strcpy(new_elemt->valeur, val);
@@ -96,7 +96,6 @@ T_Element *rechercherElement(T_Liste *list, char *val){
 	T_Element* debut = list->tete;
 
 	if(strcmp(list->queue->valeur, val) < 0 || strcmp(list->tete->valeur, val)>0){
-		printf("l'element n'est pas dans la liste");
 		return NULL;
 	}else{
 
@@ -172,8 +171,9 @@ int supprimerElement(T_Liste *list, char *val) {
 			free(b);
 		}
 	free(list);
-	}
 	return 0;
+	}
+	return -1;
  
  }
  
@@ -186,11 +186,11 @@ int supprimerElement(T_Liste *list, char *val) {
 	T_Liste * res;
 	int a,i;
 	char* k;
+	if (list1->taille == 0) {return list2;}
+	if (list2->taille == 0) {return list1;}
 	res = creerListe();
 	
-		if (list1->taille == 0) {return list2;}
-		if (list2->taille == 0) {return list1;}
-		else {
+				
 			while ((list1->taille != 0) && (list2->taille != 0)) {
 				a = strcmp(list1->tete->valeur, list2->tete->valeur);
 				if (a<0) {							//list1 plus petit
@@ -212,22 +212,26 @@ int supprimerElement(T_Liste *list, char *val) {
 			}
 			//1 ou 2 est vide a ce moment
 			if (list1->taille == 0) {
+				
 				while (list2->taille != 0) {
 					k = list2->tete->valeur;
 					insererElement(res,k);
 					supprimerElement(list2, k);
 				}
-			
+				supprimerListe(list1);
+				supprimerListe(list2);
 			}
 			if (list2->taille == 0) {
+				
 				while (list1->taille != 0) {
 					k = list1->tete->valeur;
 					insererElement(res,k);
 					supprimerElement(list1, k);
 				}
-			
+				supprimerListe(list1);
+				supprimerListe(list2);
 			}
-		}
+		
 		
 	return res;
  }
