@@ -236,4 +236,40 @@ int supprimerElement(T_Liste *list, char *val) {
 	return res;
  }
 
+int afficher(T_Liste *list) {
+
+	if (list->taille == 0) {return -1;}
+	T_Element * a; 
+	int i = 1;
+	a = list->tete;
+	printf("/n Affichage de la liste /n");
+	while (a != NULL) {
+	
+		printf("element %d | %s /n",i,a->valeur);
+		i++;
+		a = a->suivant;
+	}
+	return 0;
+}
+
+
+int menu() {
+	
+	int a;
+	printf("Menu general : que voulez vous faire? /n");
+	printf("1. creer une liste /n");
+	printf("2. ajouter un element dans une liste /n");
+	printf("3. supprimer un element d'une liste /n");
+	printf("4. rechercher un element dans une liste /n");
+	printf("5. afficher les elements d'une liste /n");
+	printf("6. supprimer une liste /n");
+	printf("7. fusionner deux listes /n");
+	printf("8.  Quitter /n");
+	while (1) {
+		if ((scanf("%d",&a) == 1) && (a<9) && (a>0)) {return a;}
+		else {printf("veuillez entrer une valeur correcte /n");}
+	}
+	
+	
+}
 
