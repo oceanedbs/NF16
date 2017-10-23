@@ -9,7 +9,7 @@ T_Element *creerElement(char *val){
 	T_Element* new_elemt;
 	new_elemt=malloc(sizeof(*new_elemt));
 	if(new_elemt==NULL){
-		printf("Erreur d'allocation mémoire pour l'élément");
+		printf("Erreur d'allocation mÃ©moire pour l'Ã©lÃ©ment");
 	}
 	else{
 		strcpy(new_elemt->valeur, val);
@@ -97,7 +97,6 @@ T_Element *rechercherElement(T_Liste *list, char *val){ //OK
 	T_Element* debut = list->tete;
 
 	if(strcmp(list->queue->valeur, val) < 0 || strcmp(list->tete->valeur, val)>0){
-		printf("l'element n'est pas dans la liste");
 		return NULL;
 	}else{
 
@@ -173,8 +172,9 @@ int supprimerElement(T_Liste *list, char *val) { //OK
 			free(b);
 		}
 	free(list);
-	}
 	return 0;
+	}
+	return -1;
  
  }
  
@@ -185,13 +185,13 @@ int supprimerElement(T_Liste *list, char *val) { //OK
 //check la plus petite tete
 //remplir 3e list tete et retirer de l'autre l'element (use supprElem) 
 	T_Liste * res;
-	int a,i;
+	int a;
 	char* k;
+	if (list1->taille == 0) {return list2;}
+	if (list2->taille == 0) {return list1;}
 	res = creerListe();
 	
-		if (list1->taille == 0) {return list2;}
-		if (list2->taille == 0) {return list1;}
-		else {
+				
 			while ((list1->taille != 0) && (list2->taille != 0)) {
 				a = strcmp(list1->tete->valeur, list2->tete->valeur);
 				if (a<0) {							//list1 plus petit
@@ -213,24 +213,64 @@ int supprimerElement(T_Liste *list, char *val) { //OK
 			}
 			//1 ou 2 est vide a ce moment
 			if (list1->taille == 0) {
+				
 				while (list2->taille != 0) {
 					k = list2->tete->valeur;
 					insererElement(res,k);
 					supprimerElement(list2, k);
 				}
-			
+				supprimerListe(list1);
+				supprimerListe(list2);
 			}
 			if (list2->taille == 0) {
+				
 				while (list1->taille != 0) {
 					k = list1->tete->valeur;
 					insererElement(res,k);
 					supprimerElement(list1, k);
 				}
-			
+				supprimerListe(list1);
+				supprimerListe(list2);
 			}
-		}
+		
 		
 	return res;
  }
 
+int afficher(T_Liste *list) {
+
+	if (list->taille == 0) {return -1;}
+	T_Element * a; 
+	int i = 1;
+	a = list->tete;
+	printf("/n Affichage de la liste /n");
+	while (a != NULL) {
+	
+		printf("element %d | %s /n",i,a->valeur);
+		i++;
+		a = a->suivant;
+	}
+	return 0;
+}
+
+
+int menu() {
+	
+	int a;
+	printf("Menu general : que voulez vous faire? /n");
+	printf("1. creer une liste /n");
+	printf("2. ajouter un element dans une liste /n");
+	printf("3. supprimer un element d'une liste /n");
+	printf("4. rechercher un element dans une liste /n");
+	printf("5. afficher les elements d'une liste /n");
+	printf("6. supprimer une liste /n");
+	printf("7. fusionner deux listes /n");
+	printf("8.  Quitter /n");
+	while (1) {
+		if ((scanf("%d",&a) == 1) && (a<9) && (a>0)) {return a;}
+		else {printf("veuillez entrer une valeur correcte /n");}
+	}
+	
+	
+}
 
