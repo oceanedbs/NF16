@@ -21,6 +21,9 @@ struct Liste{
 
 typedef struct Liste T_Liste;
 
+
+
+
 T_Element *creerElement(char *val);
 
 
