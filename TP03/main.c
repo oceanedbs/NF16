@@ -109,15 +109,71 @@ for (a=0;a<=20;a++) {tab[a]=NULL;}
 				else {
 					list = tab[b];
 					printf("entrez la valeur a inserer /n");
-					scanf("%s",v);
+					if (scanf("%s",v)==1) {
 					i = insererElement(list, v);
 					if (i==0) {printf("insertion reussie /n");}
-					if (i==-1) {printf("insertion failed /n");}
+					if (i==-1) {printf("insertion failed /n");}}
 				}
 			}
 			else {printf("veuillez entrer une valeur correcte /n");}
 		}
-		if (a==3) {}
+		if (a==3) {
+			printf("veuillez choisir la liste concernee (entrer l'indice du tableau)");
+			if ((scanf("%d",&b) == 1) && (b<=20) && (b>=0)) {
+				if (tab[b]==NULL) {printf("indice incorrect, pas de liste ici /n");}
+				else {
+					list = tab[b];
+					printf("entrez la valeur a supprimer /n");
+					if (scanf("%s",v)==1) {
+					i = supprimerElement(list, v);
+					if (i==0) {printf("suppression reussie /n");}
+					if (i==-1) {printf("suppression failed /n");}}
+				}
+			}
+			else {printf("veuillez entrer une valeur correcte /n");}
+		}
+		if (a==4) {
+			printf("veuillez choisir la liste concernee (entrer l'indice du tableau)");
+			if ((scanf("%d",&b) == 1) && (b<=20) && (b>=0)) {
+				if (tab[b]==NULL) {printf("indice incorrect, pas de liste ici /n");}
+				else {
+					list = tab[b];
+					printf("entrez la valeur a rechercher /n");
+					if (scanf("%s",v)==1) {
+					i = NULL;
+					i = rechercherElement(list, v);
+					if (i==NULL) {printf("element introuvable /n");}
+					else {printf("element found /n");}}
+				}
+			}
+			else {printf("veuillez entrer une valeur correcte /n");}
+		}
+		if (a==5) {
+			printf("veuillez choisir la liste concernee (entrer l'indice du tableau)");
+			if ((scanf("%d",&b) == 1) && (b<=20) && (b>=0)) {
+				if (tab[b]==NULL) {printf("indice incorrect, pas de liste ici /n");}
+				else {
+					i = afficher(tab[b]);
+					if (i==0) {printf("everything is ok /n");}
+					if (i==-1) {printf("everything is shit /n");}
+				}
+			}
+			else {printf("veuillez entrer une valeur correcte /n");}
+		}
+		if (a==6) {
+			printf("veuillez choisir la liste concernee (entrer l'indice du tableau)");
+			if ((scanf("%d",&b) == 1) && (b<=20) && (b>=0)) {
+				if (tab[b]==NULL) {printf("indice incorrect, pas de liste ici /n");}
+				else {
+					i = supprimerListe(tab[b]);
+					if (i==0) {printf("everything is ok /n");}
+					if (i==-1) {printf("everything is shit /n");}
+				}
+			}
+			else {printf("veuillez entrer une valeur correcte /n");}
+		}
+		if (a==7) {}
+		
 	}
 
 }
