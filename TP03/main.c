@@ -6,11 +6,11 @@
 /*				
 
 FONCTION PRGRM PRINCIPAL -> faire menu interactif (toutes les fonctions sont pretes)
-1. Créer une liste
-2. Ajouter un élément dans une liste
-3. Supprimer un élément d’une liste
-4. Rechercher un élément dans une liste
-5. Afficher les éléments d’une liste
+1. CrÃ©er une liste
+2. Ajouter un Ã©lÃ©ment dans une liste
+3. Supprimer un Ã©lÃ©ment dâ€™une liste
+4. Rechercher un Ã©lÃ©ment dans une liste
+5. Afficher les Ã©lÃ©ments dâ€™une liste
 6. Supprimer une liste
 7. Fusionner deux listes
 8. Quitter
@@ -31,7 +31,7 @@ int main() {
 	   
 
     if(new_elemt != NULL){ printf("Element cree \n");}
-    else {printf("Echec création element \n");}
+    else {printf("Echec crÃ©ation element \n");}
 
 	    new_lst = creerListe();
 	    new_lst2 = creerListe();
@@ -82,33 +82,42 @@ int main() {
 
 */
 
+#include<stdio.h>
+#include<stdlib.h>
+#include <string.h>
+#include "head.h"
+
+
 int main() {
 int a,i=0;
 T_Element *j;
-int b,c;
+int b,c,d=0;
 char v[20];
 T_Liste* tab[20];
 T_Liste* list;
 for (a=0;a<=20;a++) {tab[a]=NULL;}
 	while(1) {
-	
+        a = NULL;
 		a = menu();
 		if (a==8) {
 			printf("Au revoir !\n");
 			return 0;
 		}
 		if (a==1) {
+                d=0;
 			for (i=0;i<=20;i++) {
 				if (tab[i]==NULL) {
 					tab[i] = creerListe();
 					printf("liste cree sous tab[%d] \n",i);
 					break;
 				}
+            d++;
 			}
+			if (d==21) {printf("pas assez de place pour mettre d'autres liste, veuillez en supprimer une ancienne \n");}
 		}
 		if (a==2) {
 
-			//faire le cas ou aucune liste n'est cr��e
+			//faire le cas ou aucune liste n'est créée
 			printf("veuillez choisir la liste concernee (entrer l'indice du tableau) \n");
 			if ((scanf("%d",&b) == 1) && (b<=20) && (b>=0)) {
 				if (tab[b]==NULL) {printf("indice incorrect, pas de liste ici \n");}
@@ -118,13 +127,13 @@ for (a=0;a<=20;a++) {tab[a]=NULL;}
 					if (scanf("%s",v)==1) {
 					i = insererElement(list, v);
 					if (i==0) {printf("insertion reussie \n");}
-					if (i==-1) {printf("insertion failed, la valeur est d�j� dans la liste \n");}}
+					if (i==-1) {printf("insertion failed, la valeur est déjà dans la liste \n");}}
 				}
 			}
 			else {printf("veuillez entrer une valeur correcte \n");}
 		}
 		if (a==3) {
-			printf("veuillez choisir la liste concernee (entrer l'indice du tableau)");
+			printf("veuillez choisir la liste concernee (entrer l'indice du tableau)\n");
 			if ((scanf("%d",&b) == 1) && (b<=20) && (b>=0)) {
 				if (tab[b]==NULL) {printf("indice incorrect, pas de liste ici \n");}
 				else {
@@ -133,13 +142,13 @@ for (a=0;a<=20;a++) {tab[a]=NULL;}
 					if (scanf("%s",v)==1) {
 					i = supprimerElement(list, v);
 					if (i==0) {printf("suppression reussie \n");}
-					if (i==-1) {printf("suppression failed, �lement non trouv� \n");}}
+					if (i==-1) {printf("suppression failed, élement non trouvé \n");}}
 				}
 			}
 			else {printf("veuillez entrer une valeur correcte \n");}
 		}
 		if (a==4) {
-			printf("veuillez choisir la liste concernee (entrer l'indice du tableau)");
+			printf("veuillez choisir la liste concernee (entrer l'indice du tableau)\n");
 			if ((scanf("%d",&b) == 1) && (b<=20) && (b>=0)) {
 				if (tab[b]==NULL) {printf("indice incorrect, pas de liste ici \n");}
 				else {
@@ -167,7 +176,7 @@ for (a=0;a<=20;a++) {tab[a]=NULL;}
 			else {printf("veuillez entrer une valeur correcte \n");}
 		}
 		if (a==6) {
-			printf("veuillez choisir la liste concernee (entrer l'indice du tableau)");
+			printf("veuillez choisir la liste concernee (entrer l'indice du tableau)\n");
 			if ((scanf("%d",&b) == 1) && (b<=20) && (b>=0)) {
 				if (tab[b]==NULL) {printf("indice incorrect, pas de liste ici \n");}
 				else {
@@ -180,7 +189,7 @@ for (a=0;a<=20;a++) {tab[a]=NULL;}
 			else {printf("veuillez entrer une valeur correcte \n");}
 		}
 		if (a==7) {
-			printf("veuillez choisir la premiere liste concernee (entrer l'indice du tableau)");
+			printf("veuillez choisir la premiere liste concernee (entrer l'indice du tableau)\n");
 			if ((scanf("%d",&b) == 1) && (b<=20) && (b>=0)) {
 				if (tab[b]==NULL) {printf("indice incorrect, pas de liste ici \n");}
 				else {
@@ -191,7 +200,7 @@ for (a=0;a<=20;a++) {tab[a]=NULL;}
 							list = fusionnerListes(tab[i], tab[b]);
 							tab[i] = list;
 							tab[b] = NULL;
-							printf("la nouvelle liste a prit la place de la liste numero %d",i);
+							printf("la nouvelle liste a prit la place de la liste numero %d \n",i);
 						}
 					}
 					else {printf("veuillez entrer une valeur correcte \n");}
@@ -199,9 +208,8 @@ for (a=0;a<=20;a++) {tab[a]=NULL;}
 			}
 			else {printf("veuillez entrer une valeur correcte \n");}
 		}
-		
-	}
 
+	}
+return 0;
 }
- 
 
