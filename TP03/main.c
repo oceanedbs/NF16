@@ -1,9 +1,9 @@
-	#include<stdio.h>
+/*	#include<stdio.h>
 	#include<stdlib.h>
 	#include <string.h>
 	#include "TP03.h"
 
-/*				
+				
 
 FONCTION PRGRM PRINCIPAL -> faire menu interactif (toutes les fonctions sont pretes)
 1. CrÃ©er une liste
@@ -100,6 +100,7 @@ for (a=0;a<=20;a++) {tab[a]=NULL;}
         a = NULL;
 		a = menu();
 		if (a==8) {
+			for (d=0;d<=20;d++) {supprimerListe(tab[d]);}
 			printf("Au revoir !\n");
 			return 0;
 		}
