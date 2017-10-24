@@ -160,7 +160,7 @@ int supprimerElement(T_Liste *list, char *val) { //OK
 
  
  
- int supprimerListe(T_Liste *list) { //Pb tout n'est pas free a priori si tu install valgrind et que tu le lance, on obtient à la fois 488 dans 13 blocks qui n'ont pas été free et en indirect lost il y a 120 bytes dans 3 blocks donc il manque des trucs a free (et quand je le debug a la fin la liste que j'ai free a comme taille 0 mais les pointeurs tete et queue sont initialisés)
+ int supprimerListe(T_Liste *list) { 
  
  	if(list !=NULL)
 	{
@@ -169,8 +169,10 @@ int supprimerElement(T_Liste *list, char *val) { //OK
 		{		
 			T_Element *b=a;
 			a = a->suivant;
+			b = NULL;
 			free(b);
 		}
+	list = NULL;
 	free(list);
 	return 0;
 	}
@@ -243,10 +245,10 @@ int afficher(T_Liste *list) {
 	T_Element * a; 
 	int i = 1;
 	a = list->tete;
-	printf("/n Affichage de la liste /n");
+	printf("\n Affichage de la liste \n");
 	while (a != NULL) {
 	
-		printf("element %d | %s /n",i,a->valeur);
+		printf("element %d | %s \n",i,a->valeur);
 		i++;
 		a = a->suivant;
 	}
@@ -257,18 +259,18 @@ int afficher(T_Liste *list) {
 int menu() {
 	
 	int a;
-	printf("Menu general : que voulez vous faire? /n");
-	printf("1. creer une liste /n");
-	printf("2. ajouter un element dans une liste /n");
-	printf("3. supprimer un element d'une liste /n");
-	printf("4. rechercher un element dans une liste /n");
-	printf("5. afficher les elements d'une liste /n");
-	printf("6. supprimer une liste /n");
-	printf("7. fusionner deux listes /n");
-	printf("8.  Quitter /n");
+	printf("Menu general : que voulez vous faire? \n");
+	printf("1. creer une liste \n");
+	printf("2. ajouter un element dans une liste \n");
+	printf("3. supprimer un element d'une liste \n");
+	printf("4. rechercher un element dans une liste \n");
+	printf("5. afficher les elements d'une liste \n");
+	printf("6. supprimer une liste \n");
+	printf("7. fusionner deux listes \n");
+	printf("8.  Quitter \n");
 	while (1) {
 		if ((scanf("%d",&a) == 1) && (a<9) && (a>0)) {return a;}
-		else {printf("veuillez entrer une valeur correcte /n");}
+		else {printf("veuillez entrer une valeur correcte \n");}
 	}
 	
 	
