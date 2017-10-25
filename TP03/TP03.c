@@ -276,3 +276,19 @@ int menu() {
 	
 }
 
+
+
+int tableau_vide(T_Liste *tab[]){
+	int k, vide=0;
+	
+	for (k=0; k<=20; k++){
+		if(tab[k] != NULL){
+			vide =1;
+			break;}
+	}
+	return vide;
+
+
+
+
+}

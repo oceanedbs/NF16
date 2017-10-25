@@ -1,3 +1,4 @@
+
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -47,3 +48,4 @@ int supprimerElement(T_Liste *list, char *val);
 int afficher(T_Liste *list);
 int menu();
 
+int tableau_vide(T_Liste* tab[]);
