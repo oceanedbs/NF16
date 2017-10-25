@@ -36,9 +36,9 @@ T_Liste *creerListe(){ //OK
 }
 
 int insererElement(T_Liste *list, char *val){ //OK
-	T_Element* new_elemt, *tete;
-	tete = malloc(sizeof(*tete));
-	tete=list->tete;
+	T_Element* new_elemt, *pointeur;
+	pointeur = malloc(sizeof(*pointeur));
+	pointeur=list->tete;
 	new_elemt=creerElement(val);
 	int i=0, cmp;
 
@@ -52,20 +52,20 @@ int insererElement(T_Liste *list, char *val){ //OK
 
         }else {
             while(i<list->taille){
-                cmp = strcmp(tete->valeur, val);
+                cmp = strcmp(pointeur->valeur, val);
 
                  if(cmp != 0){
                         if(cmp>0){
                             if(i==0){ //insertion en tete de liste
                                 list->tete->precedent = new_elemt;
-                                new_elemt->suivant=tete;
+                                new_elemt->suivant=pointeur;
                                 list->tete = new_elemt;
                             }
                             else{ // insertion n'importe ou dans la liste
-                                new_elemt->suivant = tete;
-                                new_elemt->precedent=tete->precedent;
-				tete->precedent->suivant=new_elemt;
-                                tete->precedent=new_elemt;
+                                new_elemt->suivant = pointeur;
+                                new_elemt->precedent=pointeur->precedent;
+				pointeur->precedent->suivant=new_elemt;
+                                pointeur->precedent=new_elemt;
 
 
                             }
@@ -83,7 +83,7 @@ int insererElement(T_Liste *list, char *val){ //OK
                             return 0;
 
                             }
-                            tete=tete->suivant;
+                            pointeur=pointeur->suivant;
                         }
                  }else{return -1;}
             }
@@ -94,22 +94,22 @@ int insererElement(T_Liste *list, char *val){ //OK
 
 
 T_Element *rechercherElement(T_Liste *list, char *val){ //OK
-	T_Element* debut = list->tete;
+	T_Element* pointeur = list->tete;
 
 	if(strcmp(list->queue->valeur, val) < 0 || strcmp(list->tete->valeur, val)>0){
 		return NULL;
 	}else{
 
 		while(debut != NULL){
-			if(strcmp(debut->valeur, val)==0){
+			if(strcmp(pointeur->valeur, val)==0){
 				return debut;
 			}
-			else if (strcmp(debut->valeur,val)>0){
+			else if (strcmp(pointeur->valeur,val)>0){
 				return NULL;
 			}
 
 			else{
-				debut=debut->suivant;
+				pointeur=pointeur->suivant;
 
 			}
 
