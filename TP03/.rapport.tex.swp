@@ -190,9 +190,7 @@ La fonction afficher doit parcourir toute la liste pour l'afficher, la fonction 
 
 \medskip
 
-La fonction menu  
-
-Euhhhhh c'est pas un pe prohibé normalement de faire un while 1 ?????
+La fonction menu permet d'afficher le menu. Cette fonction ne comporte aucune boucle ou appel récursif, elle est donc en 0(1).
 
 \medskip
 
