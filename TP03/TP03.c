@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include <string.h>
-#include "TP03.h"
+#include "head.h"
 
 
 
@@ -55,7 +55,7 @@ int insererElement(T_Liste *list, char *val){ //OK
                 cmp = strcmp(tete->valeur, val);
 
                  if(cmp != 0){
-                        if(cmp>0){ 
+                        if(cmp>0){
                             if(i==0){ //insertion en tete de liste
                                 list->tete->precedent = new_elemt;
                                 new_elemt->suivant=tete;
@@ -71,7 +71,7 @@ int insererElement(T_Liste *list, char *val){ //OK
                             }
                             list->taille++;
                             return 0;
-                        }else{ 
+                        }else{
                             i++;
                             if(i==list->taille){ //insertion en fin de liste
 
@@ -123,7 +123,7 @@ T_Element *rechercherElement(T_Liste *list, char *val){ //OK
 
 
 int supprimerElement(T_Liste *list, char *val) { //OK
- 
+
  	if ((list->taille == 1) && (strcmp(list->tete->valeur,val)==0)) {
 		free(list->tete);
 		list->tete = NULL;
@@ -131,7 +131,7 @@ int supprimerElement(T_Liste *list, char *val) { //OK
 		list->taille = 0;
 		return 0;
 	}
- 	T_Element * a; 
+ 	T_Element * a;
  	a = rechercherElement(list, val);
  	if (a==NULL) {return -1;}
  	else if (a->precedent == NULL) {
@@ -158,15 +158,15 @@ int supprimerElement(T_Liste *list, char *val) { //OK
  }
 
 
- 
- 
- int supprimerListe(T_Liste *list) { 
- 
+
+
+ int supprimerListe(T_Liste *list) {
+
  	if(list !=NULL)
 	{
 		T_Element *a = list->tete;
 		while(a != NULL)
-		{		
+		{
 			T_Element *b=a;
 			a = a->suivant;
 			b = NULL;
@@ -177,23 +177,23 @@ int supprimerElement(T_Liste *list, char *val) { //OK
 	return 0;
 	}
 	return -1;
- 
+
  }
- 
+
 
  T_Liste *fusionnerListes(T_Liste *list1, T_Liste *list2) { //OK
- 
+
  //cas listes vides
 //check la plus petite tete
-//remplir 3e list tete et retirer de l'autre l'element (use supprElem) 
+//remplir 3e list tete et retirer de l'autre l'element (use supprElem)
 	T_Liste * res;
 	int a;
 	char* k;
 	if (list1->taille == 0) {return list2;}
 	if (list2->taille == 0) {return list1;}
 	res = creerListe();
-	
-				
+
+
 			while ((list1->taille != 0) && (list2->taille != 0)) {
 				a = strcmp(list1->tete->valeur, list2->tete->valeur);
 				if (a<0) {							//list1 plus petit
@@ -215,7 +215,7 @@ int supprimerElement(T_Liste *list, char *val) { //OK
 			}
 			//1 ou 2 est vide a ce moment
 			if (list1->taille == 0) {
-				
+
 				while (list2->taille != 0) {
 					k = list2->tete->valeur;
 					insererElement(res,k);
@@ -225,7 +225,7 @@ int supprimerElement(T_Liste *list, char *val) { //OK
 				supprimerListe(list2);
 			}
 			if (list2->taille == 0) {
-				
+
 				while (list1->taille != 0) {
 					k = list1->tete->valeur;
 					insererElement(res,k);
@@ -234,20 +234,20 @@ int supprimerElement(T_Liste *list, char *val) { //OK
 				supprimerListe(list1);
 				supprimerListe(list2);
 			}
-		
-		
+
+
 	return res;
  }
 
 int afficher(T_Liste *list) {
 
 	if (list->taille == 0) {return -1;}
-	T_Element * a; 
+	T_Element * a;
 	int i = 1;
 	a = list->tete;
 	printf("\n Affichage de la liste \n");
 	while (a != NULL) {
-	
+
 		printf("element %d | %s \n",i,a->valeur);
 		i++;
 		a = a->suivant;
@@ -257,8 +257,9 @@ int afficher(T_Liste *list) {
 
 
 int menu() {
-	
-	int a;
+
+	int a=8;
+	char k;
 	printf("Menu general : que voulez vous faire? \n");
 	printf("1. creer une liste \n");
 	printf("2. ajouter un element dans une liste \n");
@@ -269,11 +270,15 @@ int menu() {
 	printf("7. fusionner deux listes \n");
 	printf("8.  Quitter \n");
 	while (1) {
-		if ((scanf("%d",&a) == 1) && (a<9) && (a>0)) {return a;}
-		else {printf("veuillez entrer une valeur correcte \n");}
+		if ((scanf("%d%c",&a,&k) == 2) && (a<9) && (a>0) && (k=='\n')) {return a;}
+		else {
+		    a = NULL;
+            printf("veuillez entrer une valeur juste la prochaine fois! ><' \n");
+            return 8;
+		}
 	}
-	
-	
+
+
 }
 
 
