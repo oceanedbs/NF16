@@ -150,6 +150,10 @@ La fonction menu permet d'afficher le menu des 8 différentes action que l'utili
 
 La fonction tableau\_vide vérifie si le tableau passé en paramètre, cela nous sert pour voir dans le programme principal si des listes ont été créées. 
 
+\medskip
+
+Afin de pouvoir gérer nos différentes listes, nous avons décidés de stocker nos différents pointeurs dans un tableau de taille 20. On demandera ainsi à l'utilisateur sur quelle liste il souhaite réaliser tel ou tel action à chaque fois. Les listes seront désignées par leur indice de position dans le tableau. Lorsque la limite du nombre de liste est atteinte et que l'utilisateur veut en créer plus, on lui demandera alors de supprimer une ancienne liste pour libérer une case du tableau. nous avons choisi cette structure de données car elle est simple à mettre en oeuvre et très efficace. Nous aurions pu créer une liste doublement chainée contenant toutes les listes (leurs pointeurs) mais cela aurait demandé la mise en place de fonctions adaptée pour supprimer, ajouter...etc des listes alors que le tableau présentait l'avantage d'être directement utilisable sans nécéssiter beaucoup de code supplémentaire. A noter que nous aons limité la taille du tableau à 20 ici, mais les fonctions restent valide avec un tableau beaucoup plus grand!
+
 \section{Complexité}
 
 Nous allons maintenant détailler la complexité de chaque fonction.
@@ -163,7 +167,7 @@ La fonction creerListe, tout comme la fonction creerElement ne comporte pas de b
 La fonction insererElement :
 \begin{itemize}
 	\item si la liste est vide, l'insertion se fait en O(1) car il n'y a que des opérations d'affectations.
-	\item si la liste est non vide on parcours la liste, si la valeur à inséré est égale à une de la liste on ne fait rien, sinon, si l'insertion se fait en tête de liste on est en O(1), si l'insertion se fait en fin de liste on est en O(n) car on doit parcourir toute la liste de n élements. 
+	\item si la liste est non vide on parcours la liste, si la valeur à inséré est égale à une de la liste on ne fait rien, sinon, si l'insertion se fait en tête de liste on est en O(1). Si l'élément doit être insérer en fin de liste, alors on est en O(1) car nous avons aussi prit en compte ce cas particulier (afin de réduire la complexité de nos autres fonctions faisant appel à celle-ci). Dans tous les autres cas, on parcourt la liste afin de trouver l'emplacement où insérer l'élément, on a donc O(n-1) dans le pire de ces cas là, c'est à dire O(n).
 	
 \end{itemize}
 
@@ -178,11 +182,11 @@ La fonction supprimerElement, dans le meilleur des cas doit supprimer l'unique �
 
 \medskip
 
-La fonction supprimerListe, doit si la liste n'est pas nulle, parcourir les n élements de la liste et les supprimer. La fonction est donc en O(n) 
+La fonction supprimerListe, doit si la liste n'est pas nulle, parcourir les n élements de la liste et les supprimer. La fonction est donc en O(n). On a aussi prit en compte le cas particulier où la liste est vide, on est alors en 0(1) dans ce cas.   
 
 \medskip
 
-La fonction fusionnerListes doit, si une des 2 listes est vide directement retourner l'autre liste, ces opérations sont uniquement des opérations d'assignantion, elles se font en O(1). Sinon la fonction doit parcourir chaque liste et la réécrire dans la liste résultat. Si la liste 1 possède n éléments et la liste 2 m éléments, la fonction doit réaliser n+m fois la boucle, on est donc en O(m+n)
+La fonction fusionnerListes doit, si une des 2 listes est vide directement retourner l'autre liste, ces opérations sont uniquement des opérations d'assignantion, elles se font en O(1). Sinon la fonction doit parcourir chaque liste et la réécrire dans la liste résultat. Il faut préciser que la fonction fera appel aux fonctions supprimerElement, supprimerListe & insererElement qui sont en O(n) dans le pire des cas, mais pas ici. En effet, on inserera toujours les valeurs en fin (queue) de liste pour la liste résultat, et on supprimera toujours les valeurs en tête de liste pour les deux listes à fusionner. De plus les listes supprimées étaient alors vides (donc suppression en O(1)). Ainsi, la suppression d'éléments sera toujours en O(1) ici et l'insertion dans la liste résultat sera elle aussi en O(1) car nous avons prévu ce cas particulier . Si la liste 1 possède n éléments et la liste 2 m éléments, la fonction doit réaliser min(n,m) fois les comparaisons, puis ajouter le reste de la liste non vide au résultat, on est donc en O(max(n,m)).
 
 \medskip
 
@@ -196,6 +200,14 @@ La fonction menu permet d'afficher le menu. Cette fonction ne comporte aucune bo
 
 La fonction tableau\_vide permet de parcourir le tableau de 20 cases on est donc au maximum en O(20) donc la fonction est en O(1).
 
+\medskip
+
+Nous avons essayé de réduire au minimum la complexité de nos fonctions durant ce TP, et sommes parvenu à une complexité maximale de O(max(n,m)) pour notre pire fonction (fusionnerListes). Nous avons en effet volontairement modifié nos fonctions de sorte à prendre en compte des cas particuliers et qui apparaissaient dans d'autres fonctions. Dans la fonction fusionnerListes, on fait par exemple appel aux fonctions d'insertion d'élement et de suppression d'élement, qui sont normalement en O(n) chacune. Voyant que nos insertions se faisaient toujours en queue de liste dans le cadre de fusionnerListes, nous avons rajouté ce cas particulier dans notre fonction d'insertion afin d'éviter de parcourir toute la liste inutilement. Nous n'avons pas eu besoin de modifier la fonction de recherche et de suppression d'élement car celles-ci étaient déjà en O(1) dans le cadre de la fonction fusionnerListes (car les suppressions sont toutes en tête de listes). Nous avons vérifié toutes nos fonctions afin d'optimiser autant que nous le pouvions leurs complexités, cela se traduit par une complexité plus faible mais un code plus lourd, car nécéssitant la prise en compte de cas particuliers. Cependant nous avons jugé que le code n'était pas trop alourdi et permettait un réel gain de complexité dans le cadre du TP.
+
+\medskip
+
+Concernant l'organisation du travail, nous avons réussi à bien nous répartir les tâches. Les fonctions creerElement et creerListe on été faites en TP, de même que le début de insererElement. Océane s'est chargée de débugger cette dernière et de la compléter, ainsi que de faire les fonctions rechercherElement & tableau\_vide. Louis s'est chargé de faire les fonctions supprimerElement, supprimerListe, fusionnerListes, afficher & menu. Ces fonctions ont été débuggées par Océane et le main.c fait par nous deux. La partie de test a aussi été faite par nous deux, et il en va de même pour le rapport.
+Pour aider à l'organisation du travail, nous avions décidé de faire le TP sur Github afin de pouvoir y accéder facilement durant les vacances.
 
 \end{document}
 
