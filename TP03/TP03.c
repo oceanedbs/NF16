@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#define TAILLE 20
 
 T_Element *creerElement(char *val) {
   T_Element *new_elemt;
@@ -279,7 +280,7 @@ int menu() {
 int tableau_vide(T_Liste *tab[]) {
   int k, vide = 0;
 
-  for (k = 0; k <= 20; k++) {
+  for (k = 0; k <= TAILLE; k++) {
     if (tab[k] != NULL) {
       vide = 1;
       break;
