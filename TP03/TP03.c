@@ -32,7 +32,7 @@ T_Liste *creerListe() { // OK
 
 int insererElement(T_Liste *list, char *val) { // OK
   T_Element *new_elemt, *pointeur;
-  pointeur = malloc(sizeof(*pointeur));
+  //pointeur = malloc(sizeof(*pointeur));               INUTILE?
   pointeur = list->tete;
   new_elemt = creerElement(val);
   int i = 0, cmp;
