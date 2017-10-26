@@ -31,12 +31,11 @@ T_Liste *creerListe() { // OK
   return new_lst;
 }
 
-int insererElement(T_Liste *list, char *val){ //OK
-	T_Element* new_elemt, *tete;
-	//tete = malloc(sizeof(*tete));     INUTILE & foireux
-	tete=list->tete;
-	new_elemt=creerElement(val);
-	int i=0, cmp;
+int insererElement(T_Liste *list, char *val) { // OK
+  T_Element *new_elemt, *pointeur;
+  pointeur = list->tete;
+  new_elemt = creerElement(val);
+  int i = 0, cmp;
 
     if(list == NULL){return -1;}
     else {
