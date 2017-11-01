@@ -37,68 +37,66 @@ int insererElement(T_Liste *list, char *val) { // OK
   new_elemt = creerElement(val);
   int i = 0, cmp;
 
-    if(list == NULL){return -1;}
-    else {
-        if(list->taille == 0){ //la liste est vide
-                list->tete = new_elemt;
-                list->queue = new_elemt;
-                list->taille ++;
-		return 0;
-
-        }else {
-            if(strcmp(list->queue->valeur, val)<0){ //insertion en fin de liste
-
-                            new_elemt->precedent = list->queue;
-                            list->queue->suivant = new_elemt;
-                            list->queue = new_elemt;
-
-                            list->taille++;
-                            return 0;
-
-                            }
-        else {
-            while(i<list->taille){
-                cmp = strcmp(tete->valeur, val);
-
-                 if(cmp != 0){
-                        if(cmp>0){
-                            if(i==0){ //insertion en tete de liste
-                                list->tete->precedent = new_elemt;
-                                new_elemt->suivant=tete;
-                                list->tete = new_elemt;
-                            }
-                            else{ // insertion n'importe ou dans la liste
-                                new_elemt->suivant = tete;
-                                new_elemt->precedent=tete->precedent;
-                                tete->precedent->suivant=new_elemt;
-                                tete->precedent=new_elemt;
-
-
-                            }
-                            list->taille++;
-                            return 0;
-                        }else{
-
-                            if(i==list->taille){ //insertion en fin de liste
-
-                            new_elemt->precedent = list->queue;
-                            list->queue->suivant = new_elemt;
-                            list->queue = new_elemt;
-
-                            list->taille++;
-                            return 0;
-
-                            }
-                            i++;
-                            tete=tete->suivant;
-                        }
-                 }else{return -1;}
-            }
-        }
-    }}
+  if (list == NULL) {
     return -1;
-}
+  } else {
+    if (list->taille == 0) { // la liste est vide
+      list->tete = new_elemt;
+      list->queue = new_elemt;
+      list->taille++;
+      return 0;
 
+    } else {
+      if (strcmp(list->queue->valeur, val) < 0) { // insertion en fin de liste
+
+        new_elemt->precedent = list->queue;
+        list->queue->suivant = new_elemt;
+        list->queue = new_elemt;
+
+        list->taille++;
+        return 0;
+
+      } else {
+        while (i < list->taille) {
+          cmp = strcmp(pointeur->valeur, val);
+
+          if (cmp != 0) {
+            if (cmp > 0) {
+              if (i == 0) { // insertion en tete de liste
+                list->tete->precedent = new_elemt;
+                new_elemt->suivant = pointeur;
+                list->tete = new_elemt;
+              } else { // insertion n'importe ou dans la liste
+                new_elemt->suivant = pointeur;
+                new_elemt->precedent = pointeur->precedent;
+                pointeur->precedent->suivant = new_elemt;
+                pointeur->precedent = new_elemt;
+              }
+              list->taille++;
+              return 0;
+            } else {
+
+              if (i == list->taille) { // insertion en fin de liste
+
+                new_elemt->precedent = list->queue;
+                list->queue->suivant = new_elemt;
+                list->queue = new_elemt;
+
+                list->taille++;
+                return 0;
+              }
+              i++;
+              pointeur = pointeur->suivant;
+            }
+          } else {
+            return -1;
+          }
+        }
+      }
+    }
+  }
+  return -1;
+}
 
 T_Element *rechercherElement(T_Liste *list, char *val) { // OK
   T_Element *pointeur = list->tete;

@@ -1,7 +1,7 @@
 /*	#include<stdio.h>
+        #include "TP03.h"
         #include<stdlib.h>
         #include <string.h>
-        #include "TP03.h"
 
 
 
@@ -41,7 +41,9 @@ int main() {
     a = menu();
     if (a == 8) {
       for (d = 0; d <= TAILLE; d++) {
-        supprimerListe(tab[d]);
+        if (tab[d] != NULL) {
+          supprimerListe(tab[d]);
+        }
       }
       printf("Au revoir !\n");
       return 0;
@@ -56,7 +58,7 @@ int main() {
         }
         d++;
       }
-      if (d == TAILLE+1) {
+      if (d == TAILLE + 1) {
         printf("pas assez de place pour mettre d'autres liste, veuillez en "
                "supprimer une ancienne \n");
       }
@@ -110,7 +112,7 @@ int main() {
                 printf("suppression reussie \n");
               }
               if (i == -1) {
-                printf("suppression failed, élement non trouvé \n");
+                printf("suppression failed, element non trouve \n");
               }
             }
           }
