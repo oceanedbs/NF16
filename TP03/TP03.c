@@ -156,18 +156,22 @@ int supprimerElement(T_Liste *list, char *val) { // OK
   }
 }
 
-int supprimerListe(T_Liste *list) {
+int supprimerListe(T_Liste ** list) {
 
-  if (list != NULL) {
-    T_Element *a = list->tete;
+  if (*list != NULL) {
+    T_Element *a = (*list)->tete;
     while (a != NULL) {
       T_Element *b = a;
       a = a->suivant;
-      b = NULL;
       free(b);
+      b = NULL;
+
     }
-    list = NULL;
-    free(list);
+    (*list)->tete = NULL;
+    (*list)->queue = NULL;
+    (*list)->taille = 0;
+    free(*list);
+    (*list) = NULL;
     return 0;
   }
   return -1;
@@ -216,8 +220,8 @@ T_Liste *fusionnerListes(T_Liste *list1, T_Liste *list2) { // OK
       insererElement(res, k);
       supprimerElement(list2, k);
     }
-    supprimerListe(list1);
-    supprimerListe(list2);
+    supprimerListe(&list1);
+    supprimerListe(&list2);
   }
   if (list2->taille == 0) {
 
@@ -226,8 +230,8 @@ T_Liste *fusionnerListes(T_Liste *list1, T_Liste *list2) { // OK
       insererElement(res, k);
       supprimerElement(list1, k);
     }
-    supprimerListe(list1);
-    supprimerListe(list2);
+    supprimerListe(&list1);
+    supprimerListe(&list2);
   }
 
   return res;

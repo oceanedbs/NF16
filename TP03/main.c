@@ -31,7 +31,7 @@ int main() {
   T_Element *j;
   int b, c, d = 0;
   char v[20];
-  T_Liste *tab[TAILLE];
+  T_Liste *tab[TAILLE+1];
   T_Liste *list;
   for (a = 0; a <= TAILLE; a++) {
     tab[a] = NULL;
@@ -42,7 +42,7 @@ int main() {
     if (a == 8) {
       for (d = 0; d <= TAILLE; d++) {
         if (tab[d] != NULL) {
-          supprimerListe(tab[d]);
+          supprimerListe(&tab[d]);
         }
       }
       printf("Au revoir !\n");
@@ -195,7 +195,7 @@ int main() {
           if (tab[b] == NULL) {
             printf("indice incorrect, pas de liste ici \n");
           } else {
-            i = supprimerListe(tab[b]);
+            i = supprimerListe(&tab[b]);
             tab[b] = NULL;
             if (i == 0) {
               printf("everything is ok \n");

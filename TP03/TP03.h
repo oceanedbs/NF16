@@ -28,7 +28,7 @@ T_Element *rechercherElement(T_Liste *list, char *val);
 
 int supprimerElement(T_Liste *list, char *val);
 
-int supprimerListe(T_Liste *list);
+int supprimerListe(T_Liste **list);
 
 T_Liste *fusionnerListes(T_Liste *list1, T_Liste *list2);
 
