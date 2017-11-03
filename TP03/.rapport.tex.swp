@@ -10,10 +10,13 @@
  \usepackage{amsmath}
 \pagestyle{fancy}
  \usepackage{comment} 
+ \usepackage[top=2cm, bottom=2cm, left=2cm , right=2cm]{geometry}
+ 
 
  \lhead{Louis Caron \\ Océane DUBOIS}
  \rhead{NF16 - TP03 - Listes chainées}
  \rfoot{}
+
 
 
 
@@ -60,7 +63,7 @@ C'est donc notre but de créer d'abord des éléments puis des listes composées
 
 \section{Fonctions implémentées}
 
-Nous avons commencé par implémenter la structure Element comme suivant : 
+Nous avons commencé par implémenter la structure Element comme suivant 
 
 \begin{lstlisting}
 struct Element {
@@ -89,26 +92,16 @@ Cette structure est composée d'un entier pour connaître sa taille et de 2 poin
 Nous avons ensuite implémenté les 10 fonctions suivantes : 
 \begin{lstlisting}
 T_Element *creerElement(char *val);
-
 T_Liste *creerListe();
-
 int insererElement(T_Liste *list, char *val);
-
 T_Element *rechercherElement(T_Liste *list, char *val);
-
 int supprimerElement(T_Liste *list, char *val);
-
 int supprimerListe(T_Liste *list);
-
 T_Liste *fusionnerListes(T_Liste *list1, T_Liste *list2);
-
-int afficher(T_Liste *list);
-
+int afficher(T_Liste *list)
 int menu();
-
 int tableau_vide(T_Liste* tab[]); 
- 
-\end{lstlisting}
+ \end{lstlisting}
 
 La fonction creerElement permet d'initialiser une structure de type T\_Element en initialisant valeur avec la chaine de caractère passée en paramètres, les pointeurs suivant et précédents sont initialisés à NULL. Cette fonction retourne un pointeur sur l’élément créé.
 
@@ -149,17 +142,13 @@ La fonction menu permet d'afficher le menu des 8 différentes action que l'utili
 \medskip
 
 La fonction tableau\_vide vérifie si le tableau passé en paramètre, cela nous sert pour voir dans le programme principal si des listes ont été créées. 
-
 \section{Complexité}
 
 Nous allons maintenant détailler la complexité de chaque fonction.
-
 \medskip
-
 La fonction creerElement n'est composée d'aucune boucle. Elle est donc en O(1).
-\medskip
+
 La fonction creerListe, tout comme la fonction creerElement ne comporte pas de boucles ou d'appels récursifs donc elle est en O(1).
-\medskip
 La fonction insererElement :
 \begin{itemize}
 	\item si la liste est vide, l'insertion se fait en O(1) car il n'y a que des opérations d'affectations.
@@ -196,6 +185,17 @@ La fonction menu permet d'afficher le menu. Cette fonction ne comporte aucune bo
 
 La fonction tableau\_vide permet de parcourir le tableau de 20 cases on est donc au maximum en O(20) donc la fonction est en O(1).
 
+\medskip
+
+Pour finir, voici la capture d'écran de la commande valgrind executée dans le terminal sur le fichier executable de notre programme. Cette image prouve que nous avons bien libéré toute la mémoire utilisée dans le programme.
+
+\begin{figure}[h]
+\includegraphics[width=8cm]{leak_summary.png}
+\end{figure}
+
+
+Concernant l'organisation du travail, nous avons réussi à bien nous répartir les tâches. Les fonctions creerElement et creerListe on été faites en TP, de même que le début de insererElement. Océane s'est chargée de débugger cette dernière et de la compléter, ainsi que de faire les fonctions rechercherElement et tableau\_vide. Louis s'est chargé de faire les fonctions supprimerElement, supprimerListe, fusionnerListes, afficher et menu. Ces fonctions ont été débuggées par Océane et le main.c fait par nous deux. La partie de test a aussi été faite par nous deux, et il en va de même pour le rapport. 
+Pour aider à l'organisation du travail, nous avions décidé de faire le TP sur Github afin de pouvoir y accéder facilement durant les vacances. 
 
 \end{document}
 
