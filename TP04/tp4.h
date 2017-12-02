@@ -17,4 +17,6 @@ DicoABR* rechercherMot(DicoABR* dico, char* valeur);
 
 int supprimeMot(DicoABR* dico, char* valeur);
 
-suggestionMots(DicoABR d, char* souschaine, int k);
+void suggestionMots(DicoABR *dico, char* souschaine, int k);
+
+void parcours_infixe(DicoABR *mot, int k, char *souschaine);

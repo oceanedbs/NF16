@@ -40,7 +40,7 @@ DicoABR *ajoutMot(DicoABR *dico, char *valeur){
         else if(strcmp(pointeurx->val, valeur)<0){
           pointeurx=pointeurx->fils_droit;
         }
-        if(strcmp(pointeury->val, valeur==0)){
+        if(strcmp(pointeury->val, valeur)==0){
           printf("L'élement existe déjà\n");
           return pointeury;
         }
@@ -64,12 +64,12 @@ DicoABR *ajoutMot(DicoABR *dico, char *valeur){
 
 DicoABR* rechercherMot(DicoABR* dico, char* valeur) {
   DicoABR* dic = dico;
-  while (dic->val!=valeur && dic!=NULL) {
+  while (dic!=NULL && dic->val!=valeur) {
     if (strcmp(dic->val,valeur)>0) {dic = dic->fils_gauche;}
     if (strcmp(dic->val,valeur)<0) {dic = dic->fils_droit;}
   }
   if (dic==NULL) {printf("not found :( \n");}
-  if (dic->val == valeur) {printf("word found :D \n");}
+  else if (strcmp(dic->val,valeur)==0) {printf("word found :D \n");}
   return dic;
 }
 
@@ -117,22 +117,48 @@ int supprimeMot(DicoABR* dico, char* valeur) {
 
 
 void suggestionMots(DicoABR *dico, char* souschaine, int k){
-  DicoABR *pointeur;
+  DicoABR *pointeur, *mot;
   pointeur=dico;
-  while(strcnmp(pointeur->val, souschaine, sizeof(souschaine))!=0){
+  int i=k;
+  while(strncmp(pointeur->val, souschaine, sizeof(souschaine))!=0){
     if(strcmp(pointeur->val, souschaine)>0){
       pointeur=pointeur->fils_gauche;
     }
     else if(strcmp(pointeur->val, souschaine)<0){
       pointeur=pointeur->fils_droit;
+    }else if (strncmp(pointeur->val, souschaine, sizeof(souschaine))==0) {
+      mot=pointeur;
     }
     else{
-      printf("Il n'y a pas de mots contenant cette sous chaine\n", );
+      printf("Il n'y a pas de mots contenant cette sous chaine\n");
     }
-    //choix : on affiche les n
   }
+  //on réalise un parcours par infixe pour afficher les n mots par ordre croissant ayant souschaine
+  while(mot!=NULL && k >0){
+    printf("Valeur n° %d : %s\n",k, pointeur->val );
+    k--;
+    if(pointeur->fils_gauche !=NULL && strncmp(pointeur->fils_gauche->val, souschaine, sizeof(souschaine))==0){
+      pointeur=pointeur->fils_gauche;
+    }
+    else if(pointeur->fils_gauche !=NULL && strncmp(pointeur->fils_gauche->val, souschaine, sizeof(souschaine))==0){
+      pointeur = pointeur->fils_droit;
+    }
+    else{
+      pointeur = pointeur->pere;
+    }
+  }
+  parcours_infixe(mot, k, souschaine);
 
+}
 
+void parcours_infixe(DicoABR *mot, int k, char *souschaine){
+  if(mot != NULL && k>0){
+      parcours_infixe(mot->fils_gauche, k-1, souschaine);
+    parcours_infixe(mot->fils_droit, k-1, souschaine);
+    if(strncmp(mot->val, souschaine, sizeof(souschaine))==0){
+      printf("Valeur n° %d : %s", k, mot->val);
+    }
+  }
 }
 
 
@@ -182,3 +208,5 @@ BONUS :
 CALCULER LE TEMPS D'EXECUTION D'UNE FONCTION
 GRAPHIQUE : TAILLE DE DONNEES / TEMPS
 COMPARER COMPLEXITE THEORIQUE
+
+*/
