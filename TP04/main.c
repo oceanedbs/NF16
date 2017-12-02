@@ -15,11 +15,11 @@ int main(int argc, char const *argv[]) {
   ajoutMot(dico, "rapidita");
   ajoutMot(dico, "rapiditu");
 
-  rechercherMot(dico, "rapiditb");
+  rechercherMot(dico, "rap");
 
 //  supprimeMot(dico,"rapide");
 
-  suggestionMots(dico, "rap", 4);
+  suggestionMots(dico, "rap", 3);
 /*
   void parcours_infixe(DicoABR *mot, int k, char *souschaine);
 

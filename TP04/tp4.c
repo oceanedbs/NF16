@@ -127,14 +127,16 @@ void suggestionMots(DicoABR *dico, char* souschaine, int k){
     else if(strcmp(pointeur->val, souschaine)<0){
       pointeur=pointeur->fils_droit;
     }else if (strncmp(pointeur->val, souschaine, sizeof(souschaine))==0) {
-      mot=pointeur;
+      while(pointeur->fils_gauche != NULL && strncmp(pointeur->val, souschaine, sizeof(souschaine))==0){
+        pointeur=pointeur->fils_gauche;
+      }
     }
     else{
       printf("Il n'y a pas de mots contenant cette sous chaine\n");
     }
   }
   //on réalise un parcours par infixe pour afficher les n mots par ordre croissant ayant souschaine
-  while(mot!=NULL && k >0){
+/*  while(mot!=NULL && k >0){
     printf("Valeur n° %d : %s\n",k, pointeur->val );
     k--;
     if(pointeur->fils_gauche !=NULL && strncmp(pointeur->fils_gauche->val, souschaine, sizeof(souschaine))==0){
@@ -146,18 +148,46 @@ void suggestionMots(DicoABR *dico, char* souschaine, int k){
     else{
       pointeur = pointeur->pere;
     }
+  }*/
+  DicoABR* y, *z, *x;
+  y=pointeur;
+  while (k>0 && y->pere != NULL) {
+    y=y->pere;
+    z=y->fils_droit;
+    x=y->fils_gauche;
+    printf("Valeur %d : %s \n", k, y->val);
+    k--;
+    while(z != NULL && k>0){
+      printf("Valeur %d : %s \n",k, z->val );
+      k--;
+      z=z->fils_droit;
+
+    }
+    while(x != NULL && k>0){
+      printf("Valeur %d : %s \n",k, x->val );
+      k--;
+      x=x->fils_gauche;
+
+    }
   }
-  parcours_infixe(mot, k, souschaine);
+  if(k>0){printf("Il n'y a pas d'autres valeurs correspondant au suffixe donné \n");}
+
+
 
 }
 
 void parcours_infixe(DicoABR *mot, int k, char *souschaine){
-  if(mot != NULL && k>0){
-      parcours_infixe(mot->fils_gauche, k-1, souschaine);
-    parcours_infixe(mot->fils_droit, k-1, souschaine);
-    if(strncmp(mot->val, souschaine, sizeof(souschaine))==0){
-      printf("Valeur n° %d : %s", k, mot->val);
+  while(mot != NULL && k>0){
+    if(mot->fils_gauche !=NULL){
+      parcours_infixe(mot->fils_gauche, k, souschaine);
     }
+    if(mot->fils_droit != NULL){
+    parcours_infixe(mot->fils_droit, k, souschaine);
+    }
+//    if(strncmp(mot->val, souschaine, sizeof(souschaine))==0){
+      printf("Valeur n° %d : %s \n", k, mot->val);
+      k=k-1;
+  //  }
   }
 }
 
