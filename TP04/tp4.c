@@ -3,23 +3,26 @@
 #include<string.h>
 #include "tp4.h"
 
-DicoABR* initDico(char* valeur){
+Arbre* initDico(char* valeur){
   DicoABR *new_dico;
+  Arbre *newArbre;
   new_dico=malloc(sizeof(DicoABR));
+  newArbre=malloc(sizeof(Arbre));
   if(new_dico!=NULL){
     new_dico->val=valeur;
     new_dico->pere=NULL;
     new_dico->fils_droit=NULL;
     new_dico->fils_gauche=NULL;
+    newArbre->racine = new_dico;
   }
   else{
     printf("Erreur d'allocation mémoire\n");
   }
 
-  return new_dico;
+  return newArbre;
 }
 
-DicoABR *ajoutMot(DicoABR *dico, char *valeur){
+DicoABR *ajoutMot(Arbre *newArbre, char *valeur){
   DicoABR* new_mot;
   new_mot=malloc(sizeof(DicoABR));
   if(new_mot!=NULL){
@@ -27,9 +30,9 @@ DicoABR *ajoutMot(DicoABR *dico, char *valeur){
     new_mot->pere=NULL;
     new_mot->fils_gauche=NULL;
     new_mot->fils_droit=NULL;
-    if(dico != NULL){
+    if(newArbre != NULL){
       DicoABR* pointeurx, *pointeury;
-      pointeurx=dico;
+      pointeurx=newArbre->racine;
       pointeury=NULL;
 
       while(pointeurx!=NULL){
@@ -58,12 +61,13 @@ DicoABR *ajoutMot(DicoABR *dico, char *valeur){
   else{
     printf("Erreur d'allcation mémoire\n");
   }
+  printf("Le mot à été inséré dans l'arbre\n" );
   return(new_mot);
 
 }
 
-DicoABR* rechercherMot(DicoABR* dico, char* valeur) {
-  DicoABR* dic = dico;
+DicoABR *rechercherMot(Arbre* dico, char* valeur) {
+  DicoABR* dic = dico->racine;
   while (dic!=NULL && dic->val!=valeur) {
     if (strcmp(dic->val,valeur)>0) {dic = dic->fils_gauche;}
     if (strcmp(dic->val,valeur)<0) {dic = dic->fils_droit;}
@@ -74,14 +78,15 @@ DicoABR* rechercherMot(DicoABR* dico, char* valeur) {
 }
 
 DicoABR* mini(DicoABR* dico) {
-  DicoABR* temp = dico->fils_droit;
+  DicoABR *temp=dico;
+  //DicoABR* temp = dico->fils_droit;
   while (temp->fils_gauche!=NULL) {
     temp = temp->fils_gauche;
   }
   return temp;
 }
 
-int supprimeMot(DicoABR* dico, char* valeur) {
+int supprimeMot(Arbre *dico, char* valeur) {
   DicoABR* dic = rechercherMot(dico,valeur);
   DicoABR* temp;
   if (dic==NULL) {printf("mot non exitant \n"); return -1;}
@@ -116,39 +121,60 @@ int supprimeMot(DicoABR* dico, char* valeur) {
 }
 
 
-void suggestionMots(DicoABR *dico, char* souschaine, int k){
+
+DicoABR* successeur(DicoABR *pointeur){
+  DicoABR *y;
+  if(pointeur->fils_droit != NULL){
+      return mini(pointeur->fils_droit);
+  }
+  else{
+    y=pointeur->pere;
+    while(y!= NULL && pointeur == y->fils_droit){
+      pointeur = y;
+      y=y->pere;
+  }
+  return y;
+}
+}
+
+
+void suggestionMots(Arbre *dico, char* souschaine, int k){
   DicoABR *pointeur, *mot;
-  pointeur=dico;
+  pointeur=dico->racine;
   int i=k;
-  while(strncmp(pointeur->val, souschaine, sizeof(souschaine))!=0){
-    if(strcmp(pointeur->val, souschaine)>0){
+  while(strncmp(pointeur->val, souschaine, strlen(souschaine))!=0){
+    if(strncmp(pointeur->val, souschaine, strlen(souschaine))>0){
       pointeur=pointeur->fils_gauche;
     }
-    else if(strcmp(pointeur->val, souschaine)<0){
+    else if(strncmp(pointeur->val, souschaine, strlen(souschaine))<0){
       pointeur=pointeur->fils_droit;
-    }else if (strncmp(pointeur->val, souschaine, sizeof(souschaine))==0) {
-      while(pointeur->fils_gauche != NULL && strncmp(pointeur->val, souschaine, sizeof(souschaine))==0){
-        pointeur=pointeur->fils_gauche;
-      }
-    }
-    else{
+    }else{
       printf("Il n'y a pas de mots contenant cette sous chaine\n");
     }
   }
-  //on réalise un parcours par infixe pour afficher les n mots par ordre croissant ayant souschaine
-/*  while(mot!=NULL && k >0){
-    printf("Valeur n° %d : %s\n",k, pointeur->val );
-    k--;
-    if(pointeur->fils_gauche !=NULL && strncmp(pointeur->fils_gauche->val, souschaine, sizeof(souschaine))==0){
-      pointeur=pointeur->fils_gauche;
+  if (strncmp(pointeur->val, souschaine, strlen(souschaine))==0) { //on récupère la plus petite valeur ayant ce prefixe
+      while(pointeur->fils_gauche != NULL && strncmp(pointeur->val, souschaine, strlen(souschaine))==0){
+        pointeur=pointeur->fils_gauche;
+      }
     }
-    else if(pointeur->fils_gauche !=NULL && strncmp(pointeur->fils_gauche->val, souschaine, sizeof(souschaine))==0){
-      pointeur = pointeur->fils_droit;
+
+  DicoABR *w;
+  w=pointeur->pere;
+  printf("Valeur %d : %s\n",k, w->val );
+  k--;
+  while(k>0){
+    w=successeur(w);
+    if(strncmp(w->val, souschaine, strlen(souschaine))==0){
+      printf("Valeur %d : %s\n",k, w->val );
+      k--;
     }
-    else{
-      pointeur = pointeur->pere;
+   else{
+      printf("Il n'y a plus de valeurs à suggérer\n" );
+     return 0;
     }
-  }*/
+  }
+
+  /*
   DicoABR* y, *z, *x;
   y=pointeur;
   while (k>0 && y->pere != NULL) {
@@ -158,24 +184,34 @@ void suggestionMots(DicoABR *dico, char* souschaine, int k){
     printf("Valeur %d : %s \n", k, y->val);
     k--;
     while(z != NULL && k>0){
-      printf("Valeur %d : %s \n",k, z->val );
-      k--;
+      if(strncmp(z->val, souschaine, sizeof(souschaine))==0){
+        printf("Valeur %d : %s \n",k, z->val );
+        k--;
+      }
       z=z->fils_droit;
 
     }
+
     while(x != NULL && k>0){
-      printf("Valeur %d : %s \n",k, x->val );
-      k--;
+      if(strncmp(x->val, souschaine, sizeof(souschaine))==0){
+        printf("Valeur %d : %s \n",k, x->val );
+        k--;
+      }
       x=x->fils_gauche;
+//NON !!!!
 
     }
+
   }
   if(k>0){printf("Il n'y a pas d'autres valeurs correspondant au suffixe donné \n");}
-
+*/
 
 
 }
 
+
+
+/*
 void parcours_infixe(DicoABR *mot, int k, char *souschaine){
   while(mot != NULL && k>0){
     if(mot->fils_gauche !=NULL){
@@ -192,7 +228,7 @@ void parcours_infixe(DicoABR *mot, int k, char *souschaine){
 }
 
 
-/*
+
 dico initDico2(dico dico, mot mot){
   if(dico==null){
     return dico;

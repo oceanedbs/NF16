@@ -9,14 +9,18 @@ typedef struct ABR{
   struct ABR* fils_droit;
 }DicoABR;
 
-DicoABR* initDico(char* valeur);
+typedef struct Dico{
+  DicoABR *racine;
+}Arbre;
 
-DicoABR* ajoutMot(DicoABR*dico, char *valeur);
+Arbre* initDico(char* valeur);
 
-DicoABR* rechercherMot(DicoABR* dico, char* valeur);
+DicoABR *ajoutMot(Arbre *newArbre, char *valeur);
 
-int supprimeMot(DicoABR* dico, char* valeur);
+DicoABR *rechercherMot(Arbre* dico, char* valeur);
 
-void suggestionMots(DicoABR *dico, char* souschaine, int k);
+int supprimeMot(Arbre *dico, char* valeur);
+
+void suggestionMots(Arbre *dico, char* souschaine, int k);
 
 void parcours_infixe(DicoABR *mot, int k, char *souschaine);
