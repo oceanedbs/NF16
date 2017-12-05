@@ -77,9 +77,9 @@ DicoABR *rechercherMot(Arbre* dico, char* valeur) {
   return dic;
 }
 
-DicoABR* mini(DicoABR* dico) {
-  DicoABR *temp=dico;
-  //DicoABR* temp = dico->fils_droit;
+DicoABR* mini(DicoABR* dico) {  //min du sad de dico
+  DicoABR* temp=dico->fils_droit;
+  
   while (temp->fils_gauche!=NULL) {
     temp = temp->fils_gauche;
   }
@@ -89,6 +89,7 @@ DicoABR* mini(DicoABR* dico) {
 int supprimeMot(Arbre *dico, char* valeur) {
   DicoABR* dic = rechercherMot(dico,valeur);
   DicoABR* temp;
+  DicoABR* temp2;
   if (dic==NULL) {printf("mot non exitant \n"); return -1;}
   else {printf("le mot existe \n");}
   if (dic->fils_droit==NULL && dic->fils_gauche==NULL) {
@@ -116,7 +117,33 @@ int supprimeMot(Arbre *dico, char* valeur) {
   if (dic->fils_droit!=NULL && dic->fils_gauche!=NULL) {
     //on remplace dic par min de SAD et suppr min SAD
     temp = mini(dic);
-
+    dic->val = temp->val;
+    //suppr temp
+             
+          if (temp->fils_droit==NULL && temp->fils_gauche==NULL) {
+            temp2= temp->pere;
+            if (strcmp(temp2->fils_droit->val,temp->val)==0) {free(temp2->fils_droit); temp2->fils_droit=NULL;}
+            else {free(temp2->fils_gauche); temp2->fils_gauche=NULL;}
+            return 0;
+          }
+          /*if (temp->fils_droit==NULL) {
+            temp = dic;
+            dic->fils_gauche->pere = dic->pere;
+            dic = dic->pere;
+            if (strcmp(dic->fils_droit->val,valeur)==0) {dic->fils_droit=dic->fils_droit->fils_gauche; free(temp);}
+            else {dic->fils_gauche=dic->fils_gauche->fils_gauche; free(temp);}
+            return 0;
+          } */            //ici temp est le min du sad donc il a pas de fils gauche donc 
+          if (temp->fils_droit!=NULL) {
+            temp2 = temp->pere;
+            if (strcmp(temp2->fils_droit->val,temp->val)==0) {temp2->fils_droit= temp->fils_droit;}
+            else {temp2->fils_gauche = temp->fils_droit;}
+            temp->fils_droit->pere = temp->pere;
+            
+            free(temp);
+            return 0;
+          }
+    
   }
 }
 
