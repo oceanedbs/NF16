@@ -297,6 +297,14 @@ int recherchermot2(mot m, dico d){
 }
 }
 
+
+
+Dico ajoutMot2(Mot mot, Dico dico) {
+
+  
+
+}
+
 BONUS :
 CALCULER LE TEMPS D'EXECUTION D'UNE FONCTION
 GRAPHIQUE : TAILLE DE DONNEES / TEMPS
