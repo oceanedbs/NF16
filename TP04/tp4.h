@@ -2,6 +2,17 @@
 #include <stdlib.h>
 #include<string.h>
 
+typedef struct Car{
+  char c;
+  struct Car* suiv;
+}Mot;
+
+typedef struct Cellule{
+  char c;
+  struct Cellule* alt;
+  struct Cellule* succ;
+}Dico;
+
 typedef struct ABR{
   char* val;
   struct ABR* pere;
