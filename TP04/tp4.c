@@ -266,7 +266,7 @@ Dico *prefixeMot(Dico *dico, Mot *mot){
   while(mot2->c!='$') {
         if (dico2==NULL) {return dico3;}
         if (mot2->suiv->c =='$') {return dico3;}
-        if (dico2->c=='$') {dico2=dico2->alt;}
+        if (dico2->c=='$') {dico2=dico2->alt;} //useless
         if (dico2->c==mot2->suiv->c) {dico3=dico2;  mot2=mot2->suiv;  dico2=dico2->succ;}
         else {dico2=dico2->alt;}
   }
