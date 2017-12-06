@@ -303,29 +303,17 @@ Dico prefixeMot(Dico dico, Mot mot) {
 
   Dico dico2; Mot mot2;
   dico2 = dico;
-  Dico dico3;
+  Dico dico3 = dico;
   while (mot->c!=dico2->c) {                  //on cherche si ya le premier char, si oui on pointe dessu sinon on return null
     if (dico2->alt!=NULL) {dico2=dico2->alt;}
     else {return NULL;}
   }
-  //ici on a mot->c == dico2->c
+  //ici on a mot->c == dico2->c == dico3->c
+  dico3=dico2;
   mot2=mot;
+  dico2=dico2->succ;
   while(mot2->c!='$') {
-        if (mot2->c!=dico2->c) {
-            if (dico2->alt!=NULL) {dico2=dico2->alt;}
-            else {return dico2;}
-        }
-        if (mot2->c==dico2->c) {
-            if (mot2->suiv->c=='$') {return dico2;}
-            if (dico2->succ->c=='$') {
-                if (dico2->succ->alt==NULL) {return dico2;}
-                else {dico2=dico2->succ->alt;  mot2=mot2->suiv;}
-            }
-            else {
-              dico2=dico2->succ;
-              mot2->mot2->suiv;
-            }
-        }
+        //remplir par loulou feuille
   }
   
 }
