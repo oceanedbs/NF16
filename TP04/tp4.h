@@ -22,6 +22,8 @@ DicoABR *ajoutMot(Arbre *newArbre, char *valeur);
 
 DicoABR *rechercherMot(Arbre* dico, char* valeur);
 
+DicoABR* mini(DicoABR* dico);
+
 int supprimeMot(Arbre *dico, char* valeur);
 
 int suggestionMots(Arbre *dico, char* souschaine, int k);
