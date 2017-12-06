@@ -81,7 +81,7 @@ DicoABR *rechercherMot(Arbre* dico, char* valeur) {
 
 DicoABR* mini(DicoABR* dico) {  //min du sad de dico
   DicoABR* temp=dico->fils_droit;
-  
+
   while (temp->fils_gauche!=NULL) {
     temp = temp->fils_gauche;
   }
@@ -121,7 +121,7 @@ int supprimeMot(Arbre *dico, char* valeur) {
     temp = mini(dic);
     dic->val = temp->val;
     //suppr temp
-             
+
           if (temp->fils_droit==NULL && temp->fils_gauche==NULL) {
             temp2= temp->pere;
             if (strcmp(temp2->fils_droit->val,temp->val)==0) {free(temp2->fils_droit); temp2->fils_droit=NULL;}
@@ -135,17 +135,17 @@ int supprimeMot(Arbre *dico, char* valeur) {
             if (strcmp(dic->fils_droit->val,valeur)==0) {dic->fils_droit=dic->fils_droit->fils_gauche; free(temp);}
             else {dic->fils_gauche=dic->fils_gauche->fils_gauche; free(temp);}
             return 0;
-          } */            //ici temp est le min du sad donc il a pas de fils gauche donc 
+          } */            //ici temp est le min du sad donc il a pas de fils gauche donc
           if (temp->fils_droit!=NULL) {
             temp2 = temp->pere;
             if (strcmp(temp2->fils_droit->val,temp->val)==0) {temp2->fils_droit= temp->fils_droit;}
             else {temp2->fils_gauche = temp->fils_droit;}
             temp->fils_droit->pere = temp->pere;
-            
+
             free(temp);
             return 0;
           }
-    
+
   }
 }
 
@@ -227,50 +227,34 @@ Dico *initDico2(Dico *dico, Mot *mot){
 }
 
 
-Dico *prefixeMot(Dico *dico, Mot *mot){
-  int i; //compteur des lettres du mot
-
-
-  return dico;
-}
-
-
-
-/*
-int recherchermot2(mot m, dico d){
-  if(m!=NULL && d!=NULL){
-    if(m->c == d->c && m->c=='$'){
-      return1;
-  }
-  else{
-    if(m->c==d->c){
-    return recherchermot2(m->suivant, d->succ)
-    else{
-      if(d->alt!=NULL && d->alt->c<=m->c){
-        return recherchermot2(m, d->alt);
-
+int rechercheMot2(Dico *dico, Mot *mot){
+  if(mot != NULL && dico!=NULL){
+    if(mot->c == dico->c && mot->suiv=='$'){
+      return 1;
+    }else{
+      if(mot->c==dico->c){
+        return rechercheMot2(mot->suiv, dico->succ);
+      }else{
+        if(dico->alt != NULL && dico->alt->c==mot->c){
+          return rechercheMot2(mot, dico->alt);
+        }else{
+          return 0;
+        }
       }
-      else{
-      return 0
     }
-    }
-    else{
-      return 0;
-    }
+  }else{
+    return 0;
   }
-  }
-  }
-}
-}
+
 }
 
 
 
-Dico prefixeMot(Dico dico, Mot mot) {
+Dico *prefixeMot(Dico *dico, Mot *mot){
 
-  Dico dico2; Mot mot2;
+  Dico* dico2; Mot *mot2;
   dico2 = dico;
-  Dico dico3 = dico;
+  Dico *dico3;
   while (mot->c!=dico2->c) {                  //on cherche si ya le premier char, si oui on pointe dessu sinon on return null
     if (dico2->alt!=NULL) {dico2=dico2->alt;}
     else {return NULL;}
@@ -282,15 +266,41 @@ Dico prefixeMot(Dico dico, Mot mot) {
   while(mot2->c!='$') {
         //remplir par loulou feuille
   }
-  
+
+}
+
+
+Dico *ajoutMot2(Mot *mot, Dico *dico) {
+  Dico *dico2;
+  if(mot != NULL && dico != NULL){
+    int rech=recherchermot2(dico, mot);
+    if(rech == 1){
+      printf("Le mot exite déjà\n");
+    }
+    else if (rech == 0){
+      dico2=prefixeMot(dico, mot);
+      if(dico2->succ=='$'){dico2=dico2->succ;}
+      else{
+        while(mot->suiv != NULL){
+          Dico * car = malloc(sizeof(Dico));
+          dico->alt=car;
+          car->c=mot->c;
+          car->alt=NULL;
+          car->succ=NULL;
+
+
+        }
+      }
+
+    }
+  }
+
+return dico;
+
 }
 
 
-Dico ajoutMot2(Mot mot, Dico dico) {
-
-  
-
-}
+/*
 
 BONUS :
 CALCULER LE TEMPS D'EXECUTION D'UNE FONCTION
