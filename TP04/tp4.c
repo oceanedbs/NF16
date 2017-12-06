@@ -229,7 +229,7 @@ Dico *initDico2(Dico *dico, Mot *mot){
 
 int rechercheMot2(Dico *dico, Mot *mot){
   if(mot != NULL && dico!=NULL){
-    if(mot->c == dico->c && mot->suiv=='$'){
+    if(mot->c == dico->c && mot->suiv=='$'){                      // OCEANE il faut inverser les arguments de ta fonction la nan?
       return 1;
     }else{
       if(mot->c==dico->c){
@@ -266,6 +266,7 @@ Dico *prefixeMot(Dico *dico, Mot *mot){
   while(mot2->c!='$') {
         if (dico2==NULL) {return dico3;}
         if (mot2->suiv->c =='$') {return dico3;}
+        if (dico2->c=='$') {dico2=dico2->alt;}
         if (dico2->c==mot2->suiv->c) {dico3=dico2;  mot2=mot2->suiv;  dico2=dico2->succ;}
         else {dico2=dico2->alt;}
   }
@@ -303,7 +304,27 @@ return dico;
 }
 
 
-Dico* supprimeMot2(Mot* mot, Dico* dico) {
+Dico* supprimeMot2( Mot* mot, Dico* dico) {
+  
+  if (rechercheMot2(mot,dico)==) {return NULL;}
+  Dico* dico2;
+  Dico* dico3;
+  while () {
+        dico2 = prefixeMot(dico,mot);
+        if (dico2->succ->alt!=NULL && dico2->succ->c=='$') {
+              //suppr '$' et maj les pointeurs
+              dico3=dico2->succ; 
+              dico2->succ=dico2->succ->alt;
+              free(dico3);
+               break;
+        }
+        if () {}
+        else {
+              //suppr toute la chaine & maj si alt presents en cours de route
+              //ici on esr sur un mot "fini", il faut suppr tous les cell presentes auparavant qui n'ont pas de alt
+              //si on tombe sur une qui a un alt, il faut alors se stop
+        }
+  }
   
 }
 
