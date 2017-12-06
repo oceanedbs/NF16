@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include<string.h>
 
+
+/* PARTIE 1 */
+
 typedef struct ABR{
   char* val;
   struct ABR* pere;
@@ -21,6 +24,25 @@ DicoABR *rechercherMot(Arbre* dico, char* valeur);
 
 int supprimeMot(Arbre *dico, char* valeur);
 
-void suggestionMots(Arbre *dico, char* souschaine, int k);
+int suggestionMots(Arbre *dico, char* souschaine, int k);
 
 void parcours_infixe(DicoABR *mot, int k, char *souschaine);
+
+/*PARTIE 2 */
+
+typedef struct Car{
+  char c;
+  struct Car *suiv;
+}Mot;
+
+typedef struct Cellule{
+  char c;
+  struct Cellule* succ;
+  struct Cellule* alt;
+}Dico;
+//Dico n'est pas un ABR, car il n'est pas binaire, et que son clé[fils[x]] peut être plus grande que clé[x]
+
+
+Dico *initDico2(Dico *dico, Mot *mot);
+
+Dico *prefixeMot(Dico *dico, Mot *mot);

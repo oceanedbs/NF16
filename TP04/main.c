@@ -3,7 +3,7 @@
 #include<string.h>
 #include "tp4.h"
 
-int main(int argc, char const *argv[]) {
+int main(){
   Arbre *dico;
   int w;
   w=strncmp("rapide", "rap", strlen("rap"));
@@ -24,18 +24,9 @@ int main(int argc, char const *argv[]) {
   ajoutMot(dico, "tablier");
   ajoutMot(dico, "tabouret");
 
-
-
  rechercherMot(dico, "rap");
 
-//  supprimeMot(dico,"rapide");
+ suggestionMots(dico, "a", 5);
 
- suggestionMots(dico, "rap", 5);
-/*
-  void parcours_infixe(DicoABR *mot, int k, char *souschaine);
-
-  return 0;
-
-  */
   return 0;
 }
