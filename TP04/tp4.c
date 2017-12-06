@@ -264,7 +264,10 @@ Dico *prefixeMot(Dico *dico, Mot *mot){
   mot2=mot;
   dico2=dico2->succ;
   while(mot2->c!='$') {
-        //remplir par loulou feuille
+        if (dico2==NULL) {return dico3;}
+        if (mot2->suiv->c =='$') {return dico3;}
+        if (dico2->c==mot2->suiv->c) {dico3=dico2;  mot2=mot2->suiv;  dico2=dico2->succ;}
+        else {dico2=dico2->alt;}
   }
 
 }
@@ -297,6 +300,11 @@ Dico *ajoutMot2(Mot *mot, Dico *dico) {
 
 return dico;
 
+}
+
+
+Dico* supprimeMot2(Mot* mot, Dico* dico) {
+  
 }
 
 
