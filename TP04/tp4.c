@@ -358,6 +358,30 @@ Dico* supprimeMot2( Mot* mot, Dico* dico) {
   
  }
 
+char* read(Dico* dico) {
+  
+}
+
+char** suggestionMot2(int k, Dico* dico, Mot* mot) {
+
+  Dico* dico2;
+  Dico* dico3;
+  int i;
+  dico2=prefixe(dico,mot);
+  //parcourir k branches jusqu'au bout du mot
+  // les stocker dans char* tab[]
+  char* tab[10];
+  for (i=0;i<10;i++) {  tab[i] = malloc(30*sizeof(char));}
+  
+  for (i=0;i<10;i++) {
+        if (dico2->alt != NULL) {
+            //appel recursif sur alt
+        }
+        else {}
+  }   
+  
+}
+
 
 /*
 
