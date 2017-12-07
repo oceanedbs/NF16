@@ -306,27 +306,57 @@ return dico;
 
 Dico* supprimeMot2( Mot* mot, Dico* dico) {
   
-  if (rechercheMot2(mot,dico)==) {return NULL;}
-  Dico* dico2;
-  Dico* dico3;
-  while () {
-        dico2 = prefixeMot(dico,mot);
-        if (dico2->succ->alt!=NULL && dico2->succ->c=='$') {
-              //suppr '$' et maj les pointeurs
-              dico3=dico2->succ; 
-              dico2->succ=dico2->succ->alt;
-              free(dico3);
-               break;
+  if (rechercheMot2(mot,dico)==0) {return NULL;}
+  int i =0;
+  Dico* dico2 = dico;
+  Dico* first = dico;
+  Mot* motfirst=mot;
+  Mot* mot2 = mot;
+  //check 1ere lettre
+  if (dico->c==mot->c) {i=1;}
+  while (dico2->alt->c!=mot2->c && i==0) {dico2=dico2->alt;} //on est sur le pere de l'alt qu'on veut
+  first = dico2; dico2=dico2->alt;
+  //fin de check 1er lettre
+  while (dico2->c!='$' || mot2->c!='$') {
+        if (dico2->succ->alt != NULL) {
+              first = dico2; motfirst = mot2;
+              if (dico2->succ->c==mot2->suiv->c) {dico2=dico2->succ;  mot2=mot2->suiv;}
+              else {
+                  dico2=dico->succ;
+                  mot2=mot2->suiv;
+                  while (dico2->alt->c!=mot2->c) {dico2=dico2->alt;}
+                  first = dico2;
+                  motfirst = mot2;
+                  dico2=dico2->alt;
+              }
         }
-        if () {}
         else {
-              //suppr toute la chaine & maj si alt presents en cours de route
-              //ici on esr sur un mot "fini", il faut suppr tous les cell presentes auparavant qui n'ont pas de alt
-              //si on tombe sur une qui a un alt, il faut alors se stop
+            dico2=dic02->succ;
+            mot2=mot2->suiv;
         }
+    //fin de preparation, le first et motfirst sont au bon endroit
+    //periode de suppression de la partie voulue de l'AL
+    if (first->c==dico->c) {
+        Dico* rest = first->alt;
+        while (first!=NULL) {dico2=first; first=first->succ; free(dico2);}
+        return rest;
+    }
+    if (first->c==motfirst->c) {
+      dico2=first->succ;
+      first->succ=first->succ->alt;
+      while (dico2!=NULL) {first = dico2; dico2=dico2->succ; free(first);}
+      return dico;
+    }
+    else {
+      dico2 = first->alt; 
+      first->alt = first->alt->alt; 
+      while (dico2!=NULL) {first=dico2; dico2=dico2->succ; free(first);}
+      return dico;
+    }
+    
   }
   
-}
+ }
 
 
 /*
