@@ -318,6 +318,7 @@ Dico* supprimeMot2( Mot* mot, Dico* dico) {
   first = dico2; dico2=dico2->alt;
   //fin de check 1er lettre
   while (dico2->c!='$' || mot2->c!='$') {
+        //if (mot2->suiv==NULL) {}
         if (dico2->succ->alt != NULL) {
               first = dico2; motfirst = mot2;
               if (dico2->succ->c==mot2->suiv->c) {dico2=dico2->succ;  mot2=mot2->suiv;}
@@ -358,30 +359,32 @@ Dico* supprimeMot2( Mot* mot, Dico* dico) {
   
  }
 
-char* read(Dico* dico) {
-  
-}
+
 
 char** suggestionMot2(int k, Dico* dico, Mot* mot) {
 
-  Dico* dico2;
-  Dico* dico3;
-  int i;
-  dico2=prefixe(dico,mot);
-  //parcourir k branches jusqu'au bout du mot
-  // les stocker dans char* tab[]
-  char* tab[10];
-  for (i=0;i<10;i++) {  tab[i] = malloc(30*sizeof(char));}
-  
-  for (i=0;i<10;i++) {
-        if (dico2->alt != NULL) {
-            //appel recursif sur alt
-        }
-        else {}
-  }   
+  //CA ME SAOULE PTIN !!!!! #ragequit
   
 }
 
+
+void print(Dico* dico, char* tab, int i){  //print tout le sous ensemble de dico dans l'AL
+
+  int k;
+  tab[i]=dico->c;
+  if (dico->alt!=NULL) {
+        char tab2[100];
+        for (k=0;k<=i;k++) {tab2[k]=tab[k];}
+        print(dico->alt,tab2,i);
+  }
+  if (dico->succ!=NULL) {
+        char tab3[100];
+        for (k=0;k<=i;k++) {tab3[k]=tab[k];}
+        print(dico->succ,tab3,i+1);
+  }
+  else {printf("%s \n",tab);}
+
+}
 
 /*
 
