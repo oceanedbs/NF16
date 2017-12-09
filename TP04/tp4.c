@@ -372,17 +372,18 @@ void print(Dico* dico, char* tab, int i){  //print tout le sous ensemble de dico
 
   int k;
   tab[i]=dico->c;
-  if (dico->alt!=NULL) {
-        char tab2[100];
-        for (k=0;k<=i;k++) {tab2[k]=tab[k];}
-        print(dico->alt,tab2,i);
-  }
+ 
   if (dico->succ!=NULL) {
         char tab3[100];
         for (k=0;k<=i;k++) {tab3[k]=tab[k];}
         print(dico->succ,tab3,i+1);
   }
   else {printf("%s \n",tab);}
+  if (dico->alt!=NULL) {
+        char tab2[100];
+        for (k=0;k<=i;k++) {tab2[k]=tab[k];}
+        print(dico->alt,tab2,i);
+  }
 
 }
 
