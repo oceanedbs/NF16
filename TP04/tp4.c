@@ -368,6 +368,31 @@ char** suggestionMot2(int k, Dico* dico, Mot* mot) {
 }
 
 
+//  PARTIE 3
+
+Arbre* chargerABR(Arbre* dico){ //charge le fichier dans ABR
+  FILE* fichier = NULL;
+  fichier = fopen("dictionnaire.txt","r");
+  if (fichier == NULL) {return EXIT_FAILURE;}
+  char tab[100];
+  int i;
+  Arbre* dico2 = dico;
+  while (fichier != EOF) {
+    for (i=0;i<100;i++) {tab[i]=NULL;}
+    fgets(tab,100,fichier);
+    dico2 = ajoutMot(dico2,tab);
+  }
+  
+  fclose(fichier);
+  return dico2;
+}
+
+
+Dico* chargerAL(Dico* dico){
+  
+}
+
+
 void print(Dico* dico, char* tab, int i){  //print tout le sous ensemble de dico dans l'AL
 
   int k;
@@ -386,6 +411,22 @@ void print(Dico* dico, char* tab, int i){  //print tout le sous ensemble de dico
   }
 
 }
+
+void print2(Dico* dico, Mot* mot){      //affiche tt le ss ensemble de dico qui commence par mot
+    Dico* dico2 = prefixeMot(dico,mot);
+    Mot* mot2 = mot;
+    int i;
+  char tab[100]; 
+    for (i=0;i<100;i++){
+      if (mot2->c=='$') {break;}
+      tab[i] = mot->c;
+      mot= mot->suiv;
+    }
+  print(dico2,tab,i);
+    
+}
+
+
 
 /*
 
