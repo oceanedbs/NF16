@@ -389,7 +389,37 @@ Arbre* chargerABR(Arbre* dico){ //charge le fichier dans ABR
 
 
 Dico* chargerAL(Dico* dico){
+  FILE* fichier = NULL;
+  fichier = fopen("dictionnaire.txt","r");
+  if (fichier == NULL) {return EXIT_FAILURE;}
+  char tab[100];
+  int i;
+  Dico* dico2 = dico;
+  while (fichier != EOF) {
+    for (i=0;i<100;i++) {tab[i]=NULL;}
+    fgets(tab,100,fichier);
+    //transformer le tab en Mot
+    Mot* mot;
+    Mot* mot2;
+    mot = malloc(sizeof(Mot));
+    mot->c=tab[0];
+    mot2 = mot;
+    i=1;
+    while (tab[i]!=NULL) {
+       mot2->suiv = malloc(sizeof(Mot));
+       mot2=mot2->suiv;
+       mot2->c=tab[i];
+       mot2->suiv=NULL;
+    }
+    mot2->suiv = malloc(sizeof(Mot));
+       mot2=mot2->suiv;
+       mot2->c='$';
+       mot2->suiv=NULL;
+    dico2 = ajoutMot2(mot,dico2);
+  }
   
+  fclose(fichier);
+  return dico2;
 }
 
 
