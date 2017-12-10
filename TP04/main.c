@@ -26,7 +26,7 @@ int main(){
 
  rechercherMot(dico, "rap");
 
- suggestionMots(dico, "a", 5);
+ suggestionMots(dico, "ra", 5);
 
   return 0;
 }

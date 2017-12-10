@@ -80,7 +80,7 @@ DicoABR *rechercherMot(Arbre* dico, char* valeur) {
 }
 
 DicoABR* mini(DicoABR* dico) {  //min du sad de dico
-  DicoABR* temp=dico->fils_droit;
+  DicoABR* temp=dico;
 
   while (temp->fils_gauche!=NULL) {
     temp = temp->fils_gauche;
@@ -273,30 +273,83 @@ Dico *prefixeMot(Dico *dico, Mot *mot){
 Dico *ajoutMot2(Mot *mot, Dico *dico) {
   Dico *dico2;
   if(mot != NULL && dico != NULL){
-    int rech=recherchermot2(dico, mot);
+    int rech=rechercheMot2(dico, mot);
     if(rech == 1){
       printf("Le mot exite déjà\n");
     }
-    else if (rech == 0){
-      dico2=prefixeMot(dico, mot);
-      if(dico2->succ=='$'){dico2=dico2->succ;}
-      else{
-        while(mot->suiv != NULL){
-          Dico * car = malloc(sizeof(Dico));
-          dico->alt=car;
-          car->c=mot->c;
-          car->alt=NULL;
-          car->succ=NULL;
+    else if (rech == 0){ //le mot n'existe pas dans le dictionnaire
+      if(dico->c == NULL){ //insertion à la racine si le dictionnaire est vide
+          dico->c=mot->c;
+          mot=mot->suiv;
+          while(mot != NULL){
+            Dico  *n;
+            n=malloc(sizeof(Dico));
+            n->c=mot->c;
+            n->succ=NULL;
+            n->alt = NULL;
+            dico->succ = n;
+            dico=dico->succ;
+            mot=mot->suiv;
+          }
+          return dico;
+        }
 
+      while (dico->c <= mot->c) { //permet de parcourir tout l'arbre jusqu'au caractère différent du préfixe
+        while(mot->c == dico->c){
+          dico=dico->succ;
+          mot=mot->suiv;
+        }
+        if(dico->alt != NULL){
+          dico=dico->alt;
+        }
+      }
+       //dico alt n'existe pas, donc on le créé et on rajoute toutes les lettres suivantes
+      if (dico->alt == NULL){
+          Dico  *n;
+          n=malloc(sizeof(Dico));
+          n->c=mot->c;
+          n->succ=NULL;
+          n->alt = NULL;
+          dico->alt = n;
+          dico=dico->alt;
+          mot=mot->suiv;
+          while(mot != NULL){
+            Dico  *n;
+            n=malloc(sizeof(Dico));
+            n->c=mot->c;
+            n->succ=NULL;
+            n->alt = NULL;
+            dico->succ = n;
+            dico=dico->succ;
+            mot=mot->suiv;
+          }
+          return dico;
+        }
+        else{ //dico alt exite, on sauvearde l'actuzl dico alt pour le rattachrt au nouveeau neod
+          Dico  *n, *y;
+          n=malloc(sizeof(Dico));
+          y=dico->alt;
+          n->c=mot->c;
+          n->succ=NULL;
+          n->alt = y;
+          dico->alt = n;
+          dico=dico->alt;
+          mot=mot->suiv;
+          while(mot != NULL){
+            Dico  *n;
+            n=malloc(sizeof(Dico));
+            n->c=mot->c;
+            n->succ=NULL;
+            n->alt = NULL;
+            dico->succ = n;
+            dico=dico->succ;
+            mot=mot->suiv;
+          }
+          return dico;
 
         }
       }
-
     }
-  }
-
-return dico;
-
 }
 
 
