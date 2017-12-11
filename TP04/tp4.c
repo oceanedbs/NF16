@@ -211,6 +211,39 @@ int suggestionMots(Arbre *dico, char* souschaine, int k){
 }
 /* PARTIE 2 */
 
+Mot* creerMot(){        //IT WORKS
+    char tab[100];
+     int i;
+    for(i=0;i<100;i++){tab[i]=NULL;}
+    printf("entrez un mot\n");
+    gets(tab);
+    Mot* mot;
+    Mot* mot2;
+    Mot* mot3;
+    mot = malloc(sizeof(Mot));
+    mot->c=tab[0];
+    mot2 = mot;
+    i=1;
+    while (tab[i]!=NULL && i<100) {
+       mot3 = malloc(sizeof(Mot));
+       mot2->suiv = mot3;
+       mot2=mot2->suiv;
+       mot2->c=tab[i];
+       mot2->suiv=NULL;
+       i++;
+    }
+    mot3 = malloc(sizeof(Mot));
+    mot2->suiv = mot3;
+       mot2=mot2->suiv;
+       mot2->c='$';
+       mot2->suiv=NULL;
+                    mot2=mot;
+                    while(mot2->suiv!=NULL){printf(" mot %c  \n",mot2->c); mot2=mot2->suiv;}
+                    printf(" mot %c \n",mot2->c);
+                    printf("i = %d \n",i);
+    return mot;
+}
+
 Dico *initDico2(Dico *dico, Mot *mot){
   if(dico==NULL){
     printf("Le dictionnaire passé en paramètre est vide\n");
@@ -227,30 +260,30 @@ Dico *initDico2(Dico *dico, Mot *mot){
 }
 
 
-int rechercheMot2(Dico *dico, Mot *mot){
+int rechercheMot2(Dico *dico, Mot *mot){        //IT WORKS
   if(mot != NULL && dico!=NULL){
-    if(mot->c == dico->c && mot->suiv=='$'){                      // OCEANE il faut inverser les arguments de ta fonction la nan?
+    if((mot->c=='$') && (dico->c=='$')){
       return 1;
     }else{
       if(mot->c==dico->c){
-        return rechercheMot2(mot->suiv, dico->succ);
+        return rechercheMot2(dico->succ,mot->suiv);
       }else{
         if(dico->alt != NULL && dico->alt->c==mot->c){
-          return rechercheMot2(mot, dico->alt);
+          return rechercheMot2( dico->alt,mot);
         }else{
           return 0;
         }
       }
     }
   }else{
+      printf("return 0 2 \n");
     return 0;
   }
-
 }
 
 
 
-Dico *prefixeMot(Dico *dico, Mot *mot){
+Dico *prefixeMot(Dico *dico, Mot *mot){     //IT WORKS
 
   Dico* dico2; Mot *mot2;
   dico2 = dico;
@@ -265,12 +298,11 @@ Dico *prefixeMot(Dico *dico, Mot *mot){
   dico2=dico2->succ;
   while(mot2->c!='$') {
         if (dico2==NULL) {return dico3;}
-        if (mot2->suiv->c =='$') {return dico3;}
-        if (dico2->c=='$') {dico2=dico2->alt;} //useless
+        if (mot2->suiv->c =='$') { return dico3;}
+        //if (dico2->c=='$') {/*dico2=dico2->alt;*/printf("oh damn \n");} //useless
         if (dico2->c==mot2->suiv->c) {dico3=dico2;  mot2=mot2->suiv;  dico2=dico2->succ;}
         else {dico2=dico2->alt;}
   }
-
 }
 
 
@@ -357,25 +389,34 @@ Dico *ajoutMot2(Mot *mot, Dico *dico) {
 }
 
 
-Dico* supprimeMot2( Mot* mot, Dico* dico) {
-  
-  if (rechercheMot2(mot,dico)==0) {return NULL;}
+Dico* supprimeMot2( Mot* mot, Dico* dico) {             //SEEMS TO WORK but unsure
+
+  if (rechercheMot2(dico,mot)==0) {printf("lol ya pas ce mot \n");return dico;}
+  else {printf("lets get started \n");}
   int i =0;
   Dico* dico2 = dico;
   Dico* first = dico;
   Mot* motfirst=mot;
   Mot* mot2 = mot;
+                                              printf("first = %c , dico2 = %c \n",first->c,dico2->c);
+                                            printf("motfirst = %c , mot2 = %c \n",motfirst->c,mot2->c);
+
   //check 1ere lettre
-  if (dico->c==mot->c) {i=1;}
-  while (dico2->alt->c!=mot2->c && i==0) {dico2=dico2->alt;} //on est sur le pere de l'alt qu'on veut
-  first = dico2; dico2=dico2->alt;
+  if (dico->c!=mot->c) {printf("fuck u \n");
+        while (dico2->alt->c!=mot2->c) {printf("fuck u2 \n"); dico2=dico2->alt;}
+  }             //on est sur le pere de l'alt qu'on veut
+                                            //printf("fuck u3 \n");
+  first = dico2;
+  if(dico2->alt!=NULL){dico2=dico2->alt; }
+                                            //printf("fuck u4 \n");
   //fin de check 1er lettre
-  while (dico2->c!='$' || mot2->c!='$') {
+  while (dico2->c!='$' || mot2->c!='$') {       //printf("dico2 = %c \n",dico2->c);
         //if (mot2->suiv==NULL) {}
         if (dico2->succ->alt != NULL) {
               first = dico2; motfirst = mot2;
               if (dico2->succ->c==mot2->suiv->c) {dico2=dico2->succ;  mot2=mot2->suiv;}
               else {
+                                                //printf("fuck u5 \n");
                   dico2=dico->succ;
                   mot2=mot2->suiv;
                   while (dico2->alt->c!=mot2->c) {dico2=dico2->alt;}
@@ -385,11 +426,14 @@ Dico* supprimeMot2( Mot* mot, Dico* dico) {
               }
         }
         else {
-            dico2=dic02->succ;
+            dico2=dico2->succ;
             mot2=mot2->suiv;
         }
+  }
     //fin de preparation, le first et motfirst sont au bon endroit
     //periode de suppression de la partie voulue de l'AL
+                                            printf("first = %c , dico2 = %c \n",first->c,dico2->c);
+                                            printf("motfirst = %c , mot2 = %c \n",motfirst->c,mot2->c);
     if (first->c==dico->c) {
         Dico* rest = first->alt;
         while (first!=NULL) {dico2=first; first=first->succ; free(dico2);}
@@ -402,16 +446,13 @@ Dico* supprimeMot2( Mot* mot, Dico* dico) {
       return dico;
     }
     else {
-      dico2 = first->alt; 
-      first->alt = first->alt->alt; 
+      dico2 = first->alt;
+      first->alt = first->alt->alt;
       while (dico2!=NULL) {first=dico2; dico2=dico2->succ; free(first);}
       return dico;
     }
-    
+return dico;
   }
-  
- }
-
 
 
 char** suggestionMot2(int k, Dico* dico, Mot* mot) {
@@ -435,7 +476,7 @@ Arbre* chargerABR(Arbre* dico){ //charge le fichier dans ABR
     fgets(tab,100,fichier);
     dico2 = ajoutMot(dico2,tab);
   }
-  
+
   fclose(fichier);
   return dico2;
 }
@@ -454,59 +495,66 @@ Dico* chargerAL(Dico* dico){
     //transformer le tab en Mot
     Mot* mot;
     Mot* mot2;
+    Mot* mot3;
     mot = malloc(sizeof(Mot));
     mot->c=tab[0];
     mot2 = mot;
     i=1;
     while (tab[i]!=NULL) {
-       mot2->suiv = malloc(sizeof(Mot));
+        mot3=malloc(sizeof(Mot));
+       mot2->suiv = mot3;
        mot2=mot2->suiv;
        mot2->c=tab[i];
        mot2->suiv=NULL;
     }
-    mot2->suiv = malloc(sizeof(Mot));
+    mot3=malloc(sizeof(Mot));
+    mot2->suiv = mot3;
        mot2=mot2->suiv;
        mot2->c='$';
        mot2->suiv=NULL;
     dico2 = ajoutMot2(mot,dico2);
   }
-  
+
   fclose(fichier);
   return dico2;
 }
 
 
-void print(Dico* dico, char* tab, int i){  //print tout le sous ensemble de dico dans l'AL
+void print(Dico* dico, char* tab, int i){  //print tout le sous ensemble de dico dans l'AL // IT WORKS
 
   int k;
   tab[i]=dico->c;
- 
+
   if (dico->succ!=NULL) {
         char tab3[100];
-        for (k=0;k<=i;k++) {tab3[k]=tab[k];}
+        for (k=0;k<100;k++) {tab3[k]=tab[k];}
         print(dico->succ,tab3,i+1);
   }
   else {printf("%s \n",tab);}
   if (dico->alt!=NULL) {
         char tab2[100];
-        for (k=0;k<=i;k++) {tab2[k]=tab[k];}
+        for (k=0;k<100;k++) {tab2[k]=tab[k];}
         print(dico->alt,tab2,i);
   }
-
+return 0;
 }
 
-void print2(Dico* dico, Mot* mot){      //affiche tt le ss ensemble de dico qui commence par mot
+void print2(Dico* dico, Mot* mot){      //affiche tt le ss ensemble de dico qui commence par mot  //IT WORKS
     Dico* dico2 = prefixeMot(dico,mot);
+
     Mot* mot2 = mot;
-    int i;
-  char tab[100]; 
-    for (i=0;i<100;i++){
-      if (mot2->c=='$') {break;}
-      tab[i] = mot->c;
-      mot= mot->suiv;
+    int i=0;
+  char tab[100];
+  for(i=0;i<100;i++){tab[i]=NULL;}
+  i=0;
+    while (mot2->c!='$'){
+      tab[i] = mot2->c;
+      mot2= mot2->suiv;
+      i++;
     }
-  print(dico2,tab,i);
-    
+
+  print(dico2->succ,tab,i);
+    return 0;
 }
 
 
