@@ -1,3 +1,4 @@
+
 #include<stdio.h>
 #include <stdlib.h>
 #include<string.h>
@@ -44,7 +45,7 @@ typedef struct Cellule{
 }Dico;
 //Dico n'est pas un ABR, car il n'est pas binaire, et que son clé[fils[x]] peut être plus grande que clé[x]
 
-
+Mot* creerMot();
 Dico *initDico2(Dico *dico, Mot *mot);
 
 Dico *prefixeMot(Dico *dico, Mot *mot);
@@ -53,3 +54,15 @@ Dico *prefixeMot(Dico *dico, Mot *mot);
 int rechercheMot2(Dico *dico, Mot *mot);
 
 Dico *ajoutMot2(Mot *mot, Dico *dico);
+
+Dico* supprimeMot2( Mot* mot, Dico* dico);
+
+char** suggestionMot2(int k, Dico* dico, Mot* mot);
+
+
+//PARTIE 3
+
+void print(Dico* dico, char* tab, int i);
+void print2(Dico* dico, Mot* mot);
+Dico* chargerAL(Dico* dico);
+Arbre* chargerABR(Arbre* dico);
