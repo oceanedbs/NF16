@@ -305,7 +305,7 @@ Dico *prefixeMot(Dico *dico, Mot *mot){     //IT WORKS
   }
 }
 
-Dico *prefixeMotpointeur(Dico *dico, Mot *mot){     //IT WORKS
+Dico *prefixeMot(Dico *dico, Mot *mot){     //IT WORKS
 
   Dico* dico2; Mot *mot2;
   dico2 = dico;
@@ -319,13 +319,14 @@ Dico *prefixeMotpointeur(Dico *dico, Mot *mot){     //IT WORKS
   mot2=mot;
   dico2=dico2->succ;
   while(mot2->c!='$') {
-        if (dico2==NULL) {return mot2;}
+        if (dico2==NULL) {return dico3;}
         if (mot2->suiv->c =='$') { return dico3;}
         //if (dico2->c=='$') {/*dico2=dico2->alt;*/printf("oh damn \n");} //useless
         if (dico2->c==mot2->suiv->c) {dico3=dico2;  mot2=mot2->suiv;  dico2=dico2->succ;}
         else {dico2=dico2->alt;}
   }
 }
+
 
 
 Dico *ajoutMot2(Mot *mot, Dico *dico) {
@@ -504,25 +505,14 @@ return dico;
   }
 
 
-char** suggestionMot2(int k, Dico* dico, Mot* mot) {
-  while (dico->c <= mot->c) { //permet de parcourir tout l'arbre jusqu'au caractère différent du préfixe
-    while(mot->c == dico->c){
-      dico=dico->succ;
-      mot=mot->suiv;
-      printf("%c",dico->c );
-    }
-    if(dico->alt != NULL && dico->alt->c <= mot->c){
-      dico=dico->alt;
-    }
-  }
-  if(mot->c == '$'){
-    while(k>0){
-      if(dico->c=='$'){
-        printf("\n");
-      }
+void suggestionMot2(int k, Dico* dico, Mot* mot) {
 
-    }
-  }
+  //CA ME SAOULE PTIN !!!!! #ragequit
+  //EDIT : en fait ca va
+    int n=k;
+    print2(dico,mot,&n);
+    if(n>0){printf("il n'y a plus de mots a suggerer \n");}
+   return 0;
 
 }
 
