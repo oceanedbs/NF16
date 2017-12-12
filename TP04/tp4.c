@@ -303,12 +303,35 @@ Dico *ajoutMot2(Mot *mot, Dico *dico) {
           dico=dico->succ;
           mot=mot->suiv;
         }
-        if(dico->alt != NULL){
+        if(dico->alt != NULL && dico->alt->c <= mot->c){
           dico=dico->alt;
         }
       }
+      if(dico->c > mot->c){ // si la lettre à inserer est inférieur à la lettre dans le alt
+        Dico *temp, *n;
+        n=malloc(sizeof(Dico));
+        temp=dico;
+        n->c=mot->c;
+        n->succ=NULL;
+        n->alt = temp;
+        dico=n;
+        dico=dico->succ;
+        mot=mot->suiv;
+        while(mot != NULL){
+          Dico  *n;
+          n=malloc(sizeof(Dico));
+          n->c=mot->c;
+          n->succ=NULL;
+          n->alt = NULL;
+          dico->succ = n;
+          dico=dico->succ;
+          mot=mot->suiv;
+        }
+        return dico;
+      }
+
        //dico alt n'existe pas, donc on le créé et on rajoute toutes les lettres suivantes
-      if (dico->alt == NULL){
+      else if (dico->alt == NULL){
           Dico  *n;
           n=malloc(sizeof(Dico));
           n->c=mot->c;
@@ -329,7 +352,7 @@ Dico *ajoutMot2(Mot *mot, Dico *dico) {
           }
           return dico;
         }
-        else{ //dico alt exite, on sauvearde l'actuzl dico alt pour le rattachrt au nouveeau neod
+        else{ //dico alt exite, on sauvearde l'actuel dico alt pour le rattachrt au nouveeau neod
           Dico  *n, *y;
           n=malloc(sizeof(Dico));
           y=dico->alt;
@@ -358,7 +381,7 @@ Dico *ajoutMot2(Mot *mot, Dico *dico) {
 
 
 Dico* supprimeMot2( Mot* mot, Dico* dico) {
-  
+
   if (rechercheMot2(mot,dico)==0) {return NULL;}
   int i =0;
   Dico* dico2 = dico;
@@ -385,7 +408,7 @@ Dico* supprimeMot2( Mot* mot, Dico* dico) {
               }
         }
         else {
-            dico2=dic02->succ;
+            dico2=dico2->succ;
             mot2=mot2->suiv;
         }
     //fin de preparation, le first et motfirst sont au bon endroit
@@ -402,22 +425,38 @@ Dico* supprimeMot2( Mot* mot, Dico* dico) {
       return dico;
     }
     else {
-      dico2 = first->alt; 
-      first->alt = first->alt->alt; 
+      dico2 = first->alt;
+      first->alt = first->alt->alt;
       while (dico2!=NULL) {first=dico2; dico2=dico2->succ; free(first);}
       return dico;
     }
-    
+
   }
-  
+
  }
 
 
 
 char** suggestionMot2(int k, Dico* dico, Mot* mot) {
+  while (dico->c <= mot->c) { //permet de parcourir tout l'arbre jusqu'au caractère différent du préfixe
+    while(mot->c == dico->c){
+      dico=dico->succ;
+      mot=mot->suiv;
+      printf("%c",dico->c );
+    }
+    if(dico->alt != NULL && dico->alt->c <= mot->c){
+      dico=dico->alt;
+    }
+  }
+  if(mot->c == '$'){
+    while(k>0){
+      if(dico->c=='$'){
+        printf("\n");
+      }
 
-  //CA ME SAOULE PTIN !!!!! #ragequit
-  
+    }
+  }
+
 }
 
 
@@ -435,7 +474,7 @@ Arbre* chargerABR(Arbre* dico){ //charge le fichier dans ABR
     fgets(tab,100,fichier);
     dico2 = ajoutMot(dico2,tab);
   }
-  
+
   fclose(fichier);
   return dico2;
 }
@@ -470,7 +509,7 @@ Dico* chargerAL(Dico* dico){
        mot2->suiv=NULL;
     dico2 = ajoutMot2(mot,dico2);
   }
-  
+
   fclose(fichier);
   return dico2;
 }
@@ -480,7 +519,7 @@ void print(Dico* dico, char* tab, int i){  //print tout le sous ensemble de dico
 
   int k;
   tab[i]=dico->c;
- 
+
   if (dico->succ!=NULL) {
         char tab3[100];
         for (k=0;k<=i;k++) {tab3[k]=tab[k];}
@@ -499,14 +538,14 @@ void print2(Dico* dico, Mot* mot){      //affiche tt le ss ensemble de dico qui 
     Dico* dico2 = prefixeMot(dico,mot);
     Mot* mot2 = mot;
     int i;
-  char tab[100]; 
+  char tab[100];
     for (i=0;i<100;i++){
       if (mot2->c=='$') {break;}
       tab[i] = mot->c;
       mot= mot->suiv;
     }
   print(dico2,tab,i);
-    
+
 }
 
 
