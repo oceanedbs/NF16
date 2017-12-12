@@ -54,12 +54,26 @@ dico6->c='$';
 dico6->succ=NULL;
 dico6->alt=NULL;
 
+Mot *m;
 Mot* mot= creerMot();
 printf("done \n");
  printf("resultat  = %d \n",rechercheMot2(dico,mot));
 Dico* doc;
 doc = prefixeMot(dico,mot);
-printf("doc = %c \n",doc->c);
+if(doc != NULL){
+  printf("doc = %c \n",doc->c);
+}
+else{printf("Le mot n'existe as\n" );}
+
+m=prefixeMotpointeur(dico, mot);
+if(m != NULL){
+  printf("m = %c \n",m->c);
+}
+else{printf("Le mot n'existe as\n" );}
+
+ajoutMot2(mot, dico);
+
+
 //dico = supprimeMot2(mot,dico);
 /*printf("appels a print1 puis 2\n");
 char tab[100];

@@ -339,104 +339,63 @@ Dico *ajoutMot2(Mot *mot, Dico *dico) {
     else{ //le mot n'existe pas dans le dictionnaire
       Dico *pointeur = prefixeMot(dico, mot);
       Mot *caractere = prefixeMotpointeur(dico,mot);
-      printf("Dico %c, Mot %c \n", pointeur->c, caractere->c );
-      /* if(dico->c == NULL){ //insertion à la racine si le dictionnaire est vide
-          dico->c=mot->c;
-          mot=mot->suiv;
-          while(mot != NULL){
-            Dico  *n;
-            n=malloc(sizeof(Dico));
-            n->c=mot->c;
-            n->succ=NULL;
-            n->alt = NULL;
-            dico->succ = n;
-            dico=dico->succ;
-            mot=mot->suiv;
-          }
-          return dico;
-        }
-
-      while (dico->c <= mot->c) { //permet de parcourir tout l'arbre jusqu'au caractère différent du préfixe
-        while(mot->c == dico->c){
-          dico=dico->succ;
-          mot=mot->suiv;
-        }
-        if(dico->alt != NULL && dico->alt->c <= mot->c){
-          dico=dico->alt;
+      if(pointeur==NULL || caractere == NULL){
+        printf("Impossible de trouver le mot, aucun prefix\n" );
+        pointeur= dico;
+        caractere=mot;
+        while(pointeur->alt != NULL && pointeur->alt->c<=caractere->c){
+          pointeur=pointeur->alt;
         }
       }
-      if(dico->c > mot->c){ // si la lettre à inserer est inférieur à la lettre dans le alt
-        Dico *temp, *n;
-        n=malloc(sizeof(Dico));
-        temp=dico;
-        n->c=mot->c;
-        n->succ=NULL;
-        n->alt = temp;
-        dico=n;
-        dico=dico->succ;
-        mot=mot->suiv;
-        while(mot != NULL){
-          Dico  *n;
-          n=malloc(sizeof(Dico));
-          n->c=mot->c;
-          n->succ=NULL;
-          n->alt = NULL;
-          dico->succ = n;
-          dico=dico->succ;
-          mot=mot->suiv;
-        }
-        return dico;
-      }
+      else {
+        printf("Il y a un prefixe ! Dico %c, Mot %c \n", pointeur->c, caractere->c );
+        if(caractere->c != '$'){caractere=caractere->suiv;}
 
-       //dico alt n'existe pas, donc on le créé et on rajoute toutes les lettres suivantes
-      else if (dico->alt == NULL){
-          Dico  *n;
-          n=malloc(sizeof(Dico));
-          n->c=mot->c;
-          n->succ=NULL;
-          n->alt = NULL;
-          dico->alt = n;
-          dico=dico->alt;
-          mot=mot->suiv;
-          while(mot != NULL){
-            Dico  *n;
-            n=malloc(sizeof(Dico));
-            n->c=mot->c;
-            n->succ=NULL;
-            n->alt = NULL;
-            dico->succ = n;
-            dico=dico->succ;
-            mot=mot->suiv;
-          }
-          return dico;
+      //printf("ici pointeur = %c et caractere = %c \n", pointeur->c, caractere->c );
+      pointeur=pointeur->succ;
+      while(pointeur->alt != NULL){
+        if(pointeur->c < caractere->c && pointeur->alt->c < caractere->c){
+          pointeur=pointeur->alt;
         }
-        else{ //dico alt exite, on sauvearde l'actuel dico alt pour le rattachrt au nouveeau neod
-          Dico  *n, *y;
-          n=malloc(sizeof(Dico));
-          y=dico->alt;
-          n->c=mot->c;
-          n->succ=NULL;
-          n->alt = y;
-          dico->alt = n;
-          dico=dico->alt;
-          mot=mot->suiv;
-          while(mot != NULL){
-            Dico  *n;
-            n=malloc(sizeof(Dico));
-            n->c=mot->c;
-            n->succ=NULL;
-            n->alt = NULL;
-            dico->succ = n;
-            dico=dico->succ;
-            mot=mot->suiv;
-          }
-          return dico;
-
+        else {
+          break;
         }
       }
     }
+
+      Dico * newdico = malloc(sizeof(Dico));
+      newdico->alt = NULL;
+      newdico->succ = NULL;
+      newdico->c = caractere->c;
+      if(pointeur->alt != NULL) {newdico->alt = pointeur->alt; pointeur->alt = newdico;}
+      else{pointeur->alt = newdico;}
+      pointeur=pointeur->alt;
+
+      printf("Ici on a pointeur %c mot %c \n", pointeur->c, caractere->c );
+      caractere=caractere->suiv;
+      printf("première lettre écrite\n");
+      while(caractere->c != '$'){
+        Dico* newdico2 = malloc(sizeof(Dico));
+        newdico2->alt = NULL;
+        newdico2->succ=NULL;
+        newdico2->c=caractere->c;
+
+        newdico->succ=newdico2;
+        newdico2->c=caractere->c;
+        newdico=newdico->succ;
+        caractere=caractere->suiv;
+        printf("Lettre suivante\n");
+      }
+      Dico* dico3 = malloc(sizeof(Dico));
+      dico3->alt = NULL;
+      dico3->succ=NULL;
+      dico3->c=caractere->c;
+      printf("Tout est écrit \n");
+    }
+    return dico;
+  }
 }
-*/
+
 
 Dico* supprimeMot2( Mot* mot, Dico* dico) {             //SEEMS TO WORK but unsure
 
@@ -617,7 +576,14 @@ void print2(Dico* dico, Mot* mot){      //affiche tt le ss ensemble de dico qui 
       mot2= mot2->suiv;
       i++;
     }
-
+if (dico2->succ!=NULL) {
   print(dico2->succ,tab,i);
+}
+else{
+  while(mot->c != NULL){
+    printf("%s", mot->c );
+
+  }
+}
     return 0;
 }
