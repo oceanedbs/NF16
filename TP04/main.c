@@ -26,6 +26,8 @@ int main(){
 
  rechercherMot(dico, "rap");
 
+ supprimeMot(dico, "tabouret");
+
  suggestionMots(dico, "ra", 5);
 
   return 0;

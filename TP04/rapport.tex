@@ -15,7 +15,16 @@ Dans cette partie le but est de représenter un dictionnaire sous forme d'ABR, o
 
 Nous avons implémenté 2 structures pour coder ces foctions : Arbre, qui pointe toujours sur la racine de l'arbre et DicoABR qui est une cellule de l'arbre. 
 
+Ainsi la fonction initDico, permet de d'allouer de la mémoire à la structure Arbre et à la structure DicoABR et de l'initialiser tel que Arbre pointe sur Dico ABR.
 
+Cette fonction est en O(1) car ne réalise que des assignations
+
+La fonction ajoutMot permet d'insérer un nouveau mot dans l'ABR que nous avons créé précédement. Cette fonction devra au maximum parcourir toute la hauteur de l'arbre, on sera donc en O(h).
+
+
+La fonction rechercherMot permet de rechercher dans tout l'arbre si un mot est présent, elle devra également au maximum parcourir toute la hauteur de l'arbre. Sa compléxité est donc en O(h).
+
+Nous avons également implémenté la fonction m
 
 
 \end{document}

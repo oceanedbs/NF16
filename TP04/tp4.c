@@ -96,7 +96,7 @@ int supprimeMot(Arbre *dico, char* valeur) {
   else {printf("le mot existe \n");}
   if (dic->fils_droit==NULL && dic->fils_gauche==NULL) {
     dic = dic->pere;
-    if (strcmp(dic->fils_droit->val,valeur)==0) {free(dic->fils_droit); dic->fils_droit=NULL;}
+    if (dic->fils_droit != NULL && strcmp(dic->fils_droit->val,valeur)==0) {free(dic->fils_droit); dic->fils_droit=NULL;}
     else {free(dic->fils_gauche); dic->fils_gauche=NULL;}
     return 0;
   }
@@ -104,7 +104,7 @@ int supprimeMot(Arbre *dico, char* valeur) {
     temp = dic;
     dic->fils_gauche->pere = dic->pere;
     dic = dic->pere;
-    if (strcmp(dic->fils_droit->val,valeur)==0) {dic->fils_droit=dic->fils_droit->fils_gauche; free(temp);}
+    if (dic->fils_droit != NULL && strcmp(dic->fils_droit->val,valeur)==0) {dic->fils_droit=dic->fils_droit->fils_gauche; free(temp);}
     else {dic->fils_gauche=dic->fils_gauche->fils_gauche; free(temp);}
     return 0;
   }
@@ -124,7 +124,7 @@ int supprimeMot(Arbre *dico, char* valeur) {
 
           if (temp->fils_droit==NULL && temp->fils_gauche==NULL) {
             temp2= temp->pere;
-            if (strcmp(temp2->fils_droit->val,temp->val)==0) {free(temp2->fils_droit); temp2->fils_droit=NULL;}
+            if (temp2->fils_droit != NULL && strcmp(temp2->fils_droit->val,temp->val)==0) {free(temp2->fils_droit); temp2->fils_droit=NULL;}
             else {free(temp2->fils_gauche); temp2->fils_gauche=NULL;}
             return 0;
           }
@@ -305,6 +305,28 @@ Dico *prefixeMot(Dico *dico, Mot *mot){     //IT WORKS
   }
 }
 
+Dico *prefixeMotpointeur(Dico *dico, Mot *mot){     //IT WORKS
+
+  Dico* dico2; Mot *mot2;
+  dico2 = dico;
+  Dico *dico3;
+  while (mot->c!=dico2->c) {                  //on cherche si ya le premier char, si oui on pointe dessu sinon on return null
+    if (dico2->alt!=NULL) {dico2=dico2->alt;}
+    else {return NULL;}
+  }
+  //ici on a mot->c == dico2->c == dico3->c
+  dico3=dico2;
+  mot2=mot;
+  dico2=dico2->succ;
+  while(mot2->c!='$') {
+        if (dico2==NULL) {return mot2;}
+        if (mot2->suiv->c =='$') { return dico3;}
+        //if (dico2->c=='$') {/*dico2=dico2->alt;*/printf("oh damn \n");} //useless
+        if (dico2->c==mot2->suiv->c) {dico3=dico2;  mot2=mot2->suiv;  dico2=dico2->succ;}
+        else {dico2=dico2->alt;}
+  }
+}
+
 
 Dico *ajoutMot2(Mot *mot, Dico *dico) {
   Dico *dico2;
@@ -312,9 +334,13 @@ Dico *ajoutMot2(Mot *mot, Dico *dico) {
     int rech=rechercheMot2(dico, mot);
     if(rech == 1){
       printf("Le mot exite déjà\n");
+      return dico;
     }
-    else if (rech == 0){ //le mot n'existe pas dans le dictionnaire
-      if(dico->c == NULL){ //insertion à la racine si le dictionnaire est vide
+    else{ //le mot n'existe pas dans le dictionnaire
+      Dico *pointeur = prefixeMot(dico, mot);
+      Mot *caractere = prefixeMotpointeur(dico,mot);
+      printf("Dico %c, Mot %c \n", pointeur->c, caractere->c );
+      /* if(dico->c == NULL){ //insertion à la racine si le dictionnaire est vide
           dico->c=mot->c;
           mot=mot->suiv;
           while(mot != NULL){
@@ -410,7 +436,7 @@ Dico *ajoutMot2(Mot *mot, Dico *dico) {
       }
     }
 }
-
+*/
 
 Dico* supprimeMot2( Mot* mot, Dico* dico) {             //SEEMS TO WORK but unsure
 
@@ -595,14 +621,3 @@ void print2(Dico* dico, Mot* mot){      //affiche tt le ss ensemble de dico qui 
   print(dico2->succ,tab,i);
     return 0;
 }
-
-
-
-/*
-
-BONUS :
-CALCULER LE TEMPS D'EXECUTION D'UNE FONCTION
-GRAPHIQUE : TAILLE DE DONNEES / TEMPS
-COMPARER COMPLEXITE THEORIQUE
-
-*/
