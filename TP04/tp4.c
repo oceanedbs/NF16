@@ -305,7 +305,7 @@ Dico *prefixeMot(Dico *dico, Mot *mot){     //IT WORKS
   }
 }
 
-Dico *prefixeMotpointeur(Dico *dico, Mot *mot){     //IT WORKS
+Dico *prefixeMot(Dico *dico, Mot *mot){     //IT WORKS
 
   Dico* dico2; Mot *mot2;
   dico2 = dico;
@@ -319,13 +319,14 @@ Dico *prefixeMotpointeur(Dico *dico, Mot *mot){     //IT WORKS
   mot2=mot;
   dico2=dico2->succ;
   while(mot2->c!='$') {
-        if (dico2==NULL) {return mot2;}
+        if (dico2==NULL) {return dico3;}
         if (mot2->suiv->c =='$') { return dico3;}
         //if (dico2->c=='$') {/*dico2=dico2->alt;*/printf("oh damn \n");} //useless
         if (dico2->c==mot2->suiv->c) {dico3=dico2;  mot2=mot2->suiv;  dico2=dico2->succ;}
         else {dico2=dico2->alt;}
   }
 }
+
 
 
 Dico *ajoutMot2(Mot *mot, Dico *dico) {
@@ -463,25 +464,14 @@ return dico;
   }
 
 
-char** suggestionMot2(int k, Dico* dico, Mot* mot) {
-  while (dico->c <= mot->c) { //permet de parcourir tout l'arbre jusqu'au caractère différent du préfixe
-    while(mot->c == dico->c){
-      dico=dico->succ;
-      mot=mot->suiv;
-      printf("%c",dico->c );
-    }
-    if(dico->alt != NULL && dico->alt->c <= mot->c){
-      dico=dico->alt;
-    }
-  }
-  if(mot->c == '$'){
-    while(k>0){
-      if(dico->c=='$'){
-        printf("\n");
-      }
+void suggestionMot2(int k, Dico* dico, Mot* mot) {
 
-    }
-  }
+  //CA ME SAOULE PTIN !!!!! #ragequit
+  //EDIT : en fait ca va
+    int n=k;
+    print2(dico,mot,&n);
+    if(n>0){printf("il n'y a plus de mots a suggerer \n");}
+   return 0;
 
 }
 
@@ -544,46 +534,66 @@ Dico* chargerAL(Dico* dico){
 }
 
 
-void print(Dico* dico, char* tab, int i){  //print tout le sous ensemble de dico dans l'AL // IT WORKS
-
+void print(Dico* dico, char* tab, int i, int* n){  //print tout le sous ensemble de dico dans l'AL // IT WORKS //mettre n<0 si on veut pas lutiliser
+    if(*n==0){return 0;}
   int k;
   tab[i]=dico->c;
 
   if (dico->succ!=NULL) {
         char tab3[100];
         for (k=0;k<100;k++) {tab3[k]=tab[k];}
-        print(dico->succ,tab3,i+1);
+        print(dico->succ,tab3,i+1,n);
   }
-  else {printf("%s \n",tab);}
+  else {printf("%s \n",tab);
+          if((*n)>0){(*n)--;}
+        }
   if (dico->alt!=NULL) {
         char tab2[100];
         for (k=0;k<100;k++) {tab2[k]=tab[k];}
-        print(dico->alt,tab2,i);
+        print(dico->alt,tab2,i,n);
   }
 return 0;
 }
 
-void print2(Dico* dico, Mot* mot){      //affiche tt le ss ensemble de dico qui commence par mot  //IT WORKS
-    Dico* dico2 = prefixeMot(dico,mot);
-
-    Mot* mot2 = mot;
-    int i=0;
-  char tab[100];
-  for(i=0;i<100;i++){tab[i]=NULL;}
-  i=0;
-    while (mot2->c!='$'){
-      tab[i] = mot2->c;
-      mot2= mot2->suiv;
-      i++;
-    }
-if (dico2->succ!=NULL) {
-  print(dico2->succ,tab,i);
-}
-else{
-  while(mot->c != NULL){
-    printf("%s", mot->c );
-
+void print2(Dico* dico, Mot* mot,int* n){      //affiche tt le ss ensemble de dico qui commence par mot //mettre n<0 si on veut pas l'utiliser
+    Dico* dico2; Mot *mot2;
+  dico2 = dico;
+  Dico *dico3;
+  while (mot->c!=dico2->c) {                  //on cherche si ya le premier char, si oui on pointe dessu sinon on return null
+    if (dico2->alt!=NULL) {dico2=dico2->alt;}
+    else { printf("sous esemble non existant \n");return 0;}
   }
-}
+  //ici on a mot->c == dico2->c == dico3->c
+
+  int i = 0;
+    char tab[100];
+  for(i=0;i<100;i++){tab[i]=NULL;}
+  tab[0]=mot->c;
+  i=1;
+
+  dico3=dico2;
+  mot2=mot;
+  dico2=dico2->succ;
+  while(mot2->c!='$') {
+        if (dico2==NULL) {break;}
+        if (mot2->suiv->c =='$') { break;}
+        if (dico2->c==mot2->suiv->c) {dico3=dico2;  mot2=mot2->suiv;  dico2=dico2->succ; tab[i]=mot2->c; i++;}
+        else {dico2=dico2->alt;}
+  }
+    //lolilol
+    if (dico3==NULL){printf("sous ensemble non existant \n"); return 0;}
+
+  print(dico3->succ,tab,i,n);
     return 0;
 }
+
+
+
+/*
+
+BONUS :
+CALCULER LE TEMPS D'EXECUTION D'UNE FONCTION
+GRAPHIQUE : TAILLE DE DONNEES / TEMPS
+COMPARER COMPLEXITE THEORIQUE
+
+*/
