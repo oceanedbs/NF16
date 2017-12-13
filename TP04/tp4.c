@@ -422,15 +422,15 @@ Dico* supprimeMot2( Mot* mot, Dico* dico) {             //SEEMS TO WORK but unsu
               first = dico2; motfirst = mot2;
               if (dico2->succ->c==mot2->suiv->c) {dico2=dico2->succ;  mot2=mot2->suiv;}
               else {
-                                                //printf("fuck u5 \n");
+                if(dico2->alt != NULL){
+                            //printf("fuck u5 \n");
                   dico2=dico->succ;
                   mot2=mot2->suiv;
-                  if(dico2->alt != NULL){
                     while (dico2->alt->c!=mot2->c) {dico2=dico2->alt;}
-                  }
                   first = dico2;
                   motfirst = mot2;
-                  dico2=dico2->alt;
+                  dico2=dico2->alt; //si pas de alt ?
+                }
               }
         }
         else {

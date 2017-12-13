@@ -108,17 +108,18 @@ tab[0]='m';
 print(dico2,tab,1);
 printf("\n wait bitch \n");*/
 
-
+/*
 printf("mots à supprimer\n" );
 Mot* mot10= creerMot();
 supprimeMot2(mot10,dico);
 
 Mot* mot11= creerMot();
 supprimeMot2(mot11,dico);
-
-
+*/
+printf("print\n" );
+Mot* mot12= creerMot();
 
 int a=5;
-print2(dico,mot2, &a);
+print2(dico,mot12, &a);
   return 0;
 }
