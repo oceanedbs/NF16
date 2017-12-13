@@ -55,26 +55,51 @@ dico6->succ=NULL;
 dico6->alt=NULL;
 
 Mot *m;
+/*printf("mot à rechercher \n" );
 Mot* mot= creerMot();
-printf("done \n");
- printf("resultat  = %d \n",rechercheMot2(dico,mot));
+printf("mot à prefixer\n");
+Mot* mot1= creerMot();
+*/
+printf("mots à ajouter \n" );
+Mot* mot2= creerMot();
+ajoutMot2(mot2, dico);
+
+rechercheMot2(dico, mot2);
+
+Mot* mot3 =creerMot();
+ajoutMot2(mot3, dico);
+
+
+Mot* mot4= creerMot();
+ajoutMot2(mot4, dico);
+
+Mot* mot5= creerMot();
+ajoutMot2(mot5, dico);
+
+
+Mot* mot6= creerMot();
+ajoutMot2(mot6, dico);
+
+
+Mot* mot7= creerMot();
+ajoutMot2(mot7, dico);
+
+
+printf("Rechercher un mot \n" );
+Mot* mot8= creerMot();
+printf("resultat recherche  = %d \n",rechercheMot2(dico,mot8));
+
+/*
+printf("Prefixer un mot \n" );
+Mot* mot9= creerMot();
 Dico* doc;
-doc = prefixeMot(dico,mot);
+doc = prefixeMot(dico,mot9);
 if(doc != NULL){
   printf("doc = %c \n",doc->c);
 }
-else{printf("Le mot n'existe as\n" );}
+else{printf("Le mot n'existe pas\n" );}
+*/
 
-m=prefixeMotpointeur(dico, mot);
-if(m != NULL){
-  printf("m = %c \n",m->c);
-}
-else{printf("Le mot n'existe as\n" );}
-
-ajoutMot2(mot, dico);
-
-
-//dico = supprimeMot2(mot,dico);
 /*printf("appels a print1 puis 2\n");
 char tab[100];
 int u;
@@ -82,6 +107,18 @@ for(u=0;u<100;u++){tab[u]=NULL;}
 tab[0]='m';
 print(dico2,tab,1);
 printf("\n wait bitch \n");*/
-print2(dico,mot);
+
+
+printf("mots à supprimer\n" );
+Mot* mot10= creerMot();
+supprimeMot2(mot10,dico);
+
+Mot* mot11= creerMot();
+supprimeMot2(mot11,dico);
+
+
+
+int a=5;
+print2(dico,mot2, &a);
   return 0;
 }

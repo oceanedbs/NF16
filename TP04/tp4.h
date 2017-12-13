@@ -49,8 +49,12 @@ Dico *initDico2(Dico *dico, Mot *mot);
 
 Dico *prefixeMot(Dico *dico, Mot *mot);
 
-Dico *prefixeMotpointeur(Dico *dico, Mot *mot);
+Mot *prefixeMotpointeur(Dico *dico, Mot *mot);
 
 int rechercheMot2(Dico *dico, Mot *mot);
 
 Dico *ajoutMot2(Mot *mot, Dico *dico);
+
+Mot* creerMot();
+
+void print2(Dico* dico, Mot* mot,int* n);

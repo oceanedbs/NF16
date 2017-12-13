@@ -214,7 +214,7 @@ int suggestionMots(Arbre *dico, char* souschaine, int k){
 Mot* creerMot(){        //IT WORKS
     char tab[100];
      int i;
-    for(i=0;i<100;i++){tab[i]=NULL;}
+    for(i=0;i<100;i++){tab[i]=0;}
     printf("entrez un mot\n");
     gets(tab);
     Mot* mot;
@@ -224,7 +224,7 @@ Mot* creerMot(){        //IT WORKS
     mot->c=tab[0];
     mot2 = mot;
     i=1;
-    while (tab[i]!=NULL && i<100) {
+    while (tab[i]!=0 && i<100) {
        mot3 = malloc(sizeof(Mot));
        mot2->suiv = mot3;
        mot2=mot2->suiv;
@@ -268,7 +268,7 @@ int rechercheMot2(Dico *dico, Mot *mot){        //IT WORKS
       if(mot->c==dico->c){
         return rechercheMot2(dico->succ,mot->suiv);
       }else{
-        if(dico->alt != NULL && dico->alt->c==mot->c){
+        if(dico->alt != NULL && dico->alt->c <= mot->c){
           return rechercheMot2( dico->alt,mot);
         }else{
           return 0;
@@ -305,7 +305,7 @@ Dico *prefixeMot(Dico *dico, Mot *mot){     //IT WORKS
   }
 }
 
-Dico *prefixeMot(Dico *dico, Mot *mot){     //IT WORKS
+Mot *prefixeMotpointeur(Dico *dico, Mot *mot){     //IT WORKS
 
   Dico* dico2; Mot *mot2;
   dico2 = dico;
@@ -319,8 +319,8 @@ Dico *prefixeMot(Dico *dico, Mot *mot){     //IT WORKS
   mot2=mot;
   dico2=dico2->succ;
   while(mot2->c!='$') {
-        if (dico2==NULL) {return dico3;}
-        if (mot2->suiv->c =='$') { return dico3;}
+        if (dico2==NULL) {return mot2;}
+        if (mot2->suiv->c =='$') { return mot2;}
         //if (dico2->c=='$') {/*dico2=dico2->alt;*/printf("oh damn \n");} //useless
         if (dico2->c==mot2->suiv->c) {dico3=dico2;  mot2=mot2->suiv;  dico2=dico2->succ;}
         else {dico2=dico2->alt;}
@@ -350,7 +350,7 @@ Dico *ajoutMot2(Mot *mot, Dico *dico) {
       }
       else {
         printf("Il y a un prefixe ! Dico %c, Mot %c \n", pointeur->c, caractere->c );
-        if(caractere->c != '$'){caractere=caractere->suiv;}
+        if(caractere->suiv->c != '$'){caractere=caractere->suiv;}
 
       //printf("ici pointeur = %c et caractere = %c \n", pointeur->c, caractere->c );
       pointeur=pointeur->succ;
@@ -372,25 +372,22 @@ Dico *ajoutMot2(Mot *mot, Dico *dico) {
       else{pointeur->alt = newdico;}
       pointeur=pointeur->alt;
 
-      printf("Ici on a pointeur %c mot %c \n", pointeur->c, caractere->c );
       caractere=caractere->suiv;
-      printf("première lettre écrite\n");
       while(caractere->c != '$'){
         Dico* newdico2 = malloc(sizeof(Dico));
         newdico2->alt = NULL;
         newdico2->succ=NULL;
         newdico2->c=caractere->c;
 
-        newdico->succ=newdico2;
-        newdico2->c=caractere->c;
-        newdico=newdico->succ;
+        pointeur->succ=newdico2;
+        pointeur=pointeur->succ;
         caractere=caractere->suiv;
-        printf("Lettre suivante\n");
       }
       Dico* dico3 = malloc(sizeof(Dico));
       dico3->alt = NULL;
       dico3->succ=NULL;
       dico3->c=caractere->c;
+      pointeur->succ=dico3;
       printf("Tout est écrit \n");
     }
     return dico;
@@ -428,7 +425,9 @@ Dico* supprimeMot2( Mot* mot, Dico* dico) {             //SEEMS TO WORK but unsu
                                                 //printf("fuck u5 \n");
                   dico2=dico->succ;
                   mot2=mot2->suiv;
-                  while (dico2->alt->c!=mot2->c) {dico2=dico2->alt;}
+                  if(dico2->alt != NULL){
+                    while (dico2->alt->c!=mot2->c) {dico2=dico2->alt;}
+                  }
                   first = dico2;
                   motfirst = mot2;
                   dico2=dico2->alt;
@@ -471,7 +470,6 @@ void suggestionMot2(int k, Dico* dico, Mot* mot) {
     int n=k;
     print2(dico,mot,&n);
     if(n>0){printf("il n'y a plus de mots a suggerer \n");}
-   return 0;
 
 }
 
@@ -486,7 +484,7 @@ Arbre* chargerABR(Arbre* dico){ //charge le fichier dans ABR
   int i;
   Arbre* dico2 = dico;
   while (fichier != EOF) {
-    for (i=0;i<100;i++) {tab[i]=NULL;}
+    for (i=0;i<100;i++) {tab[i]=0;}
     fgets(tab,100,fichier);
     dico2 = ajoutMot(dico2,tab);
   }
@@ -504,7 +502,7 @@ Dico* chargerAL(Dico* dico){
   int i;
   Dico* dico2 = dico;
   while (fichier != EOF) {
-    for (i=0;i<100;i++) {tab[i]=NULL;}
+    for (i=0;i<100;i++) {tab[i]=0;}
     fgets(tab,100,fichier);
     //transformer le tab en Mot
     Mot* mot;
@@ -514,7 +512,7 @@ Dico* chargerAL(Dico* dico){
     mot->c=tab[0];
     mot2 = mot;
     i=1;
-    while (tab[i]!=NULL) {
+    while (tab[i]!=0) {
         mot3=malloc(sizeof(Mot));
        mot2->suiv = mot3;
        mot2=mot2->suiv;
@@ -535,7 +533,7 @@ Dico* chargerAL(Dico* dico){
 
 
 void print(Dico* dico, char* tab, int i, int* n){  //print tout le sous ensemble de dico dans l'AL // IT WORKS //mettre n<0 si on veut pas lutiliser
-    if(*n==0){return 0;}
+    if(*n==0){}
   int k;
   tab[i]=dico->c;
 
@@ -552,7 +550,6 @@ void print(Dico* dico, char* tab, int i, int* n){  //print tout le sous ensemble
         for (k=0;k<100;k++) {tab2[k]=tab[k];}
         print(dico->alt,tab2,i,n);
   }
-return 0;
 }
 
 void print2(Dico* dico, Mot* mot,int* n){      //affiche tt le ss ensemble de dico qui commence par mot //mettre n<0 si on veut pas l'utiliser
@@ -561,13 +558,13 @@ void print2(Dico* dico, Mot* mot,int* n){      //affiche tt le ss ensemble de di
   Dico *dico3;
   while (mot->c!=dico2->c) {                  //on cherche si ya le premier char, si oui on pointe dessu sinon on return null
     if (dico2->alt!=NULL) {dico2=dico2->alt;}
-    else { printf("sous esemble non existant \n");return 0;}
+    else { printf("sous esemble non existant \n");}
   }
   //ici on a mot->c == dico2->c == dico3->c
 
   int i = 0;
     char tab[100];
-  for(i=0;i<100;i++){tab[i]=NULL;}
+  for(i=0;i<100;i++){tab[i]=0;}
   tab[0]=mot->c;
   i=1;
 
@@ -581,10 +578,9 @@ void print2(Dico* dico, Mot* mot,int* n){      //affiche tt le ss ensemble de di
         else {dico2=dico2->alt;}
   }
     //lolilol
-    if (dico3==NULL){printf("sous ensemble non existant \n"); return 0;}
+    if (dico3==NULL){printf("sous ensemble non existant \n"); }
 
   print(dico3->succ,tab,i,n);
-    return 0;
 }
 
 
