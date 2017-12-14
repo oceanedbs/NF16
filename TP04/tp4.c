@@ -425,7 +425,7 @@ Dico* supprimeMot2( Mot* mot, Dico* dico) {             //SEEMS TO WORK but unsu
   }             //on est sur le pere de l'alt qu'on veut
                                             //printf("fuck u3 \n");
   first = dico2;
-  if(dico2->alt!=NULL){dico2=dico2->alt; }
+  if(dico2->alt!=NULL && dico->c!=mot->c){dico2=dico2->alt; }
                                             //printf("fuck u4 \n");
   //fin de check 1er lettre
   while (dico2->c!='$' || mot2->c!='$') {       //printf("dico2 = %c \n",dico2->c);
@@ -434,15 +434,15 @@ Dico* supprimeMot2( Mot* mot, Dico* dico) {             //SEEMS TO WORK but unsu
               first = dico2; motfirst = mot2;
               if (dico2->succ->c==mot2->suiv->c) {dico2=dico2->succ;  mot2=mot2->suiv;}
               else {
-                if(dico2->alt != NULL){
+               
                             //printf("fuck u5 \n");
                   dico2=dico->succ;
                   mot2=mot2->suiv;
                     while (dico2->alt->c!=mot2->c) {dico2=dico2->alt;}
                   first = dico2;
                   motfirst = mot2;
-                  dico2=dico2->alt; //si pas de alt ?
-                }
+                  dico2=dico2->alt; //si pas de alt ? //yen a forcement un vu que le mot qu on recherche existe
+                
               }
         }
         else {
