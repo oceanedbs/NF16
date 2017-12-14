@@ -415,34 +415,32 @@ Dico* supprimeMot2( Mot* mot, Dico* dico) {             //SEEMS TO WORK but unsu
   Dico* first = dico;
   Mot* motfirst=mot;
   Mot* mot2 = mot;
-                                              printf("first = %c , dico2 = %c \n",first->c,dico2->c);
-                                            printf("motfirst = %c , mot2 = %c \n",motfirst->c,mot2->c);
+                                           //   printf("first = %c , dico2 = %c \n",first->c,dico2->c);
+                                           // printf("motfirst = %c , mot2 = %c \n",motfirst->c,mot2->c);
 
   //check 1ere lettre
   if (dico->c!=mot->c) {
-	 printf("fuck u \n");
+                                            //printf("fuck u \n");
         while (dico2->alt->c!=mot2->c) {printf("fuck u2 \n"); dico2=dico2->alt;}
   }             //on est sur le pere de l'alt qu'on veut
                                             //printf("fuck u3 \n");
   first = dico2;
   if(dico2->alt!=NULL && dico->c!=mot->c){dico2=dico2->alt; }
-                                            //printf("fuck u4 \n");
+                                           // printf("fuck u4 \n");
+                                           // printf("first = %c , dico2 = %c \n",first->c,dico2->c);
+                                           // printf("motfirst = %c , mot2 = %c \n",motfirst->c,mot2->c);
   //fin de check 1er lettre
   while (dico2->c!='$' || mot2->c!='$') {       //printf("dico2 = %c \n",dico2->c);
-        //if (mot2->suiv==NULL) {}
         if (dico2->succ->alt != NULL) {
               first = dico2; motfirst = mot2;
               if (dico2->succ->c==mot2->suiv->c) {dico2=dico2->succ;  mot2=mot2->suiv;}
               else {
-               
-                            //printf("fuck u5 \n");
-                  dico2=dico->succ;
+                  dico2=dico2->succ;
                   mot2=mot2->suiv;
                     while (dico2->alt->c!=mot2->c) {dico2=dico2->alt;}
                   first = dico2;
                   motfirst = mot2;
                   dico2=dico2->alt; //si pas de alt ? //yen a forcement un vu que le mot qu on recherche existe
-                
               }
         }
         else {
@@ -452,20 +450,20 @@ Dico* supprimeMot2( Mot* mot, Dico* dico) {             //SEEMS TO WORK but unsu
   }
     //fin de preparation, le first et motfirst sont au bon endroit
     //periode de suppression de la partie voulue de l'AL
-                                            printf("first = %c , dico2 = %c \n",first->c,dico2->c);
-                                            printf("motfirst = %c , mot2 = %c \n",motfirst->c,mot2->c);
-    if (first->c==dico->c) {
+                                           // printf("first = %c , dico2 = %c \n",first->c,dico2->c);
+                                           // printf("motfirst = %c , mot2 = %c \n",motfirst->c,mot2->c);
+    if (first->c==dico->c && first->c==mot->c) {                //printf("fuck 1");
         Dico* rest = first->alt;
         while (first!=NULL) {dico2=first; first=first->succ; free(dico2);}
         return rest;
     }
-    if (first->c==motfirst->c) {
+    if (first->c==motfirst->c) {            //printf("fuck 2");
       dico2=first->succ;
       first->succ=first->succ->alt;
       while (dico2!=NULL) {first = dico2; dico2=dico2->succ; free(first);}
       return dico;
     }
-    else {
+    else {                                  //printf("fuck 3");
       dico2 = first->alt;
       first->alt = first->alt->alt;
       while (dico2!=NULL) {first=dico2; dico2=dico2->succ; free(first);}
