@@ -35,7 +35,19 @@ La fonction ajoutMot permet d'insérer un nouveau mot dans l'ABR que nous avons 
 
 La fonction rechercherMot permet de rechercher dans tout l'arbre si un mot est présent, elle devra également au maximum parcourir toute la hauteur de l'arbre. Sa compléxité est donc en O(h).
 
-Nous avons également implémenté la fonction m
+Nous avons également implémenté la fonction minimum, qui permet de retourner le minimum d'un sous-arbre, cette fonction est utilisée dans les fonctions supprimeMots et suggestionMots. La complexité de cette fonction est en O(h).
+
+La fonction supprimerMot permet de supprimer un noeud de l'arbre passé, si la valeur recherchée existe. La fonction commence par appeler la fonction rechercherMot pour savoir si la valeur recherchée existe. Si elle n'existe pas on sort de la fonction, sinon on regarde le nombre de fils que le noeud possède. S'il ne possède aucun fils, on peut le supprimer directement. Si il possède un fils droit ou un fils gauche on sauvegarde son unique fils et on le rattache au père du noeud à supprimer, puis on supprime le noeud. Si le noeud à 2 fils, on cherche le minimum du sous-arbre droit, puis on remplace le noeud par le minimum de son sous-arbre droit. 
+
+Cette fonction fait appel à rechercherMot qui est en O(h), puis la fonction ne réalise qeue des assignations, la complexité de la fonction est donc en O(h). Sauf si il y a 2 fils car on appelle la fonction minimum. On est donc en O(2h) soit en O(h).
+
+La fonction successeur est utilisée dans la fonction suggestionMots, elles retourne le successeur de n'importe quel noeud d'un arbre. Elle est également en O(h).
+
+La fonction suggestionMots, recherche à partir d'une souschaine, le mot le plus petit contenant cette sous-chaine. Puis elle imprime ses successeurs en fonction du nombre de suggestions demandées. Cette fonction est aussi en O(2h) soit en O(h)
+
+
+\section{Partie B : représentation plus compacte - Arbre lexicographique}
+
 
 
 \end{document}
