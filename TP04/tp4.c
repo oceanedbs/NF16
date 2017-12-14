@@ -68,11 +68,22 @@ DicoABR *ajoutMot(Arbre *newArbre, char *valeur){
 
 }
 
+char * creerMot1(char tab[]){
+  int i=0;
+  char *mot;
+  while(tab[i]!=0){
+    strncat(mot, tab[i],1);
+  }
+  return mot;
+}
+
 DicoABR *rechercherMot(Arbre* dico, char* valeur) {
   DicoABR* dic = dico->racine;
   while (dic!=NULL && dic->val!=valeur) {
-    if (strcmp(dic->val,valeur)>0) {dic = dic->fils_gauche;}
-    if (strcmp(dic->val,valeur)<0) {dic = dic->fils_droit;}
+    if (strcmp(dic->val,valeur)>0 && dic->val != NULL) {dic = dic->fils_gauche;     printf("Bonjour\n" );
+}
+    else if (strcmp(dic->val,valeur)<0 && dic->val !=NULL) {dic = dic->fils_droit;    printf("Bonjour 2\n" );
+}
   }
   if (dic==NULL) {printf("not found :( \n");}
   else if (strcmp(dic->val,valeur)==0) {printf("word found :D \n");}
@@ -477,59 +488,132 @@ void suggestionMot2(int k, Dico* dico, Mot* mot) {
 //  PARTIE 3
 
 Arbre* chargerABR(Arbre* dico){ //charge le fichier dans ABR
-  FILE* fichier = NULL;
-  fichier = fopen("dictionnaire.txt","r");
-  if (fichier == NULL) {return EXIT_FAILURE;}
-  char tab[100];
-  int i;
-  Arbre* dico2 = dico;
-  while (fichier != EOF) {
-    for (i=0;i<100;i++) {tab[i]=0;}
-    fgets(tab,100,fichier);
-    dico2 = ajoutMot(dico2,tab);
-  }
+  FILE* file = fopen("dictionnaire.txt", "r"); /* should check the result */
+   char line[100];
 
-  fclose(fichier);
-  return dico2;
+   while (fgets(line, sizeof(line), file)) {
+      ajoutMot(dico, line);
+   }
+
+   fclose(file);
+
+   return dico;
+}
+
+Arbre *verimotABR(Arbre *dico){
+  FILE* file = fopen("file.txt", "r"); /* should check the result */
+  if(file == NULL){ printf("Erreur d'ouverture du fichier\n"); return 1;}
+
+  char line[20];
+
+  while (fgets(line, sizeof(line), file)) {
+    printf("%s", line);
+    int b, *c;
+    char *sugg;
+    int a =rechercherMot(dico, line);
+    if(a == 1){
+      printf("le mot exite déjà dans l'arbre\n" );
+
+    }
+    else{
+      printf("Le mot n'existe pas, que souhaitez vous faire ? \n 1-ajouter le mot au dicitionnaire ? \n 2-remplacer le mot par un mot existant");
+      scanf("%d", &b);
+      if(b==1){
+        ajoutMot(dico, line);
+      }
+      if(b==2){
+        suggestionMots(dico, line, 5);
+        printf("Entrez le mot que vous souhaitez remplacer\n" );
+        scanf("%s\n",&sugg );
+        c=rechercherMot(dico, sugg);
+        if(c==NULL){
+          printf("Vous n'avez pas entré le bon mot\n");
+        }
+        else{
+          printf("Il faut remplacer le mot \n" );
+          //PAS LE TEMPS DE REFLECHIR A CA J'Y REVIENS PLUS TARD
+        }
+      }
+    }
+
+}
+/* may check feof here to make a difference between eof and io failure -- network
+   timeout for instance */
+
+fclose(file);
+return dico;
 }
 
 
 Dico* chargerAL(Dico* dico){
-  FILE* fichier = NULL;
+
+   FILE* fichier = NULL;
   fichier = fopen("dictionnaire.txt","r");
   if (fichier == NULL) {return EXIT_FAILURE;}
   char tab[100];
   int i;
-  Dico* dico2 = dico;
-  while (fichier != EOF) {
-    for (i=0;i<100;i++) {tab[i]=0;}
-    fgets(tab,100,fichier);
-    //transformer le tab en Mot
-    Mot* mot;
-    Mot* mot2;
-    Mot* mot3;
-    mot = malloc(sizeof(Mot));
-    mot->c=tab[0];
-    mot2 = mot;
-    i=1;
-    while (tab[i]!=0) {
-        mot3=malloc(sizeof(Mot));
-       mot2->suiv = mot3;
-       mot2=mot2->suiv;
-       mot2->c=tab[i];
-       mot2->suiv=NULL;
-    }
-    mot3=malloc(sizeof(Mot));
-    mot2->suiv = mot3;
-       mot2=mot2->suiv;
-       mot2->c='$';
-       mot2->suiv=NULL;
-    dico2 = ajoutMot2(mot,dico2);
-  }
+int a =100;
+   char c;
 
-  fclose(fichier);
-  return dico2;
-}
+	printf("Ok10 \n");
+   //memset(tab, 0, a);
+
+	for(i=0; i<a; i++){tab[i]=0;}
+
+   for (i = 0; i < a; i++)
+   {   	printf("Ok1 \n");
+      char c = fgetc(fichier);
+
+
+      if (!feof(fichier))
+      {
+	printf("Ok2 \n");
+         if (c == '\r' || c==' ')
+            tab[i] = 0;
+         else if (c == '\n')
+         {   	printf("Ok3 \n");
+            tab[i] = 0;
+
+         }
+         else{
+		printf("Ok112 \n");
+            tab[i] = c;
+	printf("%c", tab[i]);
+	}
+     	 }
+	}
+
+	printf("Ok44 \n");
+	i=0;
+	for(i=0; i<a; i++){
+      Mot* mot;
+      Mot* mot2;
+      Mot* mot3;
+      mot = malloc(sizeof(Mot));
+      mot->c=tab[i];
+      mot2 = mot;
+      i=0;
+      while (tab[i]!=0) {
+          mot3=malloc(sizeof(Mot));
+         mot2->suiv = mot3;
+         mot2=mot2->suiv;
+         mot2->c=tab[i];
+         mot2->suiv=NULL;
+      }
+      mot3=malloc(sizeof(Mot));
+      mot2->suiv = mot3;
+         mot2=mot2->suiv;
+         mot2->c='$';
+         mot2->suiv=NULL;
+    //  dico2 = ajoutMot2(mot,dico2);
+			i++;
+		}
+    fclose(fichier);
+     return dico;
+   }
+
+
+
 
 
 void print(Dico* dico, char* tab, int i, int* n){  //print tout le sous ensemble de dico dans l'AL // IT WORKS //mettre n<0 si on veut pas lutiliser

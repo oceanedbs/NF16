@@ -58,3 +58,9 @@ Dico *ajoutMot2(Mot *mot, Dico *dico);
 Mot* creerMot();
 
 void print2(Dico* dico, Mot* mot,int* n);
+
+
+// PARTIE 3
+
+
+Arbre* chargerABR(Arbre* dico);
