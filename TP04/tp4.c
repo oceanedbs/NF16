@@ -419,7 +419,8 @@ Dico* supprimeMot2( Mot* mot, Dico* dico) {             //SEEMS TO WORK but unsu
                                             printf("motfirst = %c , mot2 = %c \n",motfirst->c,mot2->c);
 
   //check 1ere lettre
-  if (dico->c!=mot->c) {printf("fuck u \n");
+  if (dico->c!=mot->c) {
+	 printf("fuck u \n");
         while (dico2->alt->c!=mot2->c) {printf("fuck u2 \n"); dico2=dico2->alt;}
   }             //on est sur le pere de l'alt qu'on veut
                                             //printf("fuck u3 \n");
@@ -501,7 +502,7 @@ Arbre* chargerABR(Arbre* dico){ //charge le fichier dans ABR
 }
 
 Arbre *verimotABR(Arbre *dico){
-  FILE* file = fopen("file.txt", "r"); /* should check the result */
+  FILE* file = fopen("file.txt", "r+"); /* should check the result */
   if(file == NULL){ printf("Erreur d'ouverture du fichier\n"); return 1;}
 
   char line[20];
