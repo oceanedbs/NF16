@@ -1,6 +1,8 @@
 #include<stdio.h>
 #include <stdlib.h>
 #include<string.h>
+#include<ctype.h>
+
 #include "tp4.h"
 
 /*PARTIE 1*/
@@ -45,7 +47,7 @@ DicoABR *ajoutMot(Arbre *newArbre, char *valeur){
         else if(strcmp(pointeurx->val, valeur)<0){
           pointeurx=pointeurx->fils_droit;
         }
-        if(strcmp(pointeury->val, valeur)==0){
+        else if(strcmp(pointeury->val, valeur)==0){
           printf("L'élement existe déjà\n");
           return pointeury;
         }
@@ -81,7 +83,7 @@ DicoABR *rechercherMot(DicoABR* dico, char* valeur) {
 
   if(!dico || !valeur )  return dico;
 
-  int const n=strcmp(valeur, dico->val);
+  int n=strcmp(valeur, dico->val);
   if(n==0) return dico;
 
   if(n>0) return rechercherMot(dico->fils_droit, valeur);
@@ -250,7 +252,7 @@ Mot* creerMot(){        //IT WORKS
                     mot2=mot;
                     while(mot2->suiv!=NULL){printf(" mot %c  \n",mot2->c); mot2=mot2->suiv;}
                     printf(" mot %c \n",mot2->c);
-                    printf("i = %d \n",i);
+                  //  printf("i = %d \n",i);
     return mot;
 }
 
@@ -518,7 +520,7 @@ void suggestionMot2(int k, Dico* dico, Mot* mot) {
 //  PARTIE 3 -------------------------------------------------------------------------------------
 
 Arbre* chargerABR(Arbre* dico){ //charge le fichier dans ABR
-  FILE* file = fopen("dictionnaire.txt", "r"); /* should check the result */
+  /* FILE* file = fopen("dictionnaire.txt", "r");
    char line[100];
 
    while (fgets(line, sizeof(line), file)) {
@@ -526,12 +528,16 @@ Arbre* chargerABR(Arbre* dico){ //charge le fichier dans ABR
    }
 
    fclose(file);
-
+*/
+  char mot[100];
+  printf("Rentrez le mot à ajouter \n");
+  scanf("%s",mot );
+  ajoutMot(dico, mot);
    return dico;
 }
 
 void printABR(DicoABR *dico, int* n) { //affiche les mots dans l'ordre croissant // mettre n<0 pour tt afficher
-    if(dico==NULL || (*n)==0){return 0;}
+    if(dico==NULL || (*n)==0){return ;}
     DicoABR* dico2 = dico;
     printABR(dico2->fils_gauche,n);
     printf("%s \n",dico2->val);
@@ -540,7 +546,7 @@ void printABR(DicoABR *dico, int* n) { //affiche les mots dans l'ordre croissant
 }
 
 void printABR2(DicoABR *dico, int* n) { //affiche les mots dans l'ordre decroissant // mettre n<0 pour tt afficher
-    if(dico==NULL || (*n)==0){return 0;}
+    if(dico==NULL || (*n)==0){return ;}
     DicoABR* dico2 = dico;
     printABR2(dico2->fils_droit,n);
     printf("%s \n",dico2->val);
@@ -549,16 +555,16 @@ void printABR2(DicoABR *dico, int* n) { //affiche les mots dans l'ordre decroiss
 }
 
 Arbre *verimotABR(Arbre *dico){
-  FILE* file = fopen("file.txt", "r"); /* should check the result */
-  if(file == NULL){ printf("Erreur d'ouverture du fichier\n"); return 1;}
+   FILE* file = fopen("file.txt", "r"); /* should check the result */
+  if(file == NULL){ printf("Erreur d'ouverture du fichier\n"); return NULL;}
 
   char line[20];
 
   while (fgets(line, sizeof(line), file)) {
     printf("%s", line);
-    int b, *c;
+    int b, *c, *a;
     char *sugg;
-    int a =rechercherMot(dico->racine, line);
+    a =rechercherMot(dico->racine, line);
     if(a != NULL){
       printf("le mot exite déjà dans l'arbre\n" );
 
@@ -618,7 +624,6 @@ Dico* verimotAL(Dico* dico){
 	printf("%s", line);
   Mot* mot;
   mot=creerMotChaine(line);
-  printf("rech \n" );
    int d, c=rechercheMot2(dico, mot);
    char *chaine1;
    if(c==0){ //le mot n'a pas été trouvé
@@ -710,13 +715,16 @@ Mot* mot2 = mot;
 Mot* mot3 = mot->suiv;
 while(mot3!=NULL){free(mot2);mot2=mot3;mot3=mot3->suiv;}
 free(mot2);
-return 0;
+return ;
 }
 
 Dico* veridicoAL(Dico* dico){
+    char chaine[100];
     printf("veuillez entrer le ss ensemble recherche \n");
-    Mot* mot = creerMot();
-    print2(dico,mot,5);
+    scanf("%s", chaine);
+    Mot* mot = creerMotChaine(chaine);
+    int d=5;
+    print2(dico,mot,&d);
     grofree(mot);
     printf("\n Que voulez vous faire? \n");
     printf("\n 1 - correction de ces mot \n");
@@ -726,12 +734,14 @@ Dico* veridicoAL(Dico* dico){
     scanf("%d",&i);
     if(i==1){
         printf("entrez le mot a corriger \n");
-        mot = creerMot();
+        scanf("%s", chaine );
+        mot = creerMotChaine(chaine);
         if(rechercheMot2(dico,mot)==0){printf("mot nn existant \n"); grofree(mot);return dico;}
         dico = supprimeMot2(mot,dico);
         printf("entrez sa correction \n");
+        scanf("%s", chaine );
         grofree(mot);
-        mot = creerMot();
+        mot = creerMotChaine(chaine);
 	printf("etes vous sur de vouloir contnuer ?(1 si oui)\n");
 	    scanf("%d",&a);
 	    if(a!=1){grofree(mot);printf("abort the mission\n"); return dico;}
@@ -742,7 +752,8 @@ Dico* veridicoAL(Dico* dico){
     }
     if(i==2){
         printf("entrez le mot a supprimer \n");
-        mot = creerMot();
+        scanf("%s", chaine);
+        mot = creerMotChaine(chaine);
         if(rechercheMot2(dico,mot)==0){printf("mot nn existant \n"); grofree(mot);return dico;}
 	    printf("etes vous sur de vouloir contnuer ?(1 si oui)\n");
 	    scanf("%d",&a);
@@ -760,8 +771,8 @@ Arbre* veridicoABR(Arbre* dico){
         printf("veuillez entrer le ss ensemble recherche \n");
         char tab[100];
         int a;
-        for(a=0;a<100;a++){tab[a]=NULL;}
-        gets(tab);
+        for(a=0;a<100;a++){tab[a]=0;}
+        scanf("%s",tab );
         suggestionMots(dico,tab,5);
         printf("\n Que voulez vous faire? \n");
     printf("\n 1 - correction de ces mot \n");
@@ -771,12 +782,12 @@ Arbre* veridicoABR(Arbre* dico){
     scanf("%d",&i);
     if(i==1){
         printf("entrez le mot a corriger \n");
-        for(a=0;a<100;a++){tab[a]=NULL;}
-        gets(tab);
+        for(a=0;a<100;a++){tab[a]=0;}
+        scanf("%s", tab);
         supprimeMot(dico,tab);
-        for(a=0;a<100;a++){tab[a]=NULL;}
+        for(a=0;a<100;a++){tab[a]=0;}
         printf("entrez sa correction \n");
-        gets(tab);
+        scanf("%s",tab);
         printf("sur de vouloir faire ca?(1 pour oui)\n");
         scanf("%d",&a);
         if(a!=1){printf("abort \n"); return dico;}
@@ -786,8 +797,8 @@ Arbre* veridicoABR(Arbre* dico){
     }
     if(i==2){
         printf("entrez le mot a supprimer \n");
-        for(a=0;a<100;a++){tab[a]=NULL;}
-        gets(tab);
+        for(a=0;a<100;a++){tab[a]=0;}
+        scanf("%s" ,tab);
         printf("sur de vouloir faire ca?(1 pour oui)\n");
         scanf("%d",&a);
         if(a!=1){printf("abort \n"); return dico;}

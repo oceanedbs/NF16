@@ -13,27 +13,37 @@ int main(){
   if(a == 1){
     printf("Vous avez chsoisi la représentation ABR\n" );
     Arbre *dico;
-
+    int choix =0, n=-1;
     dico=initDico("rapidement");
+    while(choix != 5){
+      printf("Que voulez vous faire \n 0- charger un mot \n 1-verimot ABR \n 2 - veridico ABR \n 3-print ordre croissant \n 4 - print ordre décroissant \n 5-quitter \n" );
+      scanf("%d", &choix );
 
-    ajoutMot(dico, "rapide");
-    ajoutMot(dico, "rap");
-    ajoutMot(dico, "rapidite");
-    ajoutMot(dico, "rapiditu");
-    ajoutMot(dico, "nul");
-    ajoutMot(dico, "nulla");
-    ajoutMot(dico, "final");
-    ajoutMot(dico, "chaise");
-    ajoutMot(dico, "tableau");
-    ajoutMot(dico, "table");
-    ajoutMot(dico, "tablier");
-    ajoutMot(dico, "tabouret");
+      if(choix == 0){
+        dico=chargerABR(dico);
+      }
+      if(choix == 1){
+        dico=verimotABR(dico);
+      }
+      if(choix==2){
+        dico=veridicoABR(dico);
+      }
+      if(choix==3){
+        dico=printABR(dico, &n);
 
-    printf("fin init\n" );
+      }
+      if(choix==4){
+        dico=printABR2(dico, &n);
+      }
+      if(choix==5){
+        return 0;
+      }
+    }
 
-    dico=verimotABR(dico);
-    printf("fin charger ABR\n" );
-    ajoutMot(dico,"rire");
+
+    int d;
+    d=-1;
+    printABR(dico,&d);
 
   }
   else if (a==2){
@@ -68,12 +78,21 @@ dico6->alt=NULL;
 
 
 dico = chargerAL(dico);
-dico=verimotAL(dico);
 
+int i;
+char tab[100];
+for(i=0;i<100;i++){tab[i]=0;}
+i=-1;
+print(dico, tab, 0, &i);
 
+//dico=verimotAL(dico);
 
+dico = veridicoAL(dico);
+for(i=0;i<100;i++){tab[i]=0;}
+i=-1;
+print(dico, tab, 0, &i);
 
-  }
+}
 
 return 0;
 }
