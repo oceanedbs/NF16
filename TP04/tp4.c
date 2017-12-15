@@ -254,6 +254,36 @@ Mot* creerMot(){        //IT WORKS
     return mot;
 }
 
+Mot* creerMotChaine(char *chaine){        //IT WORKS
+    char tab[100];
+     int i;
+    for(i=0;i<100;i++){tab[i]=0;}
+    Mot* mot;
+    Mot* mot2;
+    Mot* mot3;
+    mot = malloc(sizeof(Mot));
+    mot->c=chaine[0];
+    mot2 = mot;
+    i=1;
+    while (chaine[i]!='\n' && i<100) {
+       mot3 = malloc(sizeof(Mot));
+       mot2->suiv = mot3;
+       mot2=mot2->suiv;
+       mot2->c=chaine[i];
+       mot2->suiv=NULL;
+       i++;
+    }
+    mot3 = malloc(sizeof(Mot));
+    mot2->suiv = mot3;
+       mot2=mot2->suiv;
+       mot2->c='$';
+       mot2->suiv=NULL;
+       mot2=mot;
+      while(mot2->suiv!=NULL){printf(" mot %c  \n",mot2->c); mot2=mot2->suiv;}
+      printf("i = %d \n",i);
+      return mot;
+}
+
 Dico *initDico2(Dico *dico, Mot *mot){
   if(dico==NULL){
     printf("Le dictionnaire passé en paramètre est vide\n");
@@ -477,7 +507,9 @@ void suggestionMot2(int k, Dico* dico, Mot* mot) {
   //CA ME SAOULE PTIN !!!!! #ragequit
   //EDIT : en fait ca va
     int n=k;
-    print2(dico,mot,&n);
+    Mot * mot2;
+    mot2=mot;
+    print2(dico,mot2,&n);
     if(n>0){printf("il n'y a plus de mots a suggerer \n");}
 
 }
@@ -569,34 +601,11 @@ Dico* chargerAL(Dico *dico){
    while (fgets(line, sizeof(line), file)) {
 	printf("%s", line);
   Mot* mot;
-  Mot* mot2;
-  Mot* mot3;
-  int i;
-  mot = malloc(sizeof(Mot));
-  mot->c=line[0];
-  mot2 = mot;
-  i=1;
-  while (line[i]!=0 && i<100) {
-     mot3 = malloc(sizeof(Mot));
-     mot2->suiv = mot3;
-     mot2=mot2->suiv;
-     mot2->c=line[i];
-     mot2->suiv=NULL;
-     i++;
+  mot=creerMotChaine(line);
+  printf("mot créé\n" );
+  ajoutMot2(mot, dico);
+
   }
-  mot3 = malloc(sizeof(Mot));
-  mot2->suiv = mot3;
-     mot2=mot2->suiv;
-     mot2->c='$';
-     mot2->suiv=NULL;
-                  mot2=mot;
-                  while(mot2->suiv!=NULL){printf(" mot %c  \n",mot2->c); mot2=mot2->suiv;}
-                  printf(" mot %c \n",mot2->c);
-                  printf("i = %d \n",i);
-
-                  ajoutMot2(mot, dico);
-
-}
 return dico;
 }
 
@@ -608,31 +617,8 @@ Dico* verimotAL(Dico* dico){
    while (fgets(line, sizeof(line), file)) {
 	printf("%s", line);
   Mot* mot;
-  Mot* mot2;
-  Mot* mot3;
-  int i;
-  mot = malloc(sizeof(Mot));
-  mot->c=line[0];
-  mot2 = mot;
-  i=1;
-  while (line[i]!=0 && i<100) {
-     mot3 = malloc(sizeof(Mot));
-     mot2->suiv = mot3;
-     mot2=mot2->suiv;
-     mot2->c=line[i];
-     mot2->suiv=NULL;
-     i++;
-  }
-  mot3 = malloc(sizeof(Mot));
-  mot2->suiv = mot3;
-     mot2=mot2->suiv;
-     mot2->c='$';
-     mot2->suiv=NULL;
-                  mot2=mot;
-                  while(mot2->suiv!=NULL){printf(" mot %c  \n",mot2->c); mot2=mot2->suiv;}
-                  printf(" mot %c \n",mot2->c);
-                  printf("i = %d \n",i);
-
+  mot=creerMotChaine(line);
+  printf("rech \n" );
    int d, c=rechercheMot2(dico, mot);
    char *chaine;
    if(c==0){ //le mot n'a pas été trouvé
@@ -643,7 +629,8 @@ Dico* verimotAL(Dico* dico){
 
      }
      else{
-       suggestionMot2(dico, mot,5);
+       printf("suggestion\n" );
+       suggestionMot2(5, dico, mot);
        printf("Ecrivez le mot que vous souhaitez remplacer\n" );
        scanf("%s", chaine);
        Mot* mot4;
@@ -671,8 +658,9 @@ Dico* verimotAL(Dico* dico){
                        while(mot5->suiv!=NULL){printf(" mot %c  \n",mot5->c); mot5=mot5->suiv;}
                        printf(" mot %c \n",mot5->c);
                        printf("i = %d \n",i);
-
+        printf("suppression\n" );
        supprimeMot2(dico,mot);
+       printf("ajout\n" );
        ajoutMot2(dico, mot4);
      }
    }
@@ -714,7 +702,7 @@ void print2(Dico* dico, Mot* mot,int* n){      //affiche tt le ss ensemble de di
   Dico *dico3;
   while (mot->c!=dico2->c) {                  //on cherche si ya le premier char, si oui on pointe dessu sinon on return null
     if (dico2->alt!=NULL) {dico2=dico2->alt;}
-    else { printf("sous esemble non existant \n");}
+    else { printf("sous ensemble non existant \n"); break;}
   }
   //ici on a mot->c == dico2->c == dico3->c
 
