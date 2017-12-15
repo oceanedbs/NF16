@@ -48,36 +48,35 @@ int main(){
   }
   else if (a==2){
     printf("vous avez choisi la représentation AL\n");
-
-
-    Dico* dico = malloc(sizeof(Dico));
-    Dico* dico2= malloc(sizeof(Dico));
-    Dico* dico3= malloc(sizeof(Dico));
-    Dico* dico4= malloc(sizeof(Dico));
-    Dico* dico5= malloc(sizeof(Dico));
-    Dico* dico6= malloc(sizeof(Dico));
-
-dico->c='m';
-dico->succ=dico2;
-dico->alt=NULL;
-dico2->c='a';
-dico2->succ=dico3;
-dico2->alt=NULL;
-dico3->c='n';
-dico3->succ=dico4;
-dico3->alt=NULL;
-dico4->c='$';
-dico4->succ=NULL;
-dico4->alt=dico5;
-dico5->c='u';
-dico5->succ=dico6;
-dico5->alt=NULL;
-dico6->c='$';
-dico6->succ=NULL;
-dico6->alt=NULL;
-
-
+    char tab2[100];int lol;
+    Dico* dico;
+    int choix;
 dico = chargerAL(dico);
+  while(1){
+printf("que voulez vous faire? \n");
+printf("1 - print tout\n");
+printf("2 - print ss ensemble\n");
+printf("3 - verimot\n");
+printf("4 - veridico\n");
+printf("5 - quitter\n");
+    
+    scanf("%d",&choix);
+    if(choix==5){break;}
+    if(choix==1){for(lol=0;lol<100;lol++){tab2[lol]=0;} lol=-1; print(dico,tab2,0,&lol);}
+    if(choix==2){
+      printf("entrez le ss ensemble\n");
+      Mot* mot = creerMot();
+      //printf("combien de valeurs max voulez vous?\n");
+      //scanf("%d",&lol);
+      lol=-1;
+      print2(dico,mot,&lol);
+    }
+    if(choix==3){dico=verimotAL(dico);}
+    if(choix==4){dico = veridicoAL(dico);}
+    printf("\n-------- fin de l'iteration, on recommence -------\n");
+
+  }
+  }
 
 int i;
 char tab[100];
