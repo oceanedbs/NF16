@@ -545,10 +545,45 @@ fclose(file);
 return dico;
 }
 
+Dico* chargerAL(Dico *dico){
+  FILE* file = fopen("file.txt", "r"); /* should check the result */
+   char line[100];
 
-Dico* chargerAL(Dico* dico){
+   while (fgets(line, sizeof(line), file)) {
+	printf("%s", line);
+  Mot* mot;
+  Mot* mot2;
+  Mot* mot3;
+  int i;
+  mot = malloc(sizeof(Mot));
+  mot->c=line[0];
+  mot2 = mot;
+  i=1;
+  while (line[i]!=0 && i<100) {
+     mot3 = malloc(sizeof(Mot));
+     mot2->suiv = mot3;
+     mot2=mot2->suiv;
+     mot2->c=line[i];
+     mot2->suiv=NULL;
+     i++;
+  }
+  mot3 = malloc(sizeof(Mot));
+  mot2->suiv = mot3;
+     mot2=mot2->suiv;
+     mot2->c='$';
+     mot2->suiv=NULL;
+                  mot2=mot;
+                  while(mot2->suiv!=NULL){printf(" mot %c  \n",mot2->c); mot2=mot2->suiv;}
+                  printf(" mot %c \n",mot2->c);
+                  printf("i = %d \n",i);
 
-  FILE* file = fopen("dictionnaire.txt", "r"); /* should check the result */
+                  ajoutMot2(mot, dico);
+
+}
+
+Dico* verimotAL(Dico* dico){
+
+  FILE* file = fopen("file.txt", "r"); /* should check the result */
    char line[100];
 
    while (fgets(line, sizeof(line), file)) {
@@ -617,7 +652,7 @@ Dico* chargerAL(Dico* dico){
                        while(mot5->suiv!=NULL){printf(" mot %c  \n",mot5->c); mot5=mot5->suiv;}
                        printf(" mot %c \n",mot5->c);
                        printf("i = %d \n",i);
-            
+
        supprimeMot2(dico,mot);
        ajoutMot2(dico, mot4);
      }
