@@ -129,7 +129,7 @@ int supprimeMot(Arbre *dico, char* valeur) {
   }
   if (dic->fils_droit!=NULL && dic->fils_gauche!=NULL) {
     //on remplace dic par min de SAD et suppr min SAD
-    temp = mini(dic);
+    temp = mini(dic->fils_droit);
     dic->val = temp->val;
     //suppr temp
 
