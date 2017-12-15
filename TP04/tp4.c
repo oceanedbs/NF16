@@ -728,6 +728,57 @@ void print2(Dico* dico, Mot* mot,int* n){      //affiche tt le ss ensemble de di
 }
 
 
+void grofree(Mot* mot){ //permet de free des Mot
+Mot* mot2 = mot;
+Mot* mot3 = mot->suiv;
+while(mot3!=NULL){free(mot2);mot2=mot3;mot3=mot3->suiv;}
+free(mot2);
+return 0;
+}
+
+Dico* veridicoAL(Dico* dico){
+    printf("veuillez entrer le ss ensemble recherche \n");
+    Mot* mot = creerMot();
+    print2(dico,mot,5);
+    grofree(mot);
+    printf("\n Que voulez vous faire? \n");
+    printf("\n 1 - correction de ces mot \n");
+    printf("\n 2 - suppression du mot \n");
+    printf("\n 3 - valider \n");
+    int i,a;
+    scanf("%d",&i);
+    if(i==1){
+        printf("entrez le mot a corriger \n");
+        mot = creerMot();
+        if(rechercheMot2(dico,mot)==0){printf("mot nn existant \n"); grofree(mot);return dico;}
+        dico = supprimeMot2(mot,dico);
+        printf("entrez sa correction \n");
+        grofree(mot);
+        mot = creerMot();
+	printf("etes vous sur de vouloir contnuer ?(1 si oui)\n");
+	    scanf("%d",&a);
+	    if(a!=1){grofree(mot);printf("abort the mission\n"); return dico;}
+        dico = ajoutMot2(mot,dico);
+        grofree(mot);
+        printf("C'est bon le mot est corrige \n");
+        return dico;
+    }
+    if(i==2){
+        printf("entrez le mot a supprimer \n");
+        mot = creerMot();
+        if(rechercheMot2(dico,mot)==0){printf("mot nn existant \n"); grofree(mot);return dico;}
+	    printf("etes vous sur de vouloir contnuer ?(1 si oui)\n");
+	    scanf("%d",&a);
+	    if(a!=1){grofree(mot);printf("abort the mission\n"); return dico;}
+        dico = supprimeMot2(mot,dico);
+        grofree(mot);
+        printf("suppression done \n");
+        return dico;
+    }
+    if(i==3){printf("good, have a nice day \n"); return dico;}
+    else{printf("looser\n"); return dico;}
+}
+
 
 /*
 
