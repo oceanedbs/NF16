@@ -20,7 +20,7 @@ Arbre* initDico(char* valeur);
 
 DicoABR *ajoutMot(Arbre *newArbre, char *valeur);
 
-DicoABR *rechercherMot(Arbre* dico, char* valeur);
+DicoABR *rechercherMot(DicoABR* dico, char* valeur);
 
 DicoABR* mini(DicoABR* dico);
 

@@ -67,7 +67,7 @@ DicoABR *ajoutMot(Arbre *newArbre, char *valeur){
   return(new_mot);
 
 }
-
+/*
 char * creerMot1(char tab[]){
   int i=0;
   char *mot;
@@ -75,19 +75,18 @@ char * creerMot1(char tab[]){
     strncat(mot, tab[i],1);
   }
   return mot;
-}
+}*/
 
-DicoABR *rechercherMot(Arbre* dico, char* valeur) {
-  DicoABR* dic = dico->racine;
-  while (dic!=NULL && dic->val!=valeur) {
-    if (strcmp(dic->val,valeur)>0 && dic->val != NULL) {dic = dic->fils_gauche;     printf("Bonjour\n" );
-}
-    else if (strcmp(dic->val,valeur)<0 && dic->val !=NULL) {dic = dic->fils_droit;    printf("Bonjour 2\n" );
-}
-  }
-  if (dic==NULL) {printf("not found :( \n");}
-  else if (strcmp(dic->val,valeur)==0) {printf("word found :D \n");}
-  return dic;
+DicoABR *rechercherMot(DicoABR* dico, char* valeur) {
+
+  if(!dico || !valeur )  return dico;
+
+  int const n=strcmp(valeur, dico->val);
+  if(n==0) return dico;
+
+  if(n>0) return rechercherMot(dico->fils_droit, valeur);
+
+  return rechercherMot(dico->fils_gauche, valeur);
 }
 
 DicoABR* mini(DicoABR* dico) {  //min du sad de dico
@@ -100,7 +99,7 @@ DicoABR* mini(DicoABR* dico) {  //min du sad de dico
 }
 
 int supprimeMot(Arbre *dico, char* valeur) {
-  DicoABR* dic = rechercherMot(dico,valeur);
+  DicoABR* dic = rechercherMot(dico->racine,valeur);
   DicoABR* temp;
   DicoABR* temp2;
   if (dic==NULL) {printf("mot non exitant \n"); return -1;}
@@ -419,13 +418,12 @@ Dico* supprimeMot2( Mot* mot, Dico* dico) {             //SEEMS TO WORK but unsu
                                             printf("motfirst = %c , mot2 = %c \n",motfirst->c,mot2->c);
 
   //check 1ere lettre
-  if (dico->c!=mot->c) {
-	 printf("fuck u \n");
+  if (dico->c!=mot->c) {printf("fuck u \n");
         while (dico2->alt->c!=mot2->c) {printf("fuck u2 \n"); dico2=dico2->alt;}
   }             //on est sur le pere de l'alt qu'on veut
                                             //printf("fuck u3 \n");
   first = dico2;
-  if(dico2->alt!=NULL && dico->c!=mot->c){dico2=dico2->alt; }
+  if(dico2->alt!=NULL){dico2=dico2->alt; }
                                             //printf("fuck u4 \n");
   //fin de check 1er lettre
   while (dico2->c!='$' || mot2->c!='$') {       //printf("dico2 = %c \n",dico2->c);
@@ -434,15 +432,15 @@ Dico* supprimeMot2( Mot* mot, Dico* dico) {             //SEEMS TO WORK but unsu
               first = dico2; motfirst = mot2;
               if (dico2->succ->c==mot2->suiv->c) {dico2=dico2->succ;  mot2=mot2->suiv;}
               else {
-               
+                if(dico2->alt != NULL){
                             //printf("fuck u5 \n");
                   dico2=dico->succ;
                   mot2=mot2->suiv;
                     while (dico2->alt->c!=mot2->c) {dico2=dico2->alt;}
                   first = dico2;
                   motfirst = mot2;
-                  dico2=dico2->alt; //si pas de alt ? //yen a forcement un vu que le mot qu on recherche existe
-                
+                  dico2=dico2->alt; //si pas de alt ?
+                }
               }
         }
         else {
@@ -502,7 +500,7 @@ Arbre* chargerABR(Arbre* dico){ //charge le fichier dans ABR
 }
 
 Arbre *verimotABR(Arbre *dico){
-  FILE* file = fopen("file.txt", "r+"); /* should check the result */
+  FILE* file = fopen("file.txt", "r"); /* should check the result */
   if(file == NULL){ printf("Erreur d'ouverture du fichier\n"); return 1;}
 
   char line[20];
@@ -511,8 +509,8 @@ Arbre *verimotABR(Arbre *dico){
     printf("%s", line);
     int b, *c;
     char *sugg;
-    int a =rechercherMot(dico, line);
-    if(a == 1){
+    int a =rechercherMot(dico->racine, line);
+    if(a != NULL){
       printf("le mot exite déjà dans l'arbre\n" );
 
     }
@@ -525,8 +523,11 @@ Arbre *verimotABR(Arbre *dico){
       if(b==2){
         suggestionMots(dico, line, 5);
         printf("Entrez le mot que vous souhaitez remplacer\n" );
-        scanf("%s\n",&sugg );
-        c=rechercherMot(dico, sugg);
+        scanf("%s",sugg );
+        printf("%s\n", sugg );
+        printf("Bonjour\n");
+        c=rechercherMot(dico->racine, sugg);
+        printf("Bonjour 2\n" );
         if(c==NULL){
           printf("Vous n'avez pas entré le bon mot\n");
         }
@@ -538,8 +539,7 @@ Arbre *verimotABR(Arbre *dico){
     }
 
 }
-/* may check feof here to make a difference between eof and io failure -- network
-   timeout for instance */
+
 
 fclose(file);
 return dico;
@@ -548,69 +548,86 @@ return dico;
 
 Dico* chargerAL(Dico* dico){
 
-   FILE* fichier = NULL;
-  fichier = fopen("dictionnaire.txt","r");
-  if (fichier == NULL) {return EXIT_FAILURE;}
-  char tab[100];
+  FILE* file = fopen("dictionnaire.txt", "r"); /* should check the result */
+   char line[100];
+
+   while (fgets(line, sizeof(line), file)) {
+	printf("%s", line);
+  Mot* mot;
+  Mot* mot2;
+  Mot* mot3;
   int i;
-int a =100;
-   char c;
+  mot = malloc(sizeof(Mot));
+  mot->c=line[0];
+  mot2 = mot;
+  i=1;
+  while (line[i]!=0 && i<100) {
+     mot3 = malloc(sizeof(Mot));
+     mot2->suiv = mot3;
+     mot2=mot2->suiv;
+     mot2->c=line[i];
+     mot2->suiv=NULL;
+     i++;
+  }
+  mot3 = malloc(sizeof(Mot));
+  mot2->suiv = mot3;
+     mot2=mot2->suiv;
+     mot2->c='$';
+     mot2->suiv=NULL;
+                  mot2=mot;
+                  while(mot2->suiv!=NULL){printf(" mot %c  \n",mot2->c); mot2=mot2->suiv;}
+                  printf(" mot %c \n",mot2->c);
+                  printf("i = %d \n",i);
 
-	printf("Ok10 \n");
-   //memset(tab, 0, a);
+   int d, c=rechercheMot2(dico, mot);
+   char *chaine;
+   if(c==0){ //le mot n'a pas été trouvé
+     printf("Le mot n'esite pas dans le dictionaire, vous souhaitez : \n 0 - ajouter le mot \n 1 - remplacer le mot\n" );
+     scanf("%d", &d);
+     if(d==0){
+       ajoutMot2(mot, dico);
 
-	for(i=0; i<a; i++){tab[i]=0;}
+     }
+     else{
+       suggestionMot2(dico, mot,5);
+       printf("Ecrivez le mot que vous souhaitez remplacer\n" );
+       scanf("%s", chaine);
+       Mot* mot4;
+       Mot* mot5;
+       Mot* mot6;
+       int i;
+       mot4 = malloc(sizeof(Mot));
+       mot4->c= chaine[0];
+       mot5 = mot4;
+       i=1;
+       while (chaine[i]!=0 && i<100) {
+          mot6 = malloc(sizeof(Mot));
+          mot5->suiv = mot6;
+          mot5=mot5->suiv;
+          mot5->c=chaine[i];
+          mot5->suiv=NULL;
+          i++;
+       }
+       mot6 = malloc(sizeof(Mot));
+       mot5->suiv = mot6;
+          mot5=mot5->suiv;
+          mot5->c='$';
+          mot5->suiv=NULL;
+                       mot5=mot;
+                       while(mot5->suiv!=NULL){printf(" mot %c  \n",mot5->c); mot5=mot5->suiv;}
+                       printf(" mot %c \n",mot5->c);
+                       printf("i = %d \n",i);
+            
+       supprimeMot2(dico,mot);
+       ajoutMot2(dico, mot4);
+     }
+   }
 
-   for (i = 0; i < a; i++)
-   {   	printf("Ok1 \n");
-      char c = fgetc(fichier);
 
+   }
 
-      if (!feof(fichier))
-      {
-	printf("Ok2 \n");
-         if (c == '\r' || c==' ')
-            tab[i] = 0;
-         else if (c == '\n')
-         {   	printf("Ok3 \n");
-            tab[i] = 0;
-
-         }
-         else{
-		printf("Ok112 \n");
-            tab[i] = c;
-	printf("%c", tab[i]);
-	}
-     	 }
-	}
-
-	printf("Ok44 \n");
-	i=0;
-	for(i=0; i<a; i++){
-      Mot* mot;
-      Mot* mot2;
-      Mot* mot3;
-      mot = malloc(sizeof(Mot));
-      mot->c=tab[i];
-      mot2 = mot;
-      i=0;
-      while (tab[i]!=0) {
-          mot3=malloc(sizeof(Mot));
-         mot2->suiv = mot3;
-         mot2=mot2->suiv;
-         mot2->c=tab[i];
-         mot2->suiv=NULL;
-      }
-      mot3=malloc(sizeof(Mot));
-      mot2->suiv = mot3;
-         mot2=mot2->suiv;
-         mot2->c='$';
-         mot2->suiv=NULL;
-    //  dico2 = ajoutMot2(mot,dico2);
-			i++;
-		}
-    fclose(fichier);
-     return dico;
+   fclose(file);
+   return dico;
    }
 
 
