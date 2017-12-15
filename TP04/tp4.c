@@ -30,7 +30,9 @@ DicoABR *ajoutMot(Arbre *newArbre, char *valeur){
   DicoABR* new_mot;
   new_mot=malloc(sizeof(DicoABR));
   if(new_mot!=NULL){
-    new_mot->val = valeur;
+    int ulu ;
+    new_mot->val = malloc(sizeof(char)*110);
+    for(ulu=0;ulu<100;ulu++){new_mot->val[ulu]=valeur[ulu];}
     new_mot->pere=NULL;
     new_mot->fils_gauche=NULL;
     new_mot->fils_droit=NULL;
