@@ -128,7 +128,7 @@ int supprimeMot(Arbre *dico, char* valeur) {
   }
   if (dic->fils_droit!=NULL && dic->fils_gauche!=NULL) {
     //on remplace dic par min de SAD et suppr min SAD
-    temp = mini(dic);
+    temp = mini(dic->fils_droit);
     dic->val = temp->val;
     //suppr temp
 
@@ -414,33 +414,32 @@ Dico* supprimeMot2( Mot* mot, Dico* dico) {             //SEEMS TO WORK but unsu
   Dico* first = dico;
   Mot* motfirst=mot;
   Mot* mot2 = mot;
-                                              printf("first = %c , dico2 = %c \n",first->c,dico2->c);
-                                            printf("motfirst = %c , mot2 = %c \n",motfirst->c,mot2->c);
+                                           //   printf("first = %c , dico2 = %c \n",first->c,dico2->c);
+                                           // printf("motfirst = %c , mot2 = %c \n",motfirst->c,mot2->c);
 
   //check 1ere lettre
-  if (dico->c!=mot->c) {printf("fuck u \n");
+  if (dico->c!=mot->c) {
+                                            //printf("fuck u \n");
         while (dico2->alt->c!=mot2->c) {printf("fuck u2 \n"); dico2=dico2->alt;}
   }             //on est sur le pere de l'alt qu'on veut
                                             //printf("fuck u3 \n");
   first = dico2;
-  if(dico2->alt!=NULL){dico2=dico2->alt; }
-                                            //printf("fuck u4 \n");
+  if(dico2->alt!=NULL && dico->c!=mot->c){dico2=dico2->alt; }
+                                           // printf("fuck u4 \n");
+                                           // printf("first = %c , dico2 = %c \n",first->c,dico2->c);
+                                           // printf("motfirst = %c , mot2 = %c \n",motfirst->c,mot2->c);
   //fin de check 1er lettre
   while (dico2->c!='$' || mot2->c!='$') {       //printf("dico2 = %c \n",dico2->c);
-        //if (mot2->suiv==NULL) {}
         if (dico2->succ->alt != NULL) {
               first = dico2; motfirst = mot2;
               if (dico2->succ->c==mot2->suiv->c) {dico2=dico2->succ;  mot2=mot2->suiv;}
               else {
-                if(dico2->alt != NULL){
-                            //printf("fuck u5 \n");
-                  dico2=dico->succ;
+                  dico2=dico2->succ;
                   mot2=mot2->suiv;
                     while (dico2->alt->c!=mot2->c) {dico2=dico2->alt;}
                   first = dico2;
                   motfirst = mot2;
-                  dico2=dico2->alt; //si pas de alt ?
-                }
+                  dico2=dico2->alt; //si pas de alt ? //yen a forcement un vu que le mot qu on recherche existe
               }
         }
         else {
@@ -450,20 +449,20 @@ Dico* supprimeMot2( Mot* mot, Dico* dico) {             //SEEMS TO WORK but unsu
   }
     //fin de preparation, le first et motfirst sont au bon endroit
     //periode de suppression de la partie voulue de l'AL
-                                            printf("first = %c , dico2 = %c \n",first->c,dico2->c);
-                                            printf("motfirst = %c , mot2 = %c \n",motfirst->c,mot2->c);
-    if (first->c==dico->c) {
+                                           // printf("first = %c , dico2 = %c \n",first->c,dico2->c);
+                                           // printf("motfirst = %c , mot2 = %c \n",motfirst->c,mot2->c);
+    if (first->c==dico->c && first->c==mot->c) {                //printf("fuck 1");
         Dico* rest = first->alt;
         while (first!=NULL) {dico2=first; first=first->succ; free(dico2);}
         return rest;
     }
-    if (first->c==motfirst->c) {
+    if (first->c==motfirst->c) {            //printf("fuck 2");
       dico2=first->succ;
       first->succ=first->succ->alt;
       while (dico2!=NULL) {first = dico2; dico2=dico2->succ; free(first);}
       return dico;
     }
-    else {
+    else {                                  //printf("fuck 3");
       dico2 = first->alt;
       first->alt = first->alt->alt;
       while (dico2!=NULL) {first=dico2; dico2=dico2->succ; free(first);}
@@ -484,7 +483,7 @@ void suggestionMot2(int k, Dico* dico, Mot* mot) {
 }
 
 
-//  PARTIE 3
+//  PARTIE 3 -------------------------------------------------------------------------------------
 
 Arbre* chargerABR(Arbre* dico){ //charge le fichier dans ABR
   FILE* file = fopen("dictionnaire.txt", "r"); /* should check the result */
@@ -497,6 +496,24 @@ Arbre* chargerABR(Arbre* dico){ //charge le fichier dans ABR
    fclose(file);
 
    return dico;
+}
+
+void printABR(DicoABR *dico, int* n) { //affiche les mots dans l'ordre croissant // mettre n<0 pour tt afficher
+    if(dico==NULL || (*n)==0){return 0;}
+    DicoABR* dico2 = dico;
+    printABR(dico2->fils_gauche,n);
+    printf("%s \n",dico2->val);
+    (*n)--;
+    printABR(dico2->fils_droit,n);
+}
+
+void printABR2(DicoABR *dico, int* n) { //affiche les mots dans l'ordre decroissant // mettre n<0 pour tt afficher
+    if(dico==NULL || (*n)==0){return 0;}
+    DicoABR* dico2 = dico;
+    printABR2(dico2->fils_droit,n);
+    printf("%s \n",dico2->val);
+    (*n)--;
+    printABR2(dico2->fils_gauche,n);
 }
 
 Arbre *verimotABR(Arbre *dico){
