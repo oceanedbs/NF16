@@ -538,13 +538,9 @@ Arbre* chargerABR(Arbre* dico){ //charge le fichier dans ABR
 
 void printABR(DicoABR *dico, int* n) { //affiche les mots dans l'ordre croissant // mettre n<0 pour tt afficher
     if(dico==NULL || (*n)==0){return ;}
-    else{
-    printf("%s\n",dico->val );
-    printABR(dico->fils_droit, n);
-    printABR(dico->fils_gauche, n);
-
-  }
-  
+    DicoABR* dico2 = dico;
+    printABR(dico2->fils_gauche,n);
+    if(dico2->val!= NULL){printf("%s \n",dico2->val);
 }
 
 void printABR2(DicoABR *dico, int* n) { //affiche les mots dans l'ordre decroissant // mettre n<0 pour tt afficher
