@@ -51,7 +51,8 @@ int main(){
     char tab2[100];int lol;
     Dico* dico;
     int choix;
-dico = chargerAL(dico);
+    dico=malloc(sizeof(Dico));
+    dico = chargerAL(dico);
   while(1){
 printf("que voulez vous faire? \n");
 printf("1 - print tout\n");
@@ -59,13 +60,14 @@ printf("2 - print ss ensemble\n");
 printf("3 - verimot\n");
 printf("4 - veridico\n");
 printf("5 - quitter\n");
-    
+
     scanf("%d",&choix);
     if(choix==5){break;}
     if(choix==1){for(lol=0;lol<100;lol++){tab2[lol]=0;} lol=-1; print(dico,tab2,0,&lol);}
     if(choix==2){
       printf("entrez le ss ensemble\n");
-      Mot* mot = creerMot();
+      scanf("%s",tab2 );
+      Mot* mot = creerMotChaine(tab2);
       //printf("combien de valeurs max voulez vous?\n");
       //scanf("%d",&lol);
       lol=-1;
@@ -78,20 +80,6 @@ printf("5 - quitter\n");
   }
   }
 
-int i;
-char tab[100];
-for(i=0;i<100;i++){tab[i]=0;}
-i=-1;
-print(dico, tab, 0, &i);
-
-//dico=verimotAL(dico);
-
-dico = veridicoAL(dico);
-for(i=0;i<100;i++){tab[i]=0;}
-i=-1;
-print(dico, tab, 0, &i);
-
-}
 
 return 0;
 }

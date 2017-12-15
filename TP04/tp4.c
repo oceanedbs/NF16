@@ -540,7 +540,8 @@ void printABR(DicoABR *dico, int* n) { //affiche les mots dans l'ordre croissant
     if(dico==NULL || (*n)==0){return ;}
     DicoABR* dico2 = dico;
     printABR(dico2->fils_gauche,n);
-    printf("%s \n",dico2->val);
+    if(dico2->val!= NULL){    printf("%s \n",dico2->val);
+}
     (*n)--;
     printABR(dico2->fils_droit,n);
 }
