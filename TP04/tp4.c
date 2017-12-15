@@ -265,7 +265,7 @@ Mot* creerMotChaine(char *chaine){        //IT WORKS
     mot->c=chaine[0];
     mot2 = mot;
     i=1;
-    while (chaine[i]!='\n' && i<100) {
+    while (isalpha(chaine[i])) {
        mot3 = malloc(sizeof(Mot));
        mot2->suiv = mot3;
        mot2=mot2->suiv;
@@ -620,7 +620,7 @@ Dico* verimotAL(Dico* dico){
   mot=creerMotChaine(line);
   printf("rech \n" );
    int d, c=rechercheMot2(dico, mot);
-   char *chaine;
+   char *chaine1;
    if(c==0){ //le mot n'a pas été trouvé
      printf("Le mot n'esite pas dans le dictionaire, vous souhaitez : \n 0 - ajouter le mot \n 1 - remplacer le mot\n" );
      scanf("%d", &d);
@@ -629,39 +629,16 @@ Dico* verimotAL(Dico* dico){
 
      }
      else{
-       printf("suggestion\n" );
+       printf("Suggestion\n" );
        suggestionMot2(5, dico, mot);
        printf("Ecrivez le mot que vous souhaitez remplacer\n" );
-       scanf("%s", chaine);
-       Mot* mot4;
-       Mot* mot5;
-       Mot* mot6;
-       int i;
-       mot4 = malloc(sizeof(Mot));
-       mot4->c= chaine[0];
-       mot5 = mot4;
-       i=1;
-       while (chaine[i]!=0 && i<100) {
-          mot6 = malloc(sizeof(Mot));
-          mot5->suiv = mot6;
-          mot5=mot5->suiv;
-          mot5->c=chaine[i];
-          mot5->suiv=NULL;
-          i++;
-       }
-       mot6 = malloc(sizeof(Mot));
-       mot5->suiv = mot6;
-          mot5=mot5->suiv;
-          mot5->c='$';
-          mot5->suiv=NULL;
-                       mot5=mot;
-                       while(mot5->suiv!=NULL){printf(" mot %c  \n",mot5->c); mot5=mot5->suiv;}
-                       printf(" mot %c \n",mot5->c);
-                       printf("i = %d \n",i);
+       scanf("%s", chaine1);
+       printf(" crée : %s\n", chaine1 );
+       Mot *mot4 = creerMotChaine(chaine1);
         printf("suppression\n" );
-       supprimeMot2(dico,mot);
+       supprimeMot2(mot4,dico);
        printf("ajout\n" );
-       ajoutMot2(dico, mot4);
+       ajoutMot2(mot, dico);
      }
    }
 
