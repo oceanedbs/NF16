@@ -69,6 +69,7 @@ dico6->alt=NULL;
 printf("init fini\n" );
 
 dico = chargerAL(dico);
+dico=verimotAL(dico);
   }
 
 return 0;

@@ -546,7 +546,7 @@ return dico;
 }
 
 Dico* chargerAL(Dico *dico){
-  FILE* file = fopen("file.txt", "r"); /* should check the result */
+  FILE* file = fopen("dictionnaire.txt", "r"); /* should check the result */
    char line[100];
 
    while (fgets(line, sizeof(line), file)) {
@@ -579,6 +579,8 @@ Dico* chargerAL(Dico *dico){
 
                   ajoutMot2(mot, dico);
 
+}
+return dico;
 }
 
 Dico* verimotAL(Dico* dico){
