@@ -779,6 +779,48 @@ Dico* veridicoAL(Dico* dico){
     else{printf("looser\n"); return dico;}
 }
 
+Arbre* veridicoABR(Arbre* dico){
+        printf("veuillez entrer le ss ensemble recherche \n");
+        char tab[100];
+        int a;
+        for(a=0;a<100;a++){tab[a]=NULL;}
+        gets(tab);
+        suggestionMots(dico,tab,5);
+        printf("\n Que voulez vous faire? \n");
+    printf("\n 1 - correction de ces mot \n");
+    printf("\n 2 - suppression du mot \n");
+    printf("\n 3 - valider \n");
+    int i;
+    scanf("%d",&i);
+    if(i==1){
+        printf("entrez le mot a corriger \n");
+        for(a=0;a<100;a++){tab[a]=NULL;}
+        gets(tab);
+        supprimeMot(dico,tab);
+        for(a=0;a<100;a++){tab[a]=NULL;}
+        printf("entrez sa correction \n");
+        gets(tab);
+        printf("sur de vouloir faire ca?(1 pour oui)\n");
+        scanf("%d",&a);
+        if(a!=1){printf("abort \n"); return dico;}
+        ajoutMot(dico,tab);
+        printf("C'est bon le mot est corrige \n");
+        return dico;
+    }
+    if(i==2){
+        printf("entrez le mot a supprimer \n");
+        for(a=0;a<100;a++){tab[a]=NULL;}
+        gets(tab);
+        printf("sur de vouloir faire ca?(1 pour oui)\n");
+        scanf("%d",&a);
+        if(a!=1){printf("abort \n"); return dico;}
+        supprimeMot(dico,tab);
+        printf("suppression done \n");
+        return dico;
+    }
+    if(i==3){printf("good, have a nice day \n");}
+    else{printf("looser\n"); return dico;}
+}
 
 /*
 
