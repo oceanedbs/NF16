@@ -484,7 +484,7 @@ void suggestionMot2(int k, Dico* dico, Mot* mot) {
 }
 
 
-//  PARTIE 3
+//  PARTIE 3 -------------------------------------------------------------------------------------
 
 Arbre* chargerABR(Arbre* dico){ //charge le fichier dans ABR
   FILE* file = fopen("dictionnaire.txt", "r"); /* should check the result */
@@ -497,6 +497,24 @@ Arbre* chargerABR(Arbre* dico){ //charge le fichier dans ABR
    fclose(file);
 
    return dico;
+}
+
+void printABR(DicoABR *dico, int* n) { //affiche les mots dans l'ordre croissant // mettre n<0 pour tt afficher
+    if(dico==NULL || (*n)==0){return 0;}
+    DicoABR* dico2 = dico;
+    printABR(dico2->fils_gauche,n);
+    printf("%s \n",dico2->val);
+    (*n)--;
+    printABR(dico2->fils_droit,n);
+}
+
+void printABR2(DicoABR *dico, int* n) { //affiche les mots dans l'ordre decroissant // mettre n<0 pour tt afficher
+    if(dico==NULL || (*n)==0){return 0;}
+    DicoABR* dico2 = dico;
+    printABR2(dico2->fils_droit,n);
+    printf("%s \n",dico2->val);
+    (*n)--;
+    printABR2(dico2->fils_gauche,n);
 }
 
 Arbre *verimotABR(Arbre *dico){
