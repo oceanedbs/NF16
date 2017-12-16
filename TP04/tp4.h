@@ -66,3 +66,6 @@ void print2(Dico* dico, Mot* mot,int* n);
 
 
 Arbre* chargerABR(Arbre* dico);
+
+
+void printABR(DicoABR *dico, int* n);

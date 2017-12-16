@@ -29,11 +29,11 @@ int main(){
         dico=veridicoABR(dico);
       }
       if(choix==3){
-        dico=printABR(dico, &n);
+        printABR(dico, &n);
 
       }
       if(choix==4){
-        dico=printABR2(dico, &n);
+        printABR2(dico, &n);
       }
       if(choix==5){
         return 0;

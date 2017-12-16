@@ -393,6 +393,17 @@ Dico *ajoutMot2(Mot *mot, Dico *dico) {
       else {
         printf("Il y a un prefixe ! Dico %c, Mot %c \n", pointeur->c, caractere->c );
         if(caractere->suiv->c != '$'){caractere=caractere->suiv;}
+        else if(caractere->suiv->c == '$'){
+          Dico *pointeur2 = pointeur->succ;
+          Dico *new=malloc(sizeof(Dico));
+          new->c='$';
+          new->succ=NULL;
+          new->alt=pointeur2;
+          pointeur->succ=new;
+          return new;
+
+
+        }
 
       //printf("ici pointeur = %c et caractere = %c \n", pointeur->c, caractere->c );
       pointeur=pointeur->succ;
@@ -542,6 +553,7 @@ void printABR(DicoABR *dico, int* n) { //affiche les mots dans l'ordre croissant
     printABR(dico2->fils_gauche,n);
     if(dico2->val!= NULL){printf("%s \n",dico2->val);
 }
+}
 
 void printABR2(DicoABR *dico, int* n) { //affiche les mots dans l'ordre decroissant // mettre n<0 pour tt afficher
     if(dico==NULL || (*n)==0){return ;}
@@ -682,7 +694,7 @@ void print2(Dico* dico, Mot* mot,int* n){      //affiche tt le ss ensemble de di
   Dico *dico3;
   while (mot->c!=dico2->c) {                  //on cherche si ya le premier char, si oui on pointe dessu sinon on return null
     if (dico2->alt!=NULL) {dico2=dico2->alt;}
-    else { printf("sous ensemble non existant \n"); break;}
+    else { printf("sous ensemble non existant \n"); return;}
   }
   //ici on a mot->c == dico2->c == dico3->c
 
@@ -806,7 +818,9 @@ Arbre* veridicoABR(Arbre* dico){
     }
     if(i==3){printf("good, have a nice day \n");}
     else{printf("looser\n"); return dico;}
+
 }
+
 
 /*
 

@@ -9,4 +9,6 @@ final
 finalement
 rat
 rateau
+rapidement
+rapide
 rate
