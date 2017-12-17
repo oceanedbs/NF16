@@ -29,7 +29,7 @@ int supprimeMot(Arbre *dico, char* valeur);
 
 int suggestionMots(Arbre *dico, char* souschaine, int k);
 
-void parcours_infixe(DicoABR *mot, int k, char *souschaine);
+void parcours_infixe(DicoABR *mot);
 
 /*PARTIE 2 */
 

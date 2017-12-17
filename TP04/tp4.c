@@ -163,6 +163,29 @@ int supprimeMot(Arbre *dico, char* valeur) {
   }
 }
 
+void parcours_prefixe(DicoABR *dico){
+  if(dico != NULL){
+    printf("Valeur : %s\n", dico->val );
+    parcours_prefixe(dico->fils_gauche);
+    parcours_prefixe(dico->fils_droit);
+  }
+}
+
+void parcours_infixe(DicoABR *dico){
+  if(dico != NULL){
+    parcours_infixe(dico->fils_gauche);
+    printf("Valeur : %s\n", dico->val );
+    parcours_infixe(dico->fils_droit);
+  }
+}
+void parcours_postfixe(DicoABR *dico){
+  if(dico!=NULL){
+    parcours_postfixe(dico->fils_gauche);
+    parcours_postfixe(dico->fils_droit);
+    printf("Valeur %s \n", dico->val );
+  }
+}
+
 
 
 DicoABR* successeur(DicoABR *pointeur){
@@ -542,9 +565,10 @@ Arbre* chargerABR(Arbre* dico){ //charge le fichier dans ABR
 
    fclose(file);
 */
-  char mot[100];
+  char *mot;
+  mot=(char*)malloc((strlen(mot)+1)*sizeof(char));
   printf("Rentrez le mot à ajouter \n");
-  scanf("%s",mot );
+  scanf("%s",mot);
   ajoutMot(dico, mot);
    return dico;
 }
@@ -582,28 +606,30 @@ Arbre *verimotABR(Arbre *dico){
 
     }
     else{
-      printf("Le mot n'existe pas, que souhaitez vous faire ? \n 1-ajouter le mot au dicitionnaire ? \n 2-remplacer le mot par un mot existant");
+      printf("Le mot n'existe pas, que souhaitez vous faire ? \n 1-ajouter le mot au dicitionnaire ? \n 2-remplacer le mot par un mot existant \n");
       scanf("%d", &b);
       if(b==1){
         ajoutMot(dico, line);
       }
       if(b==2){
-        suggestionMots(dico, line, 5);
-        printf("Entrez le mot que vous souhaitez remplacer\n" );
-        scanf("%s",sugg );
-        printf("%s\n", sugg );
-        printf("Bonjour\n");
-        c=rechercherMot(dico->racine, sugg);
-        printf("Bonjour 2\n" );
-        if(c==NULL){
-          printf("Vous n'avez pas entré le bon mot\n");
-        }
-        else{
-          printf("Il faut remplacer le mot \n" );
-          //PAS LE TEMPS DE REFLECHIR A CA J'Y REVIENS PLUS TARD
+        int c;
+        c=suggestionMots(dico, line, 5);
+        if(c==1){
+          printf("Entrez le mot que vous souhaitez remplacer\n" );
+          scanf("%s",sugg );
+          printf("%s\n", sugg );
+          printf("Bonjour\n");
+          c=rechercherMot(dico->racine, sugg);
+          printf("Bonjour 2\n" );
+          if(c==NULL){
+            printf("Vous n'avez pas entré le bon mot\n");
+          }
+          else{
+            printf("Il faut remplacer le mot \n" );
         }
       }
     }
+  }
 
 }
 

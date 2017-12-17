@@ -13,14 +13,17 @@ int main(){
   if(a == 1){
     printf("Vous avez chsoisi la représentation ABR\n" );
     Arbre *dico;
+    char *chaine;
     int choix =0, n=-1;
     dico=initDico("rapidement");
-    while(choix != 5){
-      printf("Que voulez vous faire \n 0- charger un mot \n 1-verimot ABR \n 2 - veridico ABR \n 3-print ordre croissant \n 4 - print ordre décroissant \n 5-quitter \n" );
+    while(choix != 6){
+      printf("Que voulez vous faire \n 0- charger un mot \n 1-verimot ABR \n 2 - veridico ABR \n 3- print parcours prefixe \n 4 - print parcours infixe \n 5- parcours parcours_postfixe \n 6-quitter \n" );
       scanf("%d", &choix );
 
       if(choix == 0){
         dico=chargerABR(dico);
+
+
       }
       if(choix == 1){
         dico=verimotABR(dico);
@@ -29,13 +32,16 @@ int main(){
         dico=veridicoABR(dico);
       }
       if(choix==3){
-        printABR(dico, &n);
+        parcours_prefixe(dico->racine);
 
       }
       if(choix==4){
-        printABR2(dico, &n);
+        parcours_infixe(dico->racine);
       }
-      if(choix==5){
+      if(choix == 5){
+        parcours_postfixe(dico->racine);
+      }
+      if(choix==6){
         return 0;
       }
     }
