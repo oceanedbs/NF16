@@ -556,21 +556,25 @@ void suggestionMot2(int k, Dico* dico, Mot* mot) {
 //  PARTIE 3 -------------------------------------------------------------------------------------
 
 Arbre* chargerABR(Arbre* dico){ //charge le fichier dans ABR
-  /* FILE* file = fopen("dictionnaire.txt", "r");
+   FILE* file = fopen("dictionnaire.txt", "r");
    char line[100];
 
    while (fgets(line, sizeof(line), file)) {
       ajoutMot(dico, line);
    }
-
    fclose(file);
-*/
+   return dico;
+
+
+/*
   char *mot;
   mot=(char*)malloc((strlen(mot)+1)*sizeof(char));
   printf("Rentrez le mot à ajouter \n");
   scanf("%s",mot);
   ajoutMot(dico, mot);
    return dico;
+
+*/
 }
 
 void printABR(DicoABR *dico, int* n) { //affiche les mots dans l'ordre croissant // mettre n<0 pour tt afficher
