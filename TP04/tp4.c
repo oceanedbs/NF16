@@ -598,8 +598,8 @@ void printABR3(DicoABR* dico, int* n,char* c){  //affiche maximum n mots inf a c
     if (dico==NULL){return 0;}
 	if((*n)==0){return 0;}
     if (strcmp(dico->val,c)<=0){
-        printf("%s \n",dico->val); (*n)--;
         printABR(dico->fils_gauche,n);
+	if((*n)>0){printf("%s \n",dico->val); (*n)--;}
         printABR3(dico->fils_droit,n,c);
     }
     else{
@@ -611,9 +611,9 @@ void printABR3(DicoABR* dico, int* n,char* c){  //affiche maximum n mots inf a c
 void printABR4(DicoABR* dico, int* n,char* c){  //affiche maximum n mots sup a c
     if (dico==NULL){return 0;}
     if (strcmp(dico->val,c)>=0){
-        printf("%s \n",dico->val); (*n)--;
-        printABR(dico->fils_droit,n);
-        printABR4(dico->fils_gauche,n,c);
+	 printABR4(dico->fils_gauche,n,c);
+        if((*n)>0){printf("%s \n",dico->val); (*n)--;}
+        printABR(dico->fils_droit,n);       
     }
     else{
         printABR3(dico->fils_droit,n,c);
