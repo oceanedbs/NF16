@@ -578,7 +578,7 @@ Arbre* chargerABR(Arbre* dico){ //charge le fichier dans ABR
 }
 
 void printABR(DicoABR *dico, int* n) { //affiche les mots dans l'ordre croissant // mettre n<0 pour tt afficher
-    if(dico==NULL || (*n)==0){return ;}
+    if(dico==NULL || (*n)==0){return 0;}
     DicoABR* dico2 = dico;
     printABR(dico2->fils_gauche,n);
     if(dico2->val!= NULL){printf("%s \n",dico2->val);
@@ -586,7 +586,7 @@ void printABR(DicoABR *dico, int* n) { //affiche les mots dans l'ordre croissant
 }
 
 void printABR2(DicoABR *dico, int* n) { //affiche les mots dans l'ordre decroissant // mettre n<0 pour tt afficher
-    if(dico==NULL || (*n)==0){return ;}
+    if(dico==NULL || (*n)==0){return 0;}
     DicoABR* dico2 = dico;
     printABR2(dico2->fils_droit,n);
     printf("%s \n",dico2->val);
@@ -596,8 +596,9 @@ void printABR2(DicoABR *dico, int* n) { //affiche les mots dans l'ordre decroiss
 
 void printABR3(DicoABR* dico, int* n,char* c){  //affiche maximum n mots inf a c
     if (dico==NULL){return 0;}
+	if((*n)==0){return 0;}
     if (strcmp(dico->val,c)<=0){
-        printf("%s \n",dico->val);
+        printf("%s \n",dico->val); (*n)--;
         printABR(dico->fils_gauche,n);
         printABR3(dico->fils_droit,n,c);
     }
@@ -610,7 +611,7 @@ void printABR3(DicoABR* dico, int* n,char* c){  //affiche maximum n mots inf a c
 void printABR4(DicoABR* dico, int* n,char* c){  //affiche maximum n mots sup a c
     if (dico==NULL){return 0;}
     if (strcmp(dico->val,c)>=0){
-        printf("%s \n",dico->val);
+        printf("%s \n",dico->val); (*n)--;
         printABR(dico->fils_droit,n);
         printABR4(dico->fils_gauche,n,c);
     }
