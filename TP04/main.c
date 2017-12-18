@@ -17,7 +17,7 @@ int main(){
     int choix =0, n=-1;
     dico=initDico("rapidement");
     while(choix != 6){
-      printf("Que voulez vous faire \n 0- charger un mot \n 1-verimot ABR \n 2 - veridico ABR \n 3- print parcours prefixe \n 4 - print parcours infixe \n 5- parcours parcours_postfixe \n 6-quitter \n" );
+      printf("Que voulez vous faire \n 0- charger l'ABR depuis le fichier dictionnaire.txt \n 1-verimot ABR \n 2 - veridico ABR \n 3- print parcours prefixe \n 4 - print parcours infixe \n 5- parcours parcours_postfixe \n 6-quitter \n" );
       scanf("%d", &choix );
 
       if(choix == 0){
@@ -62,6 +62,7 @@ int main(){
   while(1){
 printf("que voulez vous faire? \n");
 printf("1 - print tout\n");
+
 printf("2 - print ss ensemble\n");
 printf("3 - verimot\n");
 printf("4 - veridico\n");
