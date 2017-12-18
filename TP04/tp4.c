@@ -594,6 +594,32 @@ void printABR2(DicoABR *dico, int* n) { //affiche les mots dans l'ordre decroiss
     printABR2(dico2->fils_gauche,n);
 }
 
+void printABR3(DicoABR* dico, int* n,char* c){  //affiche maximum n mots inf a c
+    if (dico==NULL){return 0;}
+    if (strcmp(dico->val,c)<=0){
+        printf("%s \n",dico->val);
+        printABR(dico->fils_gauche,n);
+        printABR3(dico->fils_droit,n,c);
+    }
+    else{
+        printABR3(dico->fils_gauche,n,c);
+    }
+ return 0;
+}
+
+void printABR4(DicoABR* dico, int* n,char* c){  //affiche maximum n mots sup a c
+    if (dico==NULL){return 0;}
+    if (strcmp(dico->val,c)>=0){
+        printf("%s \n",dico->val);
+        printABR(dico->fils_droit,n);
+        printABR4(dico->fils_gauche,n,c);
+    }
+    else{
+        printABR3(dico->fils_droit,n,c);
+    }
+ return 0;
+}
+
 Arbre *verimotABR(Arbre *dico){
    FILE* file = fopen("file.txt", "r"); /* should check the result */
   if(file == NULL){ printf("Erreur d'ouverture du fichier\n"); return NULL;}
