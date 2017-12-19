@@ -247,6 +247,17 @@ int suggestionMots(Arbre *dico, char* souschaine, int k){
   }
   return 1;
 }
+
+void supprimeABRtotal(DicoABR* dico){
+    if(dico==NULL){printf("done \n"); return NULL;}
+    DicoABR* dico2 = dico->fils_droit;
+    DicoABR* dico3 = dico->fils_gauche;
+    free(dico->val);
+    free(dico);
+    supprimeABRtotal(dico2);
+    supprimeABRtotal(dico3);
+}
+
 /* PARTIE 2 */
 
 Mot* creerMot(){        //IT WORKS
