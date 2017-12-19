@@ -27,6 +27,7 @@ Arbre* initDico(char* valeur){
 }
 
 DicoABR *ajoutMot(Arbre *newArbre, char *valeur){
+	if(rechercherMot(newArbre->racine,valeur)!=NULL){printf("le mot existe deja \n"); return newArbre->racine;}
   DicoABR* new_mot;
   new_mot=malloc(sizeof(DicoABR));
   if(new_mot!=NULL){
@@ -83,7 +84,7 @@ char * creerMot1(char tab[]){
 
 DicoABR *rechercherMot(DicoABR* dico, char* valeur) {
 
-  if(!dico || !valeur )  return dico;
+  if(!dico || !valeur )  return NULL;
 
   int n=strcmp(valeur, dico->val);
   if(n==0) return dico;
