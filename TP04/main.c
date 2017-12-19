@@ -42,6 +42,7 @@ int main(){
         parcours_postfixe(dico->racine);
       }
       if(choix==6){
+        void supprimeABRtotal(dico->racine);
         return 0;
       }
     }
