@@ -634,10 +634,10 @@ void printABR4(DicoABR* dico, int* n,char* c){  //affiche maximum n mots sup a c
 }
 
 Arbre *verimotABR(Arbre *dico){
-   FILE* file = fopen("file.txt", "r"); /* should check the result */
+   FILE* file = fopen("file.txt", "r+"); /* should check the result */
   if(file == NULL){ printf("Erreur d'ouverture du fichier\n"); return NULL;}
 
-  char line[20];
+  char line[40];
 
   while (fgets(line, sizeof(line), file)) {
     printf("%s", line);
@@ -657,6 +657,7 @@ Arbre *verimotABR(Arbre *dico){
       if(b==2){
         int c;
         c=suggestionMots(dico, line, 5);
+	   
         if(c==1){
           printf("Entrez le mot que vous souhaitez remplacer\n" );
           scanf("%s",sugg );
