@@ -709,6 +709,41 @@ void printABR4(DicoABR* dico, int* n,char* c){  //affiche les mots sup a c
  return 0;
 }
 
+void ajoutMotfile(char mot[]){
+  FILE * file =fopen("dictionnaire.txt", "a");
+  if(file == NULL){ printf("Erreur d'ouverture du fichier\n"); return NULL;}
+  fputs(mot, file);
+  fclose(file);
+
+}
+
+void remplacerMot(char correction[], char supp[]){
+  FILE * file1 = fopen("file.txt", "r+");
+
+  FILE * file2 = fopen("file2.txt", "w+");
+
+    char line[40];
+    int i;
+    for(i=0; i<40; i++){line[i]=0;}
+
+    while (fgets(line, sizeof(line), file1)) {
+      if(strcmp(line, supp)!= 0){
+        fputs(line, file2);
+
+      }
+      else{
+        fputs(correction, file2);
+      }
+    }
+
+    fclose(file1);
+    fclose(file2);
+
+    remove("file.txt");
+    rename("file2.txt", "file.txt");
+}
+
+
 Arbre *verimotABR(Arbre *dico){
    FILE* file = fopen("file.txt", "r+"); /* should check the result */
   if(file == NULL){ printf("Erreur d'ouverture du fichier\n"); return NULL;}
@@ -732,6 +767,7 @@ Arbre *verimotABR(Arbre *dico){
       scanf("%d", &b);
       if(b==1){
         ajoutMot(dico, line);
+        ajoutMotfile(line);
       }
       if(b==2){
         int c;
@@ -743,8 +779,8 @@ Arbre *verimotABR(Arbre *dico){
           scanf("%s", sugg);
           strcat(sugg, "\n");
           printf("Il faut remplacer le mot \n" );
-          supprimeMot(dico, sugg);
-          ajoutMot(dico, line);
+          remplacerMot(sugg, line);
+
         }
     }
   }
@@ -786,20 +822,22 @@ Dico* verimotAL(Dico* dico){
      printf("Le mot n'esite pas dans le dictionaire, vous souhaitez : \n 0 - ajouter le mot \n 1 - remplacer le mot\n" );
      scanf("%d", &d);
      if(d==0){
+       ajoutMotfile(line);
        ajoutMot2(mot, dico);
 
      }
      else{
        printf("Suggestion\n" );
        suggestionMot2(5, dico, mot);
-       printf("Ecrivez le mot que vous souhaitez remplacer\n" );
+       printf("Ecrivez la correction du mot\n" );
        scanf("%s", chaine1);
        printf(" crée : %s\n", chaine1 );
-       Mot *mot4 = creerMotChaine(chaine1);
-        printf("suppression\n" );
-       supprimeMot2(mot4,dico);
-       printf("ajout\n" );
-       ajoutMot2(mot, dico);
+       remplacerMot(chaine1, line);
+       //Mot *mot4 = creerMotChaine(chaine1);
+        //printf("suppression\n" );
+       //supprimeMot2(mot4,dico);
+       //printf("ajout\n" );
+      // ajoutMot2(mot, dico);
      }
    }
 
@@ -970,10 +1008,11 @@ Arbre* veridicoABR(Arbre* dico){
 }
 
 void supprimeALtotal(Dico* dico){
+    Dico *dico2=NULL, *dico3=NULL;
     if(dico==NULL){printf("done\n");return 0;}
-    Dico* dico2 = dico->alt;
-    Dico* dico3 = dico->succ;
-    free(dico->c);
+    if(dico->alt != NULL){dico2 = dico->alt;}
+    if(dico->succ != NULL){dico3 = dico->succ;}
+  //  free(dico->c);
     free(dico);
     supprimeALtotal(dico2);
     supprimeALtotal(dico3);

@@ -16,16 +16,13 @@ int main(){
     char *chaine;
     int choix =0, n=-1;
     char chaine2[100];
-    dico=initDico("rapidement\n"); //le "\n" est mis ici car les mots récupérés de dictionnaire.txt ont un \n à la fin
+    dico=initDico("initial\n"); //le "\n" est mis ici car les mots récupérés de dictionnaire.txt ont un \n à la fin
+    dico=chargerABR(dico);
     while(choix != 8){
-      printf("Que voulez vous faire \n 0- charger l'ABR depuis le fichier dictionnaire.txt \n 1-verimot ABR \n 2 - veridico ABR \n 3- print parcours prefixe \n 4 - print parcours infixe \n 5- parcours parcours_postfixe \n 6- afficher sous ensemble 1 (affiche tous les mots du dictionnaire avant la chaine passée en argument)\n 7-afficher sous ensemble 2 (affiche les mots commençant par le préfixe passé en argument)\n 8-quitter \n" );
+      printf("Que voulez vous faire  \n 1-verimot ABR \n 2 - veridico ABR \n 3- print parcours prefixe \n 4 - print parcours infixe \n 5- parcours parcours_postfixe \n 6- afficher sous ensemble 1 (affiche tous les mots du dictionnaire avant la chaine passée en argument)\n 7-afficher sous ensemble 2 (affiche les mots commençant par le préfixe passé en argument)\n 8-quitter \n" );
       scanf("%d", &choix );
 
-      if(choix == 0){
-        dico=chargerABR(dico);
 
-
-      }
       if(choix == 1){
         dico=verimotABR(dico);
       }
@@ -68,10 +65,10 @@ int main(){
     printf("vous avez choisi la représentation AL\n");
     char tab2[100];int lol;
     Dico* dico;
-    int choix;
+    int choix=0;
     dico=malloc(sizeof(Dico));
     dico = chargerAL(dico);
-  while(1){
+  while(choix != 5){
 printf("que voulez vous faire? \n");
 printf("1 - print tout\n");
 
@@ -81,7 +78,7 @@ printf("4 - veridico\n");
 printf("5 - quitter\n");
 
     scanf("%d",&choix);
-    if(choix==5){supprimeALtotal(dico); break;}
+    if(choix==5){supprimeALtotal(dico);break;}
     if(choix==1){for(lol=0;lol<100;lol++){tab2[lol]=0;} lol=-1; print(dico,tab2,0,&lol);}
     if(choix==2){
       printf("entrez le ss ensemble\n");
