@@ -91,6 +91,7 @@ printf("5 - quitter\n");
       //scanf("%d",&lol);
       lol=-1;
       print2(dico,mot,&lol);
+      grofree(mot);
     }
     if(choix==3){dico=verimotAL(dico);}
     if(choix==4){dico = veridicoAL(dico);}
