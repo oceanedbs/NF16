@@ -60,8 +60,6 @@ typedef struct Cellule {
   struct Cellule *succ;
   struct Cellule *alt;
 } Dico;
-// Dico n'est pas un ABR, car il n'est pas binaire, et que son clé[fils[x]] peut
-// être plus grande que clé[x]
 
 Dico *initDico2(Dico *dico, Mot *mot);
 

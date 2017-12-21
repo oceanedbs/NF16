@@ -5,7 +5,7 @@
 
 #include "tp4.h"
 
-/*PARTIE 1*/
+////////////*PARTIE 1*////////////////////////
 
 Arbre *initDico(char *valeur) {
   DicoABR *new_dico;
@@ -405,8 +405,7 @@ void printABR4(DicoABR *dico, int *n, char *c) { // affiche les mots sup a c
   return;
 }
 
-//////////////////////////////* PARTIE 2
-///*////////////////////////////////////////////
+//////////////////////////////* PARTIE 2  *///////////////////////////////////////////////
 
 Dico *initDico2(Dico *dico, Mot *mot) {
   if (dico == NULL) {
@@ -801,8 +800,7 @@ void print2(Dico *dico, Mot *mot,
   print(dico3->succ, tab, i, n);
 }
 
-////////////////////////////  PARTIE 3
-//////////////////////////////////////////////
+////////////////////////////  PARTIE 3 //////////////////////////////////////////////
 
 Arbre *chargerABR(Arbre *dico) { // charge le fichier dans ABR
   FILE *file = fopen("dictionnaire.txt", "r");
