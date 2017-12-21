@@ -117,24 +117,24 @@ int supprimeMot(Arbre *dico, char* valeur) {
   else {printf("le mot existe \n");}
   if (dic->fils_droit==NULL && dic->fils_gauche==NULL) {
     dic = dic->pere;
-    if (dic->fils_droit != NULL && strcmp(dic->fils_droit->val,valeur)==0) {free(dic->fils_droit); dic->fils_droit=NULL;}
-    else {free(dic->fils_gauche); dic->fils_gauche=NULL;}
+    if (dic->fils_droit != NULL && strcmp(dic->fils_droit->val,valeur)==0) {free(dic->fils_droit->val); free(dic->fils_droit); dic->fils_droit=NULL;}
+    else {free(dic->fils_gauche->val); free(dic->fils_gauche); dic->fils_gauche=NULL;}
     return 0;
   }
   if (dic->fils_droit==NULL) {
     temp = dic;
     dic->fils_gauche->pere = dic->pere;
     dic = dic->pere;
-    if (dic->fils_droit != NULL && strcmp(dic->fils_droit->val,valeur)==0) {dic->fils_droit=dic->fils_droit->fils_gauche; free(temp);}
-    else {dic->fils_gauche=dic->fils_gauche->fils_gauche; free(temp);}
+    if (dic->fils_droit != NULL && strcmp(dic->fils_droit->val,valeur)==0) {dic->fils_droit=dic->fils_droit->fils_gauche;free(temp->val); free(temp);}
+    else {dic->fils_gauche=dic->fils_gauche->fils_gauche;free(temp->val); free(temp);}
     return 0;
   }
   if (dic->fils_gauche==NULL) {
     temp = dic;
     dic->fils_droit->pere = dic->pere;
     dic = dic->pere;
-    if (strcmp(dic->fils_droit->val,valeur)==0) {dic->fils_droit=dic->fils_droit->fils_droit; free(temp);}
-    else {dic->fils_gauche=dic->fils_gauche->fils_droit; free(temp);}
+    if (strcmp(dic->fils_droit->val,valeur)==0) {dic->fils_droit=dic->fils_droit->fils_droit; free(temp->val); free(temp);}
+    else {dic->fils_gauche=dic->fils_gauche->fils_droit; free(temp->val); free(temp);}
     return 0;
   }
   if (dic->fils_droit!=NULL && dic->fils_gauche!=NULL) {
@@ -145,8 +145,8 @@ int supprimeMot(Arbre *dico, char* valeur) {
 
           if (temp->fils_droit==NULL && temp->fils_gauche==NULL) {
             temp2= temp->pere;
-            if (temp2->fils_droit != NULL && strcmp(temp2->fils_droit->val,temp->val)==0) {free(temp2->fils_droit); temp2->fils_droit=NULL;}
-            else {free(temp2->fils_gauche); temp2->fils_gauche=NULL;}
+            if (temp2->fils_droit != NULL && strcmp(temp2->fils_droit->val,temp->val)==0) {free(temp2->fils_droit->val); free(temp2->fils_droit); temp2->fils_droit=NULL;}
+            else {free(temp2->fils_gauche->val); free(temp2->fils_gauche); temp2->fils_gauche=NULL;}
             return 0;
           }
           /*if (temp->fils_droit==NULL) {
@@ -162,7 +162,7 @@ int supprimeMot(Arbre *dico, char* valeur) {
             if (strcmp(temp2->fils_droit->val,temp->val)==0) {temp2->fils_droit= temp->fils_droit;}
             else {temp2->fils_gauche = temp->fils_droit;}
             temp->fils_droit->pere = temp->pere;
-
+		free(temp->val);
             free(temp);
             return 0;
           }
