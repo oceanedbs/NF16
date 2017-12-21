@@ -37,6 +37,12 @@ DicoABR *ajoutMot(Arbre *newArbre, char *valeur){
     new_mot->pere=NULL;
     new_mot->fils_gauche=NULL;
     new_mot->fils_droit=NULL;
+    int n=rechercherMot(newArbre->racine, valeur);
+    if(n!=NULL){
+      printf("Le mot existe déjà\n");
+      return NULL;
+    }
+    else{
     if(newArbre != NULL){
       DicoABR* pointeurx, *pointeury;
       pointeurx=newArbre->racine;
@@ -65,6 +71,7 @@ DicoABR *ajoutMot(Arbre *newArbre, char *valeur){
       }
       else{printf("Le dictionnaire passé n'a pas été initialisé\n");}
   }
+  }}
   else{
     printf("Erreur d'allcation mémoire\n");
   }
@@ -570,6 +577,8 @@ void suggestionMot2(int k, Dico* dico, Mot* mot) {
 Arbre* chargerABR(Arbre* dico){ //charge le fichier dans ABR
    FILE* file = fopen("dictionnaire.txt", "r");
    char line[100];
+   char *mot;
+   int i=0;
 
    while (fgets(line, sizeof(line), file)) {
       ajoutMot(dico, line);

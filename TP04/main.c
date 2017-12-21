@@ -15,9 +15,12 @@ int main(){
     Arbre *dico;
     char *chaine;
     int choix =0, n=-1;
-    dico=initDico("rapidement");
     while(choix != 6){
       printf("Que voulez vous faire \n 0- charger l'ABR depuis le fichier dictionnaire.txt \n 1-verimot ABR \n 2 - veridico ABR \n 3- print parcours prefixe \n 4 - print parcours infixe \n 5- parcours parcours_postfixe \n 6-quitter \n" );
+    int choix =0, n=6;
+    char chaine2[100];
+    while(choix != 8){
+      printf("Que voulez vous faire \n 0- charger l'ABR depuis le fichier dictionnaire.txt \n 1-verimot ABR \n 2 - veridico ABR \n 3- print parcours prefixe \n 4 - print parcours infixe \n 5- parcours parcours_postfixe \n 6- afficher sous ensemble 1 (affiche tous les mots du dictionnaire avant la chaine passée en argument)\n 7-afficher sous ensemble 2 (affiche les mots commençant par le préfixe passé en argument)\n 8-quitter \n" );
       scanf("%d", &choix );
 
       if(choix == 0){
@@ -42,7 +45,16 @@ int main(){
         parcours_postfixe(dico->racine);
       }
       if(choix==6){
-        void supprimeABRtotal(dico->racine);
+        printf("Entrez la chaine de caractere souhaitée \n" );
+        scanf("%s", chaine2);
+        printABR3(dico->racine, &n,chaine2);
+      }
+      if(choix==7){
+        printf("Entrez la chaine de caractere souhaitée \n" );
+        scanf("%s", chaine2);
+        printABR4(dico->racine, &n,chaine2);
+      }
+      if(choix==8){
         return 0;
       }
     }
