@@ -54,6 +54,7 @@ int main(){
       }
       if(choix==8){
         return 0;
+        supprimeABRtotal(dico->racine);
       }
     }
 
