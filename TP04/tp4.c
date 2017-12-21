@@ -43,6 +43,7 @@ DicoABR *ajoutMot(Arbre *newArbre, char *valeur){
       return NULL;
     }
     else{
+    printf("Le mot n'existe pas\n" );
     if(newArbre != NULL){
       DicoABR* pointeurx, *pointeury;
       pointeurx=newArbre->racine;
@@ -210,25 +211,90 @@ DicoABR* successeur(DicoABR *pointeur){
 }
 }
 
+DicoABR * max(DicoABR *pointeur){
+  while (pointeur->fils_droit != NULL) {
+    pointeur=pointeur->fils_droit;
+  }
+  return pointeur;
+}
+
+DicoABR * predecesseur(DicoABR *pointeur){
+  DicoABR *y;
+  if(pointeur->fils_gauche != NULL){
+    return max(pointeur->fils_gauche);
+  }
+  else{
+    y=pointeur->pere;
+    while (y!=NULL && pointeur==y->fils_gauche) {
+      pointeur=y;
+      y=y->pere;
+    }
+    return y;
+  }
+}
+
 
 int suggestionMots(Arbre *dico, char* souschaine, int k){
-  DicoABR *pointeur, *mot;
+  DicoABR *pointeur, *pere_pointeur, *mot;
+  DicoABR *w, *y;
+
   pointeur=dico->racine;
   int i=k;
   while(pointeur != NULL && strncmp(pointeur->val, souschaine, strlen(souschaine))!=0) {
     if(strncmp(pointeur->val, souschaine, strlen(souschaine))>0){
+      pere_pointeur=pointeur;
       pointeur=pointeur->fils_gauche;
     }
     else if(strncmp(pointeur->val, souschaine, strlen(souschaine))<0){
+      pere_pointeur=pointeur;
       pointeur=pointeur->fils_droit;
     }else{
-      printf("Il n'y a pas de mots contenant cette sous chaine\n");
-      return 0;
+      printf("Il n'y a pas de mots contenant cette sous chaine\n Nous allons vous proposer des mots se rapprochant de cette souschaine \n");
+      w=pere_pointeur;
+      printf("Valeur %d : %s\n",k, w->val );
+      k--;
+      while(k>0){
+        w=successeur(w);
+        if(w!=NULL){
+          printf("Valeur %d : %s\n",k, w->val );
+          k--;
+        }
+       else{
+          printf("Il n'y a plus de valeurs à suggérer\n" );
+         return 1;
+        }
+      }
     }
   }
   if(pointeur == NULL) {
     printf("Il n'y a pas de mots contenant cette sous chaine\n" );
-    return 0;
+    w=pere_pointeur;
+    y=pere_pointeur;
+    printf("Valeur %d : %s\n",k, w->val );
+    k--;
+    while(k>0){
+      if(w!=NULL){
+        w=successeur(w);
+        if(w!= NULL){
+          printf("Valeur %d : %s\n",k, w->val );
+          k--;
+        }
+      }
+     else if (y!=NULL){
+       y=predecesseur(y);
+       printf("Valeur %d : %s\n",k, y->val );
+       if(y!=NULL){
+         k--;
+       }
+
+      }
+      else{
+        printf("Il n'y a plus de valeurs à afficher \n" );
+        return 1;
+      }
+  }
+  if(k==0){return 1;}
+
   }
   if (strncmp(pointeur->val, souschaine, strlen(souschaine))==0) { //on récupère la plus petite valeur ayant ce prefixe
       while(pointeur->fils_gauche != NULL && strncmp(pointeur->val, souschaine, strlen(souschaine))==0){
@@ -236,13 +302,12 @@ int suggestionMots(Arbre *dico, char* souschaine, int k){
       }
     }
 
-  DicoABR *w;
   w=pointeur->pere;
   printf("Valeur %d : %s\n",k, w->val );
   k--;
   while(k>0){
     w=successeur(w);
-    if(strncmp(w->val, souschaine, strlen(souschaine))==0){
+    if(w!=NULL && strncmp( w->val, souschaine, strlen(souschaine))==0){
       printf("Valeur %d : %s\n",k, w->val );
       k--;
     }
@@ -560,8 +625,7 @@ return dico;
 
 void suggestionMot2(int k, Dico* dico, Mot* mot) {
 
-  //CA ME SAOULE PTIN !!!!! #ragequit
-  //EDIT : en fait ca va
+
     int n=k;
     Mot * mot2;
     mot2=mot;
@@ -646,11 +710,14 @@ Arbre *verimotABR(Arbre *dico){
   if(file == NULL){ printf("Erreur d'ouverture du fichier\n"); return NULL;}
 
   char line[40];
+  int i;
+  for(i=0; i<40; i++){line[i]=0;}
 
   while (fgets(line, sizeof(line), file)) {
     printf("%s", line);
     int b, *c, *a;
-    char *sugg;
+    int d;
+    char sugg[100];
     a =rechercherMot(dico->racine, line);
     if(a != NULL){
       printf("le mot exite déjà dans l'arbre\n" );
@@ -668,18 +735,13 @@ Arbre *verimotABR(Arbre *dico){
 
         if(c==1){
           printf("Entrez le mot que vous souhaitez remplacer\n" );
-          scanf("%s",sugg );
-          printf("%s\n", sugg );
-          printf("Bonjour\n");
-          c=rechercherMot(dico->racine, sugg);
-          printf("Bonjour 2\n" );
-          if(c==NULL){
-            printf("Vous n'avez pas entré le bon mot\n");
-          }
-          else{
-            printf("Il faut remplacer le mot \n" );
+          for(d=0;d<100;d++){sugg[d]=0;}
+          scanf("%s", sugg);
+          strcat(sugg, "\n");
+          printf("Il faut remplacer le mot \n" );
+          supprimeMot(dico, sugg);
+          ajoutMot(dico, line);
         }
-      }
     }
   }
 
@@ -874,6 +936,7 @@ Arbre* veridicoABR(Arbre* dico){
         printf("entrez le mot a corriger \n");
         for(a=0;a<100;a++){tab[a]=0;}
         scanf("%s", tab);
+        strcat(tab, "\n");
         supprimeMot(dico,tab);
         for(a=0;a<100;a++){tab[a]=0;}
         printf("entrez sa correction \n");
@@ -889,6 +952,7 @@ Arbre* veridicoABR(Arbre* dico){
         printf("entrez le mot a supprimer \n");
         for(a=0;a<100;a++){tab[a]=0;}
         scanf("%s" ,tab);
+        strcat(tab, "\n");
         printf("sur de vouloir faire ca?(1 pour oui)\n");
         scanf("%d",&a);
         if(a!=1){printf("abort \n"); return dico;}
@@ -900,13 +964,3 @@ Arbre* veridicoABR(Arbre* dico){
     else{printf("looser\n"); return dico;}
 
 }
-
-
-/*
-
-BONUS :
-CALCULER LE TEMPS D'EXECUTION D'UNE FONCTION
-GRAPHIQUE : TAILLE DE DONNEES / TEMPS
-COMPARER COMPLEXITE THEORIQUE
-
-*/
