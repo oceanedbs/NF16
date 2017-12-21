@@ -118,24 +118,24 @@ int supprimeMot(Arbre *dico, char* valeur) {
   else {printf("le mot existe \n");}
   if (dic->fils_droit==NULL && dic->fils_gauche==NULL) {
     dic = dic->pere;
-    if (dic->fils_droit != NULL && strcmp(dic->fils_droit->val,valeur)==0) {free(dic->fils_droit); dic->fils_droit=NULL;}
-    else {free(dic->fils_gauche); dic->fils_gauche=NULL;}
+    if (dic->fils_droit != NULL && strcmp(dic->fils_droit->val,valeur)==0) {free(dic->fils_droit->val); free(dic->fils_droit); dic->fils_droit=NULL;}
+    else {free(dic->fils_gauche->val); free(dic->fils_gauche); dic->fils_gauche=NULL;}
     return 0;
   }
   if (dic->fils_droit==NULL) {
     temp = dic;
     dic->fils_gauche->pere = dic->pere;
     dic = dic->pere;
-    if (dic->fils_droit != NULL && strcmp(dic->fils_droit->val,valeur)==0) {dic->fils_droit=dic->fils_droit->fils_gauche; free(temp);}
-    else {dic->fils_gauche=dic->fils_gauche->fils_gauche; free(temp);}
+    if (dic->fils_droit != NULL && strcmp(dic->fils_droit->val,valeur)==0) {dic->fils_droit=dic->fils_droit->fils_gauche;free(temp->val); free(temp);}
+    else {dic->fils_gauche=dic->fils_gauche->fils_gauche;free(temp->val); free(temp);}
     return 0;
   }
   if (dic->fils_gauche==NULL) {
     temp = dic;
     dic->fils_droit->pere = dic->pere;
     dic = dic->pere;
-    if (strcmp(dic->fils_droit->val,valeur)==0) {dic->fils_droit=dic->fils_droit->fils_droit; free(temp);}
-    else {dic->fils_gauche=dic->fils_gauche->fils_droit; free(temp);}
+    if (strcmp(dic->fils_droit->val,valeur)==0) {dic->fils_droit=dic->fils_droit->fils_droit; free(temp->val); free(temp);}
+    else {dic->fils_gauche=dic->fils_gauche->fils_droit; free(temp->val); free(temp);}
     return 0;
   }
   if (dic->fils_droit!=NULL && dic->fils_gauche!=NULL) {
@@ -146,8 +146,8 @@ int supprimeMot(Arbre *dico, char* valeur) {
 
           if (temp->fils_droit==NULL && temp->fils_gauche==NULL) {
             temp2= temp->pere;
-            if (temp2->fils_droit != NULL && strcmp(temp2->fils_droit->val,temp->val)==0) {free(temp2->fils_droit); temp2->fils_droit=NULL;}
-            else {free(temp2->fils_gauche); temp2->fils_gauche=NULL;}
+            if (temp2->fils_droit != NULL && strcmp(temp2->fils_droit->val,temp->val)==0) {free(temp2->fils_droit->val); free(temp2->fils_droit); temp2->fils_droit=NULL;}
+            else {free(temp2->fils_gauche->val); free(temp2->fils_gauche); temp2->fils_gauche=NULL;}
             return 0;
           }
           /*if (temp->fils_droit==NULL) {
@@ -163,7 +163,7 @@ int supprimeMot(Arbre *dico, char* valeur) {
             if (strcmp(temp2->fils_droit->val,temp->val)==0) {temp2->fils_droit= temp->fils_droit;}
             else {temp2->fils_gauche = temp->fils_droit;}
             temp->fils_droit->pere = temp->pere;
-
+		free(temp->val);
             free(temp);
             return 0;
           }
@@ -630,10 +630,13 @@ void suggestionMot2(int k, Dico* dico, Mot* mot) {
     Mot * mot2;
     mot2=mot;
     print2(dico,mot2,&n);
-    if(n>0){printf("il n'y a plus de mots a suggerer \n");}
+    if(n>0 && n!=k){printf("il n'y a plus de mots a suggerer \n");}
+    if(n==k){
+            char tab[100];
+            print(dico,tab,0,&n);
+    }
 
 }
-
 
 //  PARTIE 3 -------------------------------------------------------------------------------------
 
@@ -666,6 +669,8 @@ void printABR(DicoABR *dico, int* n) { //affiche les mots dans l'ordre croissant
     DicoABR* dico2 = dico;
     printABR(dico2->fils_gauche,n);
     if(dico2->val!= NULL){printf("%s \n",dico2->val);
+	(*n)--;
+	printABR(dico2->fils_droit,n);
 }
 }
 
@@ -678,12 +683,11 @@ void printABR2(DicoABR *dico, int* n) { //affiche les mots dans l'ordre decroiss
     printABR2(dico2->fils_gauche,n);
 }
 
-void printABR3(DicoABR* dico, int* n,char* c){  //affiche maximum n mots inf a c
+void printABR3(DicoABR* dico, int* n,char* c){  //affiche les mots inf a c
     if (dico==NULL){return 0;}
-	if((*n)==0){return 0;}
     if (strcmp(dico->val,c)<=0){
+        printf("%s \n",dico->val);
         printABR(dico->fils_gauche,n);
-	if((*n)>0){printf("%s \n",dico->val); (*n)--;}
         printABR3(dico->fils_droit,n,c);
     }
     else{
@@ -692,15 +696,15 @@ void printABR3(DicoABR* dico, int* n,char* c){  //affiche maximum n mots inf a c
  return 0;
 }
 
-void printABR4(DicoABR* dico, int* n,char* c){  //affiche maximum n mots sup a c
+void printABR4(DicoABR* dico, int* n,char* c){  //affiche les mots sup a c
     if (dico==NULL){return 0;}
     if (strcmp(dico->val,c)>=0){
-	 printABR4(dico->fils_gauche,n,c);
-        if((*n)>0){printf("%s \n",dico->val); (*n)--;}
+        printf("%s \n",dico->val);
         printABR(dico->fils_droit,n);
+        printABR4(dico->fils_gauche,n,c);
     }
     else{
-        printABR3(dico->fils_droit,n,c);
+        printABR4(dico->fils_droit,n,c);
     }
  return 0;
 }
@@ -964,3 +968,22 @@ Arbre* veridicoABR(Arbre* dico){
     else{printf("looser\n"); return dico;}
 
 }
+
+void supprimeALtotal(Dico* dico){
+    if(dico==NULL){printf("done\n");return 0;}
+    Dico* dico2 = dico->alt;
+    Dico* dico3 = dico->succ;
+    free(dico->c);
+    free(dico);
+    supprimeALtotal(dico2);
+    supprimeALtotal(dico3);
+}
+
+/*
+
+BONUS :
+CALCULER LE TEMPS D'EXECUTION D'UNE FONCTION
+GRAPHIQUE : TAILLE DE DONNEES / TEMPS
+COMPARER COMPLEXITE THEORIQUE
+
+*/

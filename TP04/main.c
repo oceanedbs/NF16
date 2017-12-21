@@ -54,6 +54,7 @@ int main(){
       }
       if(choix==8){
         return 0;
+        supprimeABRtotal(dico->racine);
       }
     }
 
@@ -80,7 +81,7 @@ printf("4 - veridico\n");
 printf("5 - quitter\n");
 
     scanf("%d",&choix);
-    if(choix==5){break;}
+    if(choix==5){supprimeALtotal(dico); break;}
     if(choix==1){for(lol=0;lol<100;lol++){tab2[lol]=0;} lol=-1; print(dico,tab2,0,&lol);}
     if(choix==2){
       printf("entrez le ss ensemble\n");
@@ -90,6 +91,7 @@ printf("5 - quitter\n");
       //scanf("%d",&lol);
       lol=-1;
       print2(dico,mot,&lol);
+      grofree(mot);
     }
     if(choix==3){dico=verimotAL(dico);}
     if(choix==4){dico = veridicoAL(dico);}
