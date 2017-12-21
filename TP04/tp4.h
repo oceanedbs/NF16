@@ -23,13 +23,34 @@ DicoABR *ajoutMot(Arbre *newArbre, char *valeur);
 
 DicoABR *rechercherMot(DicoABR* dico, char* valeur);
 
-DicoABR* mini(DicoABR* dico);
+int suggestionMots(Arbre *dico, char* souschaine, int k);
 
 int supprimeMot(Arbre *dico, char* valeur);
 
-int suggestionMots(Arbre *dico, char* souschaine, int k);
+void parcours_prefixe(DicoABR *dico);
 
-void parcours_infixe(DicoABR *mot);
+void parcours_infixe(DicoABR *dico);
+
+void parcours_postfixe(DicoABR *dico);
+
+DicoABR* successeur(DicoABR *pointeur);
+
+DicoABR * predecesseur(DicoABR *pointeur);
+
+DicoABR * max(DicoABR *pointeur);
+
+DicoABR* mini(DicoABR* dico);
+
+void supprimeABRtotal(DicoABR* dico);
+
+void printABR(DicoABR *dico, int* n);
+
+void printABR2(DicoABR *dico, int* n);
+
+void printABR3(DicoABR* dico, int* n,char* c);
+
+void printABR4(DicoABR* dico, int* n,char* c);
+
 
 /*PARTIE 2 */
 
@@ -45,19 +66,24 @@ typedef struct Cellule{
 }Dico;
 //Dico n'est pas un ABR, car il n'est pas binaire, et que son clé[fils[x]] peut être plus grande que clé[x]
 
-Mot* creerMotChaine(char *chaine);
 
 Dico *initDico2(Dico *dico, Mot *mot);
+
+int rechercheMot2(Dico *dico, Mot *mot);
 
 Dico *prefixeMot(Dico *dico, Mot *mot);
 
 Mot *prefixeMotpointeur(Dico *dico, Mot *mot);
 
-int rechercheMot2(Dico *dico, Mot *mot);
-
 Dico *ajoutMot2(Mot *mot, Dico *dico);
 
-Mot* creerMot();
+Dico* supprimeMot2( Mot* mot, Dico* dico);
+
+void suggestionMot2(int k, Dico* dico, Mot* mot);
+
+Mot* creerMotChaine(char *chaine);
+
+void print(Dico* dico, char* tab, int i, int* n);
 
 void print2(Dico* dico, Mot* mot,int* n);
 
@@ -67,5 +93,20 @@ void print2(Dico* dico, Mot* mot,int* n);
 
 Arbre* chargerABR(Arbre* dico);
 
+void ajoutMotfile(char mot[]);
 
-void printABR(DicoABR *dico, int* n);
+void remplacerMot(char correction[], char supp[]);
+
+Arbre *verimotABR(Arbre *dico);
+
+Arbre* veridicoABR(Arbre* dico);
+
+Dico* chargerAL(Dico *dico);
+
+Dico* verimotAL(Dico* dico);
+
+void grofree(Mot* mot);
+
+Dico* veridicoAL(Dico* dico);
+
+void supprimeALtotal(Dico* dico);

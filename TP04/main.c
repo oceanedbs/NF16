@@ -58,7 +58,7 @@ int main(){
 
     int d;
     d=-1;
-    printABR(dico,&d);
+    printABR(dico->racine,&d);
 
   }
   else if (a==2){
