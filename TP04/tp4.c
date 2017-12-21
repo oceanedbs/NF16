@@ -566,10 +566,13 @@ void suggestionMot2(int k, Dico* dico, Mot* mot) {
     Mot * mot2;
     mot2=mot;
     print2(dico,mot2,&n);
-    if(n>0){printf("il n'y a plus de mots a suggerer \n");}
+    if(n>0 && n!=k){printf("il n'y a plus de mots a suggerer \n");}
+    if(n==k){
+            char tab[100];
+            print(dico,tab,0,&n);
+    }
 
 }
-
 
 //  PARTIE 3 -------------------------------------------------------------------------------------
 
