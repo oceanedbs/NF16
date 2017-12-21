@@ -70,7 +70,6 @@ DicoABR *ajoutMot(Arbre *newArbre, char *valeur){
 
       }
       else{printf("Le dictionnaire passé n'a pas été initialisé\n");}
-  }
   }}
   else{
     printf("Erreur d'allcation mémoire\n");
@@ -634,7 +633,7 @@ void printABR4(DicoABR* dico, int* n,char* c){  //affiche maximum n mots sup a c
     if (strcmp(dico->val,c)>=0){
 	 printABR4(dico->fils_gauche,n,c);
         if((*n)>0){printf("%s \n",dico->val); (*n)--;}
-        printABR(dico->fils_droit,n);       
+        printABR(dico->fils_droit,n);
     }
     else{
         printABR3(dico->fils_droit,n,c);
@@ -666,7 +665,7 @@ Arbre *verimotABR(Arbre *dico){
       if(b==2){
         int c;
         c=suggestionMots(dico, line, 5);
-	   
+
         if(c==1){
           printf("Entrez le mot que vous souhaitez remplacer\n" );
           scanf("%s",sugg );
