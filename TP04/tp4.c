@@ -616,12 +616,11 @@ void printABR2(DicoABR *dico, int* n) { //affiche les mots dans l'ordre decroiss
     printABR2(dico2->fils_gauche,n);
 }
 
-void printABR3(DicoABR* dico, int* n,char* c){  //affiche maximum n mots inf a c
+void printABR3(DicoABR* dico, int* n,char* c){  //affiche les mots inf a c
     if (dico==NULL){return 0;}
-	if((*n)==0){return 0;}
     if (strcmp(dico->val,c)<=0){
+        printf("%s \n",dico->val);
         printABR(dico->fils_gauche,n);
-	if((*n)>0){printf("%s \n",dico->val); (*n)--;}
         printABR3(dico->fils_droit,n,c);
     }
     else{
@@ -630,15 +629,15 @@ void printABR3(DicoABR* dico, int* n,char* c){  //affiche maximum n mots inf a c
  return 0;
 }
 
-void printABR4(DicoABR* dico, int* n,char* c){  //affiche maximum n mots sup a c
+void printABR4(DicoABR* dico, int* n,char* c){  //affiche les mots sup a c
     if (dico==NULL){return 0;}
     if (strcmp(dico->val,c)>=0){
-	 printABR4(dico->fils_gauche,n,c);
-        if((*n)>0){printf("%s \n",dico->val); (*n)--;}
+        printf("%s \n",dico->val);
         printABR(dico->fils_droit,n);
+        printABR4(dico->fils_gauche,n,c);
     }
     else{
-        printABR3(dico->fils_droit,n,c);
+        printABR4(dico->fils_droit,n,c);
     }
  return 0;
 }
