@@ -905,6 +905,15 @@ Arbre* veridicoABR(Arbre* dico){
 
 }
 
+void supprimeALtotal(Dico* dico){
+    if(dico==NULL){printf("done\n");return 0;}
+    Dico* dico2 = dico->alt;
+    Dico* dico3 = dico->succ;
+    free(dico->c);
+    free(dico);
+    supprimeALtotal(dico2);
+    supprimeALtotal(dico3);
+}
 
 /*
 
