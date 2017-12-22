@@ -105,6 +105,12 @@ La fonction verimotAL permet de lire tous les mots contenus dans file.txt, et de
 
 VeridicoAL fonctionne exactement comme veridicoABR, elle est donc elle aussi en O(h).
 
+Comparaison de l'AL et ABR:
+	Bien que les fonctions soient dans les deux cas en O(n) pour les actions 'importantes' (suppression, ajout, recherche...), on peut voir que le nombre de cellules/noeuds dans l'arbre est beaucoup plus faible dans l'AL car celui-ci évite les doublons pour les mots ayant les mêmes préfixes.
+	On peut ainsi voir que l'AL semble plus compact et intéressant en terme de complexité que l'ABR. Il serait intéressant de comparer l'AL avec un ABR équilibré afin de voir lequel serait le plus intéressant.
+	On aurait alors d'un coté moins de noeuds mais une complexité en O(n) et de l'autre plus de noeuds mais une complexité en O(log n).
+	Nous n'avons malheureusement pas eu le temps de faire le test nous même.
+
 \section{Répartition du travail}
 
 Nous avons tous les deux travaillé pendant de longues heures afin de mettre au point et de debugger notre TP. Il nous a semblé très long compte tenu des délais imposés.
