@@ -40,7 +40,7 @@ La fonction rechercherMot permet de rechercher dans tout l'arbre si un mot est p
 
 La fonction supprimerMot permet de supprimer un noeud de l'arbre passé, si la valeur recherchée existe. La fonction commence par appeler la fonction rechercherMot pour savoir si la valeur recherchée existe. Si elle n'existe pas on sort de la fonction, sinon on regarde le nombre de fils que le noeud possède. S'il ne possède aucun fils, on peut le supprimer directement. Si il possède un fils droit ou un fils gauche on sauvegarde son unique fils et on le rattache au père du noeud à supprimer, puis on supprime le noeud. Si le noeud à 2 fils, on cherche le minimum du sous-arbre droit, puis on remplace le noeud par le minimum de son sous-arbre droit. 
 
-Cette fonction fait appel à rechercherMot qui est en O(h), puis la fonction ne réalise qeue des assignations, la complexité de la fonction est donc en O(h). Sauf si il y a 2 fils car on appelle la fonction minimum. On est donc en O(2h) soit en O(h).
+Cette fonction fait appel à rechercherMot qui est en O(h), puis la fonction ne réalise que des assignations, la complexité de la fonction est donc en O(h). Sauf si il y a 2 fils car on appelle la fonction minimum. On est donc en O(2h) soit en O(h).
 
 La fonction suggestionMots, recherche à partir d'une souschaine, le mot le plus petit contenant cette sous-chaine. Puis elle imprime ses successeurs en fonction du nombre de suggestions demandées. Si il n'y a pas de mot contennant cette sous-chaine la fonction retourne les mots qui se trouvent autour de la position que devrait occuper ce mot si il était dans l'abre. Cette fonction est aussi en O(2h) soit en O(h)
 
@@ -70,14 +70,16 @@ La fonction prefixeMotpointeur renvoit un pointeur sur une cellule Mot qui corre
 
 La fonction ajoutMot2 permet d'ajouter un mot au dictionnaire, elle commence par appeler prefixeMot et prefixeMotpointeur, a partir de là elle insèrer tous les caractères du mot. Elle peut potentiellement avoir besoin de parcourir tous le dictionnaire. Ainsi si le mot possède m lettre et l'abre n noeuds, la compléxité est O(max(m,n)).
 
-La fonction supprimeMot2 permet de supprimer un mot du dictionnaire (si il existe déjà). Cette fonction devra au maximum parcourir tout le dictionnaire et tout le mot. Ainsi si le mot à m lettres et que l'arbre à n noeuds, la complexité est en O(m*n).
+La fonction supprimeMot2 permet de supprimer un mot du dictionnaire (si il existe déjà). Cette fonction devra au maximum parcourir tout le dictionnaire et tout le mot dans le pire cas. Ainsi si le mot à m lettres et que l'arbre à n cellules, la complexité est en O(m+n), soit O(n) car n>m ou n=m.
+	On commence par vérifier que le mot existe bien dans l'AL grâce à la fonction de recherche faite auparavant. On va ensuite le mot voulu dans le tableau, et on se placera sur le 'père' de la derniere cellule ayant un alt et faisant partie du mot cherché. On procède ensuite aux affectations & libérations nécessaires (il y a plusieurs cas possibles).
+	Le pire cas est donc lorsque les cellules qui nous intéressent sont en bout de chaines, c'est à dire tout en bas des alt possibles. Il faut alors parcourir tout le tableau au moins une fois puis une seconde fois pour la partie à supprimer, et aussi tout le mot (d'où le O(n+n+m) car il ne faut pas oublier la recherche du mot au debut, donc O(n)).
 
 
-La fonction suggestionMot2 permet de suggérer à l'utilisateur ayant comme prefixe le mot passé en argument. Cette fonction va appeler la fonction print qui affiche tous les mots  qu'on peut composer à partir d'un noeud de l'abre. Cette fonction sera au maximum appellée n fois si il y a n noeuds dans l'abre. Sa complexité est donc en O(n)
+La fonction suggestionMot2 permet de suggérer à l'utilisateur ayant comme prefixe le mot passé en argument. Cette fonction va appeler la fonction print qui affiche tous les mots  qu'on peut composer à partir d'un noeud de l'arbre. Cette fonction sera au maximum appellée n fois si il y a n noeuds dans l'abre. Sa complexité est donc en O(n)
 
 La fonction creerMotChaine permet de creer un chaine de structure Mot à partir d'une chaine passée en argument. Cette fonction ajoute également le '\$' à la fin du mot. La complexité de cette fonction correspond au nombre de lettres du mot. Si le mot à n lettres, la complexité est en O(n).
 
-Les fonctions print et print2 permettent d'afficher un sous ensemble de l'AL. Elles sont toutes 2 en O(n).
+Les fonctions print et print2 permettent d'afficher un sous ensemble de l'AL. Elles sont en O(n) dans le pire des cas.
 
 \section{Partie C : Intégration et fonctionnement}
 Cette partie contient toutes les fonctions permettant de faire fonctionner toutes les fonctions implémentées précédement. 
@@ -104,6 +106,28 @@ La fonction verimotAL permet de lire tous les mots contenus dans file.txt, et de
 VeridicoAL fonctionne exactement comme veridicoABR, elle est donc elle aussi en O(h).
 
 \section{Répartition du travail}
+
+Nous avons tous les deux travaillé pendant de longues heures afin de mettre au point et de debugger notre TP. Il nous a semblé très long compte tenu des délais imposés.
+Ainsi lors de la présentation en TP, ajoutMot ne fonctionnait pas encore totalement et nous avions des difficultés à accéder aux fichiers. Cela a rendu la présentation du TP compliqué car même si nos autres fonctions était fonctionnelles, nous étions incapable de les présenter de façon correctes (il a fallu créer des arbres à la main...).
+Nous avons depuis réussi à régler ces problèmes de fichiers et d'ajout dans un ABR. Les autres fonctions (la totalité de la partie 2 et quasiment toute la 1) n'ont pas été modifié depuis la présentation.
+Pour la fonction ajoutMot, le problème était que nous pointions toujours sur le même char*, ce qui modifiait donc les valeurs de nos anciens noeuds à chaque ajout car ils pointaient tous sur le même. Ce problème fut réglé facilement une fois identifié.
+Pour les fichiers, un mélange de problème d'ouverture (lié au compilateur) et de difficultés à gérer les '\n' avait considérablement ralenti nos efforts. Nous avons réussi à gérer cela avec des sessions de travail groupé afin d'obtenir nos deux avis sur un même problème et ainsi éviter les blocages.
+
+La partie 1 (ABR) fut majoritairement complétée par nous deux lors de la première session du TP4, et elle fut donc rapidement finie (jusqu'à que nous nous apercevions du bug de l'ajout en tout cas).
+La partie 2 (AL) a principalement été faite par Louis (Océane ayant des obligations à ce moment-là). La fonction supprimeMot2 fut nottament très longue et fastidieuse à mettre en place (plusieurs cas à prendre en compte, algorithme peu évident...). Ce fut la première partie à fonctionner entièrement pour nous.
+La partie 3, et nottament la gestion des fichiers, a été faite par Océane car Louis avait des problèmes de fichiers (ouverture impossible, peu importe le mode). Cette partie a été commencé avant la présentation du TP mais finie après celle-ci car non fonctionnelle au moment de la présentation (excepté pour la partie 'print').
+Veridico, Verimot ainsi que le main ont donc été fait en réutilisant les fonctions précédentes par tous les deux (avec une prédominance d'Océane pour la partie de chargement depuis les fichiers), et les 'print' ont été fait par Louis.
+
+Pour nous organiser, nous avons décidé de travailler sur github, afin de faciliter l'échange et éviter les doublons de fonctions et pertes de temps inutiles.
+Chacun faisait les fonctions à la suite, et on ne s'occupait pas d'une fonction déjà entamée par l'autre. Cela fonctionnait bien pour les 2 premières parties, mais fut compliqué lors de la partie 3 car il fallait connaitre le fonctionnement de toutes les fonctions précédentes.
+Pour cette partie, nous nous sommes donc donné plusieurs rendez-vous afin de travailler ensemble et de pouvoir rapidement expliquer nos fonctions en cas de besoins.
+Cela fut aussi très pratique car Louis n'arrivait pas à ouvrir les fichiers (malgré une réinstallation de CodeBlocks) et travailler à deux permit ainsi d'éviter que le travail ne repose entièrement sur Océane. Les réflexions étaient ainsi menées à deux avant d'être implémentées.
+
+D'une façon général, nous avons trouvé le TP très intéressant et formateur, mais trop long.
+Nous avons en effet apprit beaucoup de choses et fait beaucoup de recherche afin de le finir, et bien que le debbugage fut un enfer à cause de la quantité de fonctions différentes mises en jeu, réfléchir aux algorithmes à mettre en place fut réellement intéressant et stimulant.
+Cepandant nous n'avions pas assez de temps pour finir cela proprement sans être soumis à une forte pression. En effet, 2 semaines n'était pas suffisant pour nous permettre de compléter les 3 parties du TP à temps pour la présentation. Bien que nous ayons eu le temps de finir le TP avant le rendu, cela met quand même une grande pression les étudiants.
+De plus, le moment était mal choisi car les deadline de projets arrivaient, la vie associative battait son plein (comédie musicale pour Océane et projet associatif pour Louis) et des examens de TP étaient planifiés pour cette période. Le Tp de NF16 demandait donc beaucoup de temps au mauvais moment.
+Malgré cela nous avons réussi à nous partager de façon équitable le travail et à être disponible pour travailler ensemble en cas de besoin.
 
 
 
